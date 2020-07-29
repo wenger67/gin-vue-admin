@@ -1,12 +1,218 @@
 <template>
-    <router-view></router-view>
+  <div>
+    <div class="search-term">
+        <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+          <el-form-item label="Subject Name">
+            <el-input placeholder="Subject Name" v-model="searchInfo.subjectName"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">Search</el-button>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="openDialog('addSubject')">Create Subject</el-button>
+          </el-form-item>
+        </el-form>
+    </div>
+    <el-table :data="tableData" @sort-change="sortChange" border stripe>
+      <el-table-column label="id" min-width="60" prop="ID" sortable="custom"></el-table-column>
+      <el-table-column label="name" min-width="60" prop="SubjectName" sortable="custom"></el-table-column>
+      <el-table-column label="craete_at" min-width="60" prop="CreatedAt" sortable="custom"></el-table-column>
+      <el-table-column fixed="right" lable="operate" width="200">
+        <template slot-scope="scope">
+          <el-button type="primary" @click="editSubject(scope.row)" size="small" icon="el-icon-edit">Edit</el-button>
+          <el-button type="danger" @click="deleteSubject(scope.row)" size="small" icon="el-icon-delete">Delete</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 30, 50, 100]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :style="{float:'right', padding:'20px'}"
+      :total="total">
+    </el-pagination>
+    
+    <el-dialog
+      :before-close="closeDialog"
+      :title="dialogTitle"
+      :visible.sync="dialogFormVisible">
+      <el-form :inline="true" :model="form" :rules="rules" label-width="80px" ref="subjectForm">
+        <el-form-item label="name" prop="subjectName">
+          <el-input autocomplete="off" v-model="form.subjectName" ref="nameInput"></el-input>
+        </el-form-item>
+      </el-form>
+      
+      <span class="dialog-footer" slot="footer">
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button type="primary" @click="enterDialog">确 定</el-button>
+      </span>
+    </el-dialog>
+    
+  </div>
 </template>
 
 <script>
+
+import {
+  getSubjectById,
+  getSubjectList,
+  createSubject,
+  updateSubject,
+  deleteSubject
+} from '@/api/categorySubject'
+import infoList from '@/components/mixins/infoList'
+import { toSQLLine } from '@/utils/stringFun'
+
 export default {
     name:"Subject",
+    mixins: [infoList],
+    data() {
+      return {
+        listApi: getSubjectList,
+        dialogFormVisible: false,
+        dialogTitle: 'Create Subject',
+        form: {
+          subjectName: ''
+        },
+        type: '',
+        rules: {
+          subjectName: [{
+            required: true, message: 'please input category subject name', trigger: 'blur'
+          }],
+        }
+      }
+    },
+    methods: {
+      sortChange({prop, order}) {
+        if (prop) {
+          this.searchInfo.orderKey = toSQLLine(prop)
+          this.searchInfo.desc = order == 'descending'
+        }
+        this.getTableData()
+      },
+      onSubmit() {
+        this.page = 1
+        this.pageSize = 10
+        this.getTableData()
+      },
+      initForm() {
+        this.$refs.subjectForm.resetFields()
+        this.form = {
+          subjectName: ''
+        }
+      },
+      closeDialog() {
+        this.initForm()
+        this.dialogFormVisible = false
+      },
+      openDialog(type) {
+        switch (type) {
+          case 'addSubject':
+            this.dialogTitle = 'Create Subject'
+            break
+          case 'edit':
+            this.dialogTitle = 'Edit Subject'
+            break
+          default:
+            break
+        }
+        this.type = type
+        this.dialogFormVisible = true
+      },
+      async editSubject(row) {
+        const res = await getSubjectById({ id: row.ID })
+        this.form = res.data.subject
+        this.openDialog('edit')
+      },
+      async deleteSubject(row) {
+        this.$confirm('this operation is dangerous, continue ? ', 'hint', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        })
+        .then(async () => {
+          const res = await deleteSubject(row)
+          if (res.code == 0) {
+            this.$message({
+              type: 'success',
+              message: 'delete success!'
+            })
+            this.getTableData()
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'delete canceled!'
+          })
+        })
+      },
+      async enterDialog() {
+        this.$refs.subjectForm.validate(async valid => {
+          if (valid) {
+            switch (this.type) {
+              case 'addSubject':
+                {
+                  const res = await createSubject(this.form)
+                  if (res.code == 0) {
+                    this.$message({
+                      type: 'success',
+                      message: 'create success',
+                      showClose: true
+                    })
+                  }
+                  this.getTableData()
+                  this.closeDialog()
+                }
+                break
+              case 'edit':
+                {
+                  const res = await updateSubject(this.form)
+                  if (res.code == 0) {
+                    this.$message({
+                      type: 'success',
+                      message: 'edit success',
+                      showClose: true
+                    })
+                  }
+                  this.getTableData()
+                  this.closeDialog()
+                }
+                break
+              default:
+                {
+                  this.$message({
+                    type: 'error',
+                    message: 'unknow operation',
+                    showClose: true
+                  })
+                }
+                break
+            }
+          }
+        })
+      }     
+    },
+    created() {
+      this.getTableData()
+    }
 }
 </script>
-<style lang="scss">
-    
+<style scoped lang="scss">
+    .button-box {
+      padding: 10px, 20px;
+      .el-button {
+        float: right;
+      }
+    }
+    .el-tag--mini {
+      margin-left: 5px;
+    }
+    .warning {
+      color: #dc143c;
+    }
 </style>

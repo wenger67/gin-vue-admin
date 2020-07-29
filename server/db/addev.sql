@@ -18,7 +18,7 @@ create table `user_admins` (
     `company_id` int(10) unsigned not null comment '用户所属公司id',
     `address` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '用户住址',
     primary key (`id`) using btree
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '用户表';
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='用户表';
 
 drop table if exists `lifts`;
 create table `lifts` (
@@ -44,8 +44,9 @@ create table `lifts` (
     `region_id` int null default null comment '区域id',
     `building` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '楼栋',
     `cell` int null default null comment '单元',
-    `ad_device_id` int(10) unsigned null default null comment '广告机设备id'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯表';
+    `ad_device_id` int(10) unsigned null default null comment '广告机设备id',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯表';
 
 drop table if exists `user_lifts`;
 create table `user_lifts` (
@@ -55,8 +56,9 @@ create table `user_lifts` (
    `deleted_at` timestamp(0)     null default null,
    `user_id` int(10) unsigned not null comment '用户',
    `lift_id` int(10) unsigned not null comment '电梯',
-   `category_id` int(10) not null comment '用户电梯关系类型'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '用户电梯关系表';
+   `category_id` int(10) not null comment '用户电梯关系类型',
+   PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='用户电梯关系表';
 
 drop table if exists `addresss`;
 create table `addresss` (
@@ -64,8 +66,9 @@ create table `addresss` (
     `create_at`  timestamp(0)     null default null,
     `update_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
-    `address_name` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '地址，精确到类似小区级别'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '地址表';
+    `address_name` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '地址，精确到类似小区级别',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='地址表';
 
 
 drop table if exists `regions`;
@@ -76,8 +79,9 @@ create table `regions` (
     `deleted_at` timestamp(0)     null default null,
     `province` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '省份',
     `city` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '城市',
-    `district` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '行政区'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '区域表';
+    `district` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '行政区',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='区域表';
 
 drop table if exists `lift_models`;
 create table `lift_models` (
@@ -88,8 +92,9 @@ create table `lift_models` (
    `factory_id` int(10) unsigned null default null comment '电梯生产商id',
    `brand` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '电梯品牌',
    `modal` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '电梯型号',
-   `load` int null default null comment '电梯载重'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯型号表';
+   `load` int null default null comment '电梯载重',
+   PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯型号表';
 
 
 drop table if exists `companys`;
@@ -108,8 +113,9 @@ create table `companys` (
    `credit_code` varchar(20) character set utf8 collate utf8_general_ci null default null comment '统一信用代码',
    `tax_code` varchar(20) character set utf8 collate utf8_general_ci null default null comment '纳税人识别号',
    `address` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '注册地址',
-   `category_id` int(10) not null comment '电梯类别'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '公司表';
+   `category_id` int(10) not null comment '电梯类别',
+   PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='公司表';
 
 
 drop table if exists `category_subject`;
@@ -118,8 +124,9 @@ create table `category_subject` (
     `create_at`  timestamp(0)     null default null,
     `update_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
-    `subject_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '类别主体名'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '类别主体表，电梯/公司/记录/......';
+    `subject_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '类别主体名',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='类别主体表，电梯/公司/记录/......';
 
 
 drop table if exists `categorys`;
@@ -129,8 +136,9 @@ create table `categorys` (
   `update_at`  timestamp(0)     null default null,
   `deleted_at` timestamp(0)     null default null,
   `category_subject_id` int(10) not null comment '类别主体id',
-  `category_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '公司类别名'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯类别表';
+  `category_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '公司类别名',
+  PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯类别表';
 
 drop table if exists `lift_changes`;
 create table `lift_changes` (
@@ -139,8 +147,9 @@ create table `lift_changes` (
    `update_at`  timestamp(0)     null default null,
    `deleted_at` timestamp(0)     null default null,
    `lift_id` int(10) unsigned not null comment '电梯id',
-   `content` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '变更内容'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯变更表';
+   `content` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '变更内容',
+   PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯变更表';
 
 drop table if exists `lift_records`;
 create table `lift_records` (
@@ -155,8 +164,9 @@ create table `lift_records` (
     `start_time` timestamp(0) null default null comment '开始时间',
     `end_time` timestamp(0) null default null comment '结束时间',
     `worker_id` int(10) unsigned not null comment '操作人员',
-    `recorder_id` int(10) unsigned not null comment '记录人员'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯操作记录';
+    `recorder_id` int(10) unsigned not null comment '记录人员',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯操作记录';
 
 drop table if exists `lift_troubles`;
 create table `lift_troubles` (
@@ -180,6 +190,7 @@ create table `lift_troubles` (
     `progress` int unsigned not null default 1 comment '故障进度',
     `recorder_id` int(10) unsigned not null comment '记录人员',
     `feedback_content` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '反馈内容',
-    `feedback_rate` int unsigned not null default 100 comment '反馈评分'
-) engine = InnoDB auto_increment = 100 character set = utf8 collate = utf8_general_ci row_format = compact comment '电梯故障记录';
+    `feedback_rate` int unsigned not null default 100 comment '反馈评分',
+    PRIMARY KEY (`id`) USING BTREE
+) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯故障记录';
 
