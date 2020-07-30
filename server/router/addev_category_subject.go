@@ -7,7 +7,7 @@ import (
 )
 
 func InitCategorySubjectRouter(Router *gin.RouterGroup) {
-	CategorySubjectRouter := Router.Group("categorySubject").Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
+	CategorySubjectRouter := Router.Group("subject").Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
 	{
 		CategorySubjectRouter.POST("createSubject", v1.CreateSubject)
 		CategorySubjectRouter.POST("deleteSubject", v1.DeleteSubject)

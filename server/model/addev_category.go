@@ -6,7 +6,7 @@ import (
 
 type Category struct {
 	gorm.Model
-	CategorySubjectId int
-	CategorySubject   CategorySubject
-	CategoryName      string
+	Subject   CategorySubject	`json:"categorySubject" gorm:"ForeignKey:CategorySubjectId;AssociationForeignKey:ID;comment:'Category Subject'"`
+	CategorySubjectId int	`json:"categorySubjectId"`
+	CategoryName      string	`json:"categoryName"`
 }

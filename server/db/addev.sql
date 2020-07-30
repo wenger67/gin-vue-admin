@@ -60,8 +60,8 @@ create table `user_lifts` (
    PRIMARY KEY (`id`) USING BTREE
 ) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='用户电梯关系表';
 
-drop table if exists `addresss`;
-create table `addresss` (
+drop table if exists `addresses`;
+create table `addresses` (
     `id`         int(10) unsigned not null auto_increment,
     `create_at`  timestamp(0)     null default null,
     `update_at`  timestamp(0)     null default null,
@@ -97,8 +97,8 @@ create table `lift_models` (
 ) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='电梯型号表';
 
 
-drop table if exists `companys`;
-create table `companys` (
+drop table if exists `companies`;
+create table `companies` (
    `id`         int(10) unsigned not null auto_increment,
    `create_at`  timestamp(0)     null default null,
    `update_at`  timestamp(0)     null default null,
@@ -118,8 +118,8 @@ create table `companys` (
 ) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='公司表';
 
 
-drop table if exists `category_subject`;
-create table `category_subject` (
+drop table if exists `category_subjects`;
+create table `category_subjects` (
     `id`         int(10) unsigned not null auto_increment,
     `create_at`  timestamp(0)     null default null,
     `update_at`  timestamp(0)     null default null,
@@ -129,8 +129,8 @@ create table `category_subject` (
 ) engine=InnoDB auto_increment=100 charset=utf8 row_format=compact comment='类别主体表，电梯/公司/记录/......';
 
 
-drop table if exists `categorys`;
-create table `categorys` (
+drop table if exists `categories`;
+create table `categories` (
   `id`         int(10) unsigned not null auto_increment,
   `create_at`  timestamp(0)     null default null,
   `update_at`  timestamp(0)     null default null,

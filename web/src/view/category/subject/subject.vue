@@ -14,10 +14,12 @@
         </el-form>
     </div>
     <el-table :data="tableData" @sort-change="sortChange" border stripe>
-      <el-table-column label="id" min-width="60" prop="ID" sortable="custom"></el-table-column>
-      <el-table-column label="name" min-width="60" prop="SubjectName" sortable="custom"></el-table-column>
-      <el-table-column label="craete_at" min-width="60" prop="CreatedAt" sortable="custom"></el-table-column>
-      <el-table-column fixed="right" lable="operate" width="200">
+      <el-table-column label="ID" min-width="60" prop="ID" sortable="custom"></el-table-column>
+      <el-table-column label="主体" min-width="60" prop="subjectName" sortable="custom"></el-table-column>
+      <el-table-column label="日期" width="180">
+        <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
+      </el-table-column>
+      <el-table-column fixed="right" label="按钮组" width="200">
         <template slot-scope="scope">
           <el-button type="primary" @click="editSubject(scope.row)" size="small" icon="el-icon-edit">Edit</el-button>
           <el-button type="danger" @click="deleteSubject(scope.row)" size="small" icon="el-icon-delete">Delete</el-button>
@@ -63,9 +65,10 @@ import {
   createSubject,
   updateSubject,
   deleteSubject
-} from '@/api/categorySubject'
+} from '@/api/subject'
 import infoList from '@/components/mixins/infoList'
 import { toSQLLine } from '@/utils/stringFun'
+import { formatTimeToStr } from "@/utils/data";
 
 export default {
     name:"Subject",
@@ -85,6 +88,16 @@ export default {
           }],
         }
       }
+    },
+    filters: {
+      formatDate: function(time) {
+        if (time != null && time != "") {
+          var date = new Date(time);
+          return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+        } else {
+          return "";
+        }
+      },
     },
     methods: {
       sortChange({prop, order}) {
@@ -197,8 +210,8 @@ export default {
         })
       }     
     },
-    created() {
-      this.getTableData()
+    async created() {
+      await this.getTableData()
     }
 }
 </script>

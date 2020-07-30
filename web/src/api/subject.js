@@ -2,7 +2,7 @@ import service from '@/utils/request'
 
 export const getSubjectById = (data) => {
   return service({
-    url: "/categorySubject/getSubjectById",
+    url: "/subject/getSubjectById",
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export const getSubjectById = (data) => {
 
 export const getSubjectList = (data) => {
   return service({
-    url: "/categorySubject/getSubjectList",
+    url: "/subject/getSubjectList",
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export const getSubjectList = (data) => {
 
 export const createSubject = (data) => {
   return service({
-    url: "/categorySubject/createSubject",
+    url: "/subject/createSubject",
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export const createSubject = (data) => {
 
 export const updateSubject = (data) => {
   return service({
-    url: "/categorySubject/updateSubject",
+    url: "/subject/updateSubject",
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export const updateSubject = (data) => {
 
 export const deleteSubject = (data) => {
   return service({
-    url: "/categorySubject/deleteSubject",
+    url: "/subject/deleteSubject",
     method: 'post',
     data
   })
@@ -43,7 +43,7 @@ export const deleteSubject = (data) => {
 
 export const getAllSubjects = (data) => {
   return service({
-    url: "/categorySubject/getAllSubjects",
+    url: "/subject/getAllSubjects",
     method: 'post',
     data
   })

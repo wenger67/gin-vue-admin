@@ -4,5 +4,5 @@ import "github.com/jinzhu/gorm"
 
 type CategorySubject struct {
 	gorm.Model
-	SubjectName string `gorm:"comment:'类别主体名'"`
+	SubjectName string `json:"subjectName" gorm:"comment:'类别主体名'"`
 }
