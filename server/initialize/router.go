@@ -40,6 +40,8 @@ func Routers() *gin.Engine {
 	router.InitSysOperationRecordRouter(ApiGroup)    // 操作记录
 	router.InitCategorySubjectRouter(ApiGroup)
 	router.InitCategoriesRouter(ApiGroup)
+	router.InitCompanyRouter(ApiGroup)
+	router.InitRegionRouter(ApiGroup)
 	global.GVA_LOG.Info("router register success")
 	return Router
 }

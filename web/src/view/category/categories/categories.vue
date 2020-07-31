@@ -155,30 +155,30 @@ export default {
     }
   },
   methods: {
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10      
+    onSubmit() {
+      this.page = 1
+      this.pageSize = 10      
+      this.getTableData()
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    async onDelete() {
+      const ids = []
+      this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+      const res = await deleteCategoriesByIds({ ids })
+      if (res.code == 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.deleteVisible = false
         this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteCategoriesByIds({ ids })
-        if (res.code == 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          this.getTableData()
-        }
-      },
+      }
+    },
     async updateCategories(row) {
       const res = await findCategories({ ID: row.ID });
       this.type = "update";

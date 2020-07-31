@@ -4,8 +4,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 drop table if exists `user_admins`;
 create table `user_admins` (
     `id` int(10) unsigned not null auto_increment,
-    `create_at` timestamp(0) null default null,
-    `update_at` timestamp(0) null default null,
+    `created_at` timestamp(0) null default null,
+    `updated_at` timestamp(0) null default null,
     `deleted_at` timestamp(0) null default null,
     `uuid` varbinary(255) null  default null comment 'uuid',
     `phone_number` varchar(20) not null comment '登陆手机号',
@@ -23,8 +23,8 @@ create table `user_admins` (
 drop table if exists `lifts`;
 create table `lifts` (
     `id` int(10) unsigned not null auto_increment,
-    `create_at` timestamp(0) null default null,
-    `update_at` timestamp(0) null default null,
+    `created_at` timestamp(0) null default null,
+    `updated_at` timestamp(0) null default null,
     `deleted_at` timestamp(0) null default null,
     `nick_name` varchar(255) character set utf8 collate utf8_general_ci null default null comment '电梯别名',
     `code` varchar(255) character set utf8 collate utf8_general_ci null default null comment '电梯编号',
@@ -51,8 +51,8 @@ create table `lifts` (
 drop table if exists `user_lifts`;
 create table `user_lifts` (
    `id`         int(10) unsigned not null auto_increment,
-   `create_at`  timestamp(0)     null default null,
-   `update_at`  timestamp(0)     null default null,
+   `created_at`  timestamp(0)     null default null,
+   `updated_at`  timestamp(0)     null default null,
    `deleted_at` timestamp(0)     null default null,
    `user_id` int(10) unsigned not null comment '用户',
    `lift_id` int(10) unsigned not null comment '电梯',
@@ -63,8 +63,8 @@ create table `user_lifts` (
 drop table if exists `addresses`;
 create table `addresses` (
     `id`         int(10) unsigned not null auto_increment,
-    `create_at`  timestamp(0)     null default null,
-    `update_at`  timestamp(0)     null default null,
+    `created_at`  timestamp(0)     null default null,
+    `updated_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
     `address_name` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '地址，精确到类似小区级别',
     PRIMARY KEY (`id`) USING BTREE
@@ -74,8 +74,8 @@ create table `addresses` (
 drop table if exists `regions`;
 create table `regions` (
     `id`         int(10) unsigned not null auto_increment,
-    `create_at`  timestamp(0)     null default null,
-    `update_at`  timestamp(0)     null default null,
+    `created_at`  timestamp(0)     null default null,
+    `updated_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
     `province` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '省份',
     `city` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '城市',
@@ -86,8 +86,8 @@ create table `regions` (
 drop table if exists `lift_models`;
 create table `lift_models` (
    `id`         int(10) unsigned not null auto_increment,
-   `create_at`  timestamp(0)     null default null,
-   `update_at`  timestamp(0)     null default null,
+   `created_at`  timestamp(0)     null default null,
+   `updated_at`  timestamp(0)     null default null,
    `deleted_at` timestamp(0)     null default null,
    `factory_id` int(10) unsigned null default null comment '电梯生产商id',
    `brand` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '电梯品牌',
@@ -100,8 +100,8 @@ create table `lift_models` (
 drop table if exists `companies`;
 create table `companies` (
    `id`         int(10) unsigned not null auto_increment,
-   `create_at`  timestamp(0)     null default null,
-   `update_at`  timestamp(0)     null default null,
+   `created_at`  timestamp(0)     null default null,
+   `updated_at`  timestamp(0)     null default null,
    `deleted_at` timestamp(0)     null default null,
    `full_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '公司全称',
    `alias` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '公司简称',
@@ -121,8 +121,8 @@ create table `companies` (
 drop table if exists `category_subjects`;
 create table `category_subjects` (
     `id`         int(10) unsigned not null auto_increment,
-    `create_at`  timestamp(0)     null default null,
-    `update_at`  timestamp(0)     null default null,
+    `created_at`  timestamp(0)     null default null,
+    `updated_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
     `subject_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '类别主体名',
     PRIMARY KEY (`id`) USING BTREE
@@ -132,8 +132,8 @@ create table `category_subjects` (
 drop table if exists `categories`;
 create table `categories` (
   `id`         int(10) unsigned not null auto_increment,
-  `create_at`  timestamp(0)     null default null,
-  `update_at`  timestamp(0)     null default null,
+  `created_at`  timestamp(0)     null default null,
+  `updated_at`  timestamp(0)     null default null,
   `deleted_at` timestamp(0)     null default null,
   `category_subject_id` int(10) not null comment '类别主体id',
   `category_name` varchar(50)  character set utf8 collate utf8_general_ci null default null comment '公司类别名',
@@ -143,8 +143,8 @@ create table `categories` (
 drop table if exists `lift_changes`;
 create table `lift_changes` (
    `id`         int(10) unsigned not null auto_increment,
-   `create_at`  timestamp(0)     null default null,
-   `update_at`  timestamp(0)     null default null,
+   `created_at`  timestamp(0)     null default null,
+   `updated_at`  timestamp(0)     null default null,
    `deleted_at` timestamp(0)     null default null,
    `lift_id` int(10) unsigned not null comment '电梯id',
    `content` varchar(255)  character set utf8 collate utf8_general_ci null default null comment '变更内容',
@@ -154,8 +154,8 @@ create table `lift_changes` (
 drop table if exists `lift_records`;
 create table `lift_records` (
     `id`         int(10) unsigned not null auto_increment,
-    `create_at`  timestamp(0)     null default null,
-    `update_at`  timestamp(0)     null default null,
+    `created_at`  timestamp(0)     null default null,
+    `updated_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
     `lift_id` int(10) unsigned not null comment '电梯id',
     `category_id` int(10) unsigned not null comment '记录类别',
@@ -171,8 +171,8 @@ create table `lift_records` (
 drop table if exists `lift_troubles`;
 create table `lift_troubles` (
     `id`         int(10) unsigned not null auto_increment,
-    `create_at`  timestamp(0)     null default null,
-    `update_at`  timestamp(0)     null default null,
+    `created_at`  timestamp(0)     null default null,
+    `updated_at`  timestamp(0)     null default null,
     `deleted_at` timestamp(0)     null default null,
     `lift_id` int(10) unsigned not null comment '电梯id',
     `from_category_id` int(10) unsigned not null comment '故障来源类别',
