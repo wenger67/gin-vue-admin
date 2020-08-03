@@ -85,8 +85,6 @@ func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, 
 	if info.GroupKey == "district" {
 		db = db.Select("district").Where("city = ? AND district LIKE ?", info.City, "%" + info.District + "%").Group(info.GroupKey)
 	}
-
-	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&regions).Error
 	return err, regions, total
 }

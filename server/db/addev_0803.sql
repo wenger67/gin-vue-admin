@@ -27,7 +27,9 @@ CREATE TABLE `addresses` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
+  `region_id` int(10) not null comment 'region id',
   `address_name` varchar(255) DEFAULT NULL COMMENT '地址，精确到类似小区级别',
+  `user_amount` int unsigned not null default 0 comment 'user amount',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_addresses_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
@@ -41,6 +43,25 @@ LOCK TABLES `addresses` WRITE;
 /*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
 /*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `address_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `address_tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `address_id` int(10) not null comment 'address id',
+  `category_id` int(10) not null comment 'address id',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_address_tags_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Temporary table structure for view `authority_menu`

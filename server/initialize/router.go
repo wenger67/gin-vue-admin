@@ -42,6 +42,7 @@ func Routers() *gin.Engine {
 	router.InitCategoriesRouter(ApiGroup)
 	router.InitCompanyRouter(ApiGroup)
 	router.InitRegionRouter(ApiGroup)
+	router.InitAddressRouter(ApiGroup)
 	global.GVA_LOG.Info("router register success")
 	return Router
 }
