@@ -58,7 +58,7 @@ func UpdateAddress(address *model.Address) (err error) {
 // @return    Address        Address
 
 func GetAddress(id uint) (err error, address model.Address) {
-	err = global.GVA_DB.Where("id = ?", id).First(&address).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Region").Preload("Tags").First(&address).Error
 	return
 }
 
@@ -74,8 +74,12 @@ func GetAddressInfoList(info request.AddressSearch) (err error, list interface{}
     // 创建db
 	db := global.GVA_DB.Model(&model.Address{})
     var addresss []model.Address
-    // 如果有条件搜索 下方会自动创建搜索语句
+
+	if info.AddressName != "" {
+		db = db.Where("address_name LIKE ?", "%" + info.AddressName + "%")
+	}
+
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&addresss).Error
+	err = db.Limit(limit).Offset(offset).Preload("Region").Preload("Tags").Find(&addresss).Error
 	return err, addresss, total
 }

@@ -11,10 +11,10 @@
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
-                <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
-              </div>
+            <div style="text-align: right; margin: 0">
+              <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
+              <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
+            </div>
             <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
@@ -29,21 +29,28 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="region id" prop="regionId" min-width="60"></el-table-column> 
-    <el-table-column label="地址 detail" prop="addressName" min-width="60"></el-table-column> 
-    <el-table-column label="日期" min-width="60">
-         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
-    </el-table-column>
-    <el-table-column label="user amount" prop="userAmount" min-width="60"></el-table-column> 
-    
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="ID" prop="ID" min-width="30"></el-table-column>
+      <el-table-column label="Province" prop="region.province" min-width="60"></el-table-column> 
+      <el-table-column label="City" prop="region.city" min-width="60"></el-table-column> 
+      <el-table-column label="District" prop="region.district" min-width="60"></el-table-column> 
+      <el-table-column label="地址 detail" prop="addressName" min-width="60"></el-table-column> 
+      <el-table-column label="user amount" prop="userAmount" min-width="60"></el-table-column> 
+      <el-table-column label="Tags" prop="tags" min-width="60">
+        <template slot-scope="scope">
+          <el-tag :key="tag.ID" v-for="tag in scope.row.tags">{{tag.categoryName}}</el-tag>        
+        </template>
+      </el-table-column> 
+      <el-table-column label="日期" min-width="100">
+        <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
+      </el-table-column>
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button @click="updateAddress(scope.row)" size="small" type="primary">变更</el-button>
-          <el-popover placement="top" width="160" v-model="scope.row.visible">
+          <el-popover placement="top" width="160" :ref="`popover-${scope.$index}`">
             <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
+              <el-button size="mini" type="text" @click="handleClosePopover(scope.$index)">取消</el-button>
               <el-button type="primary" size="mini" @click="deleteAddress(scope.row)">确定</el-button>
             </div>
             <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
@@ -64,50 +71,47 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-    <el-row :gutter="15">
+      <el-row :gutter="15">
         <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px"
           label-position="left">
           <el-col :span="8">
             <el-form-item label="省份" prop="province">
-              <el-autocomplete
-                class="inline-input"
-                v-model="formData.province"
-                placeholder="Please input province"
-                :fetch-suggestions="getProvinces"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-              ></el-autocomplete>
+              <el-select @change="getCityOptions" filterable clearable v-model="formData.region.province" placeholder="Please select province">
+                <el-option v-for="item in provinceOptions"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="城市" prop="city">
-              <el-autocomplete
-                class="inline-input"
-                v-model="formData.city"
-                placeholder="Please input city"
-                :fetch-suggestions="getCities"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-              ></el-autocomplete>
+              <el-select @change="getDistrictOptions" filterable clearable v-model="formData.region.city" :disabled="cityOptionDisable" placeholder="Please select city">
+                <el-option v-for="item in cityOptions"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="行政区" prop="district">
-              <el-autocomplete
-                class="inline-input"
-                v-model="formData.district"
-                placeholder="Please input district"
-                :fetch-suggestions="getDistricts"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-              ></el-autocomplete>
+              <el-select v-model="formData.region.district" filterable clearable @change="handleSelectDistrict" :disabled="districtOptionDisable" placeholder="Please select city">
+                <el-option v-for="item in districtOptions"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="地址" prop="address">
               <el-autocomplete
                 class="inline-input"
-                v-model="formData.address"
+                v-model="formData.addressName"
                 placeholder="Please input address"
                 :fetch-suggestions="getAddresses"
                 :trigger-on-focus="false"
@@ -116,26 +120,19 @@
             </el-form-item> 
           </el-col>
           <el-col :span="24">
+            <el-form-item label="Amount" prop="userAmount">
+              <el-input-number v-model="formData.userAmount" :min="1" label="Amount"></el-input-number>
+            </el-form-item> 
+          </el-col>
+          <el-col :span="24">
             <el-form-item label="标签" prop="tags">
-              <el-tag
-                :key="tag"
-                v-for="tag in dynamicTags"
-                closable
-                :disable-transitions="false"
-                @close="handleClose(tag)">
-                {{tag}}
-              </el-tag>
-              <el-input
-                class="input-new-tag"
-                v-if="inputVisible"
-                v-model="inputValue"
-                ref="saveTagInput"
-                size="small"
-                @keyup.enter.native="handleInputConfirm"
-                @blur="handleInputConfirm"
-              >
-              </el-input>
-              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+              <el-select v-model="formData.tags" value-key="ID" multiple placeholder="Please select tags">
+                <el-option v-for="item in tagOptions"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.data">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-form>
@@ -161,6 +158,9 @@ import {
     findRegion,
     getRegionList
 } from "@/api/region";
+import {
+    getCategoriesList
+} from "@/api/categories";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
@@ -173,21 +173,22 @@ export default {
       dialogFormVisible: false,
       visible: false,
       type: "",
-      dynamicTags: [],
-      inputValue: '',
       deleteVisible: false,
       inputVisible: false,
       multipleSelection: [],
+      provinceOptions: [],
+      cityOptions: [],
+      districtOptions: [],
+      tagOptions: [],
+      dynamicTags: [],
+      cityOptionDisable: true,
+      districtOptionDisable: true,
+      tagSubjectId: 107,
       formData: {
-        province:null, city:null, district:null,
-        regionId:null,addressName:null,userAmount:null,
+        ID:null, regionId: null, region: {},
+        addressName:null, userAmount: null, tags:[]
       },
       rules: {
-        region: [{
-          required: true,
-          message: '请选择区域',
-          trigger: 'blur'
-        }],
         address: [{
           required: true,
           message: '请选择地址',
@@ -196,6 +197,11 @@ export default {
         tags: [{
           required: true,
           message: '请选择标签',
+          trigger: 'change'
+        }],
+        userAmount: [{
+          required: true,
+          message: 'Please input amount',
           trigger: 'change'
         }],
         province: [{
@@ -234,47 +240,55 @@ export default {
     }
   },
   methods: {
-      //条件搜索前端看此方法
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10       
+    //条件搜索前端看此方法
+    onSubmit() {
+      this.page = 1
+      this.pageSize = 10       
+      this.getTableData()
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleClosePopover(index) {
+      this.$refs[`popover-${index}`].doClose()
+    },
+    async onDelete() {
+      const ids = []
+      this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+      const res = await deleteAddressByIds({ ids })
+      if (res.code == 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.deleteVisible = false
         this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteAddressByIds({ ids })
-        if (res.code == 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          this.getTableData()
-        }
-      },
+      }
+    },
     async updateAddress(row) {
       const res = await findAddress({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.formData = res.data.readdress;
-        this.dialogFormVisible = true;
+        this.formData = res.data.readdress
+
+        // TODO fill the origin data
+
+        this.cityOptionDisable = false
+        this.districtOptionDisable = false
+        this.dialogFormVisible = true
       }
     },
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        
-          regionId:null,
-          addressName:null,
-          userAmount:null,
+        ID:null, regionId: null, region: {},
+        addressName:null, userAmount: null, tags:[]
       };
+      this.cityOptions = []
+      this.districtOptions = []
     },
     async deleteAddress(row) {
       this.visible = false;
@@ -289,15 +303,13 @@ export default {
     },
     async enterDialog() {
       let res;
+      console.log(this.formData)
       switch (this.type) {
         case "create":
           res = await createAddress(this.formData);
           break;
         case "update":
           res = await updateAddress(this.formData);
-          break;
-        default:
-          res = await createAddress(this.formData);
           break;
       }
       if (res.code == 0) {
@@ -313,37 +325,14 @@ export default {
       this.type = "create";
       this.dialogFormVisible = true;
     },
-    handleClose(tag) {
-
-    },
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
-    },
-    handleInputConfirm() {
-
-    },
-    async getRegions() {
-
-    },
-    async getAddresses() {
-
-    },
-    async getProvinces(queryString, cb) {
-      // clear right input component
-      this.formData.city = ""
-      this.formData.district = ""
-
+    async getAddresses(queryString, cb) {
       let result = []
       const params = {
         page: 1,
         pageSize: 100,
-        province: queryString,
-        groupKey: "province"
+        addressName: queryString,
       }
-      let res = await getRegionList(params)
+      let res = await getAddressList(params)
       if (res.code == 0) {
         res.data.list.forEach(element => {
           // should have value field
@@ -352,48 +341,87 @@ export default {
       }
       cb(result)
     },
-    async getCities(queryString, cb) {
+    async getProvinceOptions() {
       // clear right input component
-      this.formData.district = ""
-      let result = []
+      this.formData.region.city = ""
+      this.formData.region.district = ""
+      this.cityOptionDisable = true
+      this.districtOptionDisable = true
       const params = {
         page: 1,
         pageSize: 100,
-        province: this.formData.province,
-        city: queryString,
+        province: "",
+        groupKey: "province"
+      }
+      let res = await getRegionList(params)
+      if (res.code == 0) {
+        res.data.list.forEach(element => {
+          // should have value field
+          this.provinceOptions.push({value: element.province})
+        })
+      }
+    },
+    async getCityOptions() {
+      // clear right input component
+      this.formData.region.district = ""
+      this.cityOptionDisable = false
+      this.districtOptionDisable = true
+
+      const params = {
+        page: 1,
+        pageSize: 100,
+        province: this.formData.region.province,
+        city: "",
         groupKey: "city"
       }
       let res = await getRegionList(params)
       if (res.code == 0) {
         res.data.list.forEach(element => {
-          result.push({value: element.city})
+          this.cityOptions.push({value: element.city})
         })
       }
-      cb(result);
     },
-    async getDistricts(queryString, cb) {
-      let result = []
+    async getDistrictOptions() {
+      this.districtOptionDisable = false
       const params = {
         page: 1,
         pageSize: 100,
-        city: this.formData.city,
-        district: queryString,
+        city: this.formData.region.city,
+        district: "",
         groupKey: "district"
       }
       let res = await getRegionList(params)
       if (res.code == 0) {
         res.data.list.forEach(element => {
-          result.push({value: element.district})
+          this.districtOptions.push({value: element.district, regionId: element.ID})
         })
       }
-      cb(result);
+    },
+    async getTags() {
+      const params = {
+        page: 1,
+        pageSize: 100,
+        ID: this.tagSubjectId
+      }
+      let res = await getCategoriesList(params);
+      if (res.code == 0) {
+        res.data.list.forEach(element => {
+          this.tagOptions.push({value: element.categoryName, data:element})
+        })
+      }
     },
     handleSelect(item) {
       this.province = item
-    }    
+    },
+    handleSelectDistrict(item) {
+      this.formData.regionId = item.regionId
+    }
   },
   async created() {
-    await this.getTableData();}
+    await this.getTableData()
+    await this.getTags()
+    await this.getProvinceOptions()    
+  }
 };
 </script>
 

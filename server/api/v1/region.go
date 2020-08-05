@@ -2,7 +2,6 @@ package v1
 
 import (
 	"fmt"
-	"gin-vue-admin/global"
 	"gin-vue-admin/global/response"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -117,8 +116,6 @@ func FindRegion(c *gin.Context) {
 func GetRegionList(c *gin.Context) {
 	var pageInfo request.RegionSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-
-	global.GVA_LOG.Debug(pageInfo)
 
 	err, list, total := service.GetRegionInfoList(pageInfo)
 	if err != nil {

@@ -8,5 +8,5 @@ type Address struct {
 	Region Region `json:"region" form:"region" gorm:"ForeignKey:RegionId;AssociationForeignKey:ID"`
 	AddressName string `json:"addressName" form:"addressName"`
 	UserAmount int `json:"userAmount" form:"userAmount"`
-	Tags []AddressTag `json:"tags" form:"tags" gorm:"many2many:address_tags"`
+	Tags []Category `json:"tags" form:"tags" gorm:"many2many:address_tags"`
 }
