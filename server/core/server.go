@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/initialize"
+	"gin-vue-admin/websocket"
 	"time"
 )
 
@@ -18,6 +19,9 @@ func RunWindowsServer() {
 	}
 	Router := initialize.Routers()
 	Router.Static("/form-generator", "./resource/page")
+
+	// handle websocket request
+	Router.GET("/api/ws/endpoint", websocket.ServeWS)
 
 	//InstallPlugs(Router)
 	// end 插件描述
