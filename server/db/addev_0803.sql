@@ -550,6 +550,75 @@ LOCK TABLES `lifts` WRITE;
 /*!40000 ALTER TABLE `lifts` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+drop table if exists `ad_devices`;
+create table `ad_devices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `model_id` int(10) not null comment '电梯型号',
+  `factory_id` int(10) not null comment '生产商',
+  `factory_time` datetime default null comment '出厂时间',
+  `install_time` datetime default null comment '安装时间',
+  `status_id` int(10) default null comment '设备状态类别',
+  `online` boolean default true comment '设备是否在线',
+  `last_offline_time` datetime default null comment '上次离线时间',
+  `last_online_time` datetime default null comment '上次上线时间',
+  `owner_id` int(10) default null comment '责任人',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_devices_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备表';
+
+drop table if exists `ad_device_events`;
+create table `ad_device_events` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(10) not null comment '设备id',
+  `type` int(10) not null comment '事件类型category',
+  `content` char(255) default null comment '事件内容',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备事件表';
+
+drop table if exists `ad_device_configs`;
+create table `ad_device_configs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(10) not null comment '设备id',
+  `global` boolean default true comment '全局配置',
+  `key` char(50) not null comment '配置键值',
+  `value` char(255) not null  comment '配置内容',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备配置表';
+
+drop table if exists `ad_device_datas`;
+create table `ad_device_datas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(10) not null comment '设备id',
+  `accx` float default 0.0 comment 'x轴加速度',
+  `accy` float default 0.0 comment 'y轴加速度',
+  `accz` float default 0.0 comment 'z轴加速度',
+  `degx` float default 0.0 comment 'x轴倾斜角',
+  `degy` float default 0.0 comment 'y轴倾斜角',
+  `degz` float default 0.0 comment 'z轴倾斜角',
+  `speedz` float default 0.0 comment '电梯速度',
+  `floor` float default 1 comment '电梯当前楼层',
+  `door_state` int(10) default null comment '电梯门状态类型',
+  `people_inside` boolean default true comment '电梯内是否有人',
+  `trouble_type` int(10) default null comment '电梯状态/故障类型',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备数据表';
+
 --
 -- Table structure for table `regions`
 --

@@ -50,11 +50,11 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
     <!-- <el-table-column label="公司全称" prop="fullName" min-width="60"></el-table-column>  -->
-    <el-table-column label="公司简称" prop="alias" min-width="60"></el-table-column> 
-    <el-table-column label="法人信息" prop="legalPerson" min-width="60"></el-table-column> 
+    <el-table-column label="公司简称" prop="alias" min-width="80"></el-table-column>
+    <el-table-column label="法人信息" prop="legalPerson" min-width="40"></el-table-column>
     <el-table-column label="联系方式" prop="phone" min-width="60"></el-table-column> 
     <el-table-column label="公司状态" prop="status" min-width="60"></el-table-column> 
-    <el-table-column label="统一信用代码" prop="creditCode" min-width="60"></el-table-column> 
+    <el-table-column label="统一信用代码" prop="creditCode" min-width="65"></el-table-column>
     <!-- <el-table-column label="工商注册号" prop="regCode" min-width="60"></el-table-column> 
     <el-table-column label="组织机构号" prop="orgCode" min-width="60"></el-table-column>    
     <el-table-column label="纳税人识别号" prop="taxCode" min-width="60"></el-table-column>  -->
