@@ -34,6 +34,10 @@ func DBTables() {
 		model.UserLift{},
 		model.Company{},
 		model.Region{},
+		model.AdDevice{},
+		model.AdDeviceConfig{},
+		model.AdDeviceData{},
+		model.AdDeviceEvent{},
 	)
 	global.GVA_LOG.Debug("register table success")
 }

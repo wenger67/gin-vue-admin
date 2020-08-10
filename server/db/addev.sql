@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.31, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.27, for osx10.14 (x86_64)
 --
 -- Host: localhost    Database: qmPlus
 -- ------------------------------------------------------
--- Server version	5.7.31-0ubuntu0.16.04.1
+-- Server version	5.7.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -208,7 +208,7 @@ CREATE TABLE `companies` (
   `category_id` int(10) NOT NULL COMMENT '电梯类别',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_companies_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='公司表';
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='公司表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,6 +217,7 @@ CREATE TABLE `companies` (
 
 LOCK TABLES `companies` WRITE;
 /*!40000 ALTER TABLE `companies` DISABLE KEYS */;
+INSERT INTO `companies` VALUES (106,'2020-08-08 09:49:55','2020-08-08 09:49:55',NULL,'武汉智能电梯有限公司','武汉智能电梯有限公司','陈纯星','027-87928666','','420111000041704','178092678','91420111178092678B','91420111178092678B','湖北省武汉市洪山区武珞路718号',119),(107,'2020-08-08 09:55:43','2020-08-08 09:55:43',NULL,'武汉华美东菱电梯有限公司','武汉华美东菱电梯有限公司','戴俭勤','027-88082935','','420100000230772','71195427-3','91420100711954273A','91420100711954273A','湖北省武汉市洪山区花山镇附5号',117),(108,'2020-08-08 09:59:32','2020-08-08 09:59:32',NULL,'武汉博瑞通达电梯有限公司','博瑞通达','宋保山','027-88229959','','420111000163221','56835045X','9142011156835045XL','9142011156835045XL','湖北省武汉市洪山区和平街金地自在城(K2地块6期)A单元15层4-6号',119),(109,'2020-08-08 10:03:22','2020-08-08 10:03:22',NULL,'武汉星奥电梯有限公司','星奥电梯','黄亮平','027-83536667','','420111000363899','303529227','91420111303529227Y','91420111303529227Y','湖北省武汉市江汉区经济开发区江兴路25号A栋新金科技企业孵化器A704,A705室',119),(110,'2020-08-08 10:09:17','2020-08-08 10:09:17',NULL,'武汉利科电梯有限公司','利科电梯','曾怀池','13135672966','','420102000132629','555021198','91420116555021198J','91420116555021198J','湖北省武汉市黄陂区三里桥街发展大道特一号9栋1单元',117),(111,'2020-08-08 10:12:07','2020-08-08 10:12:07',NULL,'武汉奥星电梯有限公司','奥星电梯','邓友运','027-83551522','','420102000016383','764645052','91420102764645052B','91420102764645052B','湖北省武汉市江岸区二七路89号东立国际二期19栋1层29室',119),(112,'2020-08-08 10:14:50','2020-08-08 10:14:50',NULL,'武汉九井电梯有限公司','九井电梯','崔锐','13657223390','','420000000011766','728301279','914200007283012799','914200007283012799','湖北省武汉市洪山区岳家嘴公务员小区14栋801室',119),(113,'2020-08-08 10:19:54','2020-08-08 10:19:54',NULL,'武汉惠之美物业服务有限公司','惠之美物业','胡国平','027-59318888','','420100000085835','724664128','914201127246641280','914201127246641280','湖北省武汉市东西湖区银湖科技产业开发园18号',115),(114,'2020-08-08 10:24:16','2020-08-08 10:24:16',NULL,'湖北中楚物业股份有限公司','中楚物业','成学荣','027-51817371','','420106000048107','679115081','91420106679115081N','91420106679115081N','湖北省武汉市武昌区中南路3号领秀中南26层5号',115),(115,'2020-08-08 10:26:52','2020-08-08 10:26:52',NULL,'泛海物业管理武汉有限公司','泛海物业','郑翼龙','027-83871999','','420100000192187','55501107X','9142010055501107XX','9142010055501107XX','湖北省武汉市江汉区云彩路198号泛海城市广场写字楼8层',115),(116,'2020-08-08 10:30:13','2020-08-08 10:30:13',NULL,'湖北一江电梯维保服务有限公司','一江电梯','张波','13006127460','','4201160000107971','347255512','91420116347255512B','91420116347255512B','湖北省武汉市江岸区金桥大道20号中胜村K1地块1号办公栋4',116),(117,'2020-08-08 10:32:57','2020-08-08 10:32:57',NULL,'武汉中汇日安电梯维保工程有限公司','中汇日安电梯','王法玲','0','','0','MA49G5AB7','91420100MA49G5AB7Q','91420100MA49G5AB7Q','湖北省武汉市东湖高新技术开发区华师园北路18号博瀚科技光电产业园',116),(118,'2020-08-08 10:36:43','2020-08-08 10:36:43',NULL,'武汉市特种设备监督检验所','武汉市特种设备监督检验所','邹少俊','0','','0','0','12420100717957600G','12420100717957600G','湖北省武汉市江岸区惠济二路11-2号',118),(119,'2020-08-08 10:39:29','2020-08-08 10:39:29',NULL,'武汉产品质量监督检验所','武汉产品质量监督检验所','林建国','0','','0','0','12420100441354365Y','12420100441354365Y','湖北省武汉市东西湖区金银湖东二路5号',120),(120,'2020-08-08 10:42:59','2020-08-08 10:42:59',NULL,'开世艺商业管理武汉有限公司','K11','朱滨','027-87676765','','420100400101364','MA4KU8MA0','91420100MA4KU8MQ0K','91420100MA4KU8MQ0K','湖北省武汉市东湖高新技术开发区关山大道特一号',121),(121,'2020-08-08 10:46:02','2020-08-08 10:46:02',NULL,'华中科技大学','华中大','李元元','0','','0','0','12100000441626842D','12100000441626842D','湖北省武汉市洪山区珞瑜路1037号',114);
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +359,7 @@ CREATE TABLE `jwt_blacklists` (
   `jwt` text COMMENT 'jwt',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_jwt_blacklists_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +387,7 @@ CREATE TABLE `lift_changes` (
   `content` varchar(255) DEFAULT NULL COMMENT '变更内容',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lift_changes_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯变更表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯变更表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +417,7 @@ CREATE TABLE `lift_models` (
   `load` int(11) DEFAULT NULL COMMENT '电梯载重',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lift_models_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯型号表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯型号表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +451,7 @@ CREATE TABLE `lift_records` (
   `recorder_id` int(10) unsigned NOT NULL COMMENT '记录人员',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lift_records_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯操作记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯操作记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -493,7 +494,7 @@ CREATE TABLE `lift_troubles` (
   `feedback_rate` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '反馈评分',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lift_troubles_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯故障记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯故障记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,7 +539,7 @@ CREATE TABLE `lifts` (
   `ad_device_id` int(10) unsigned DEFAULT NULL COMMENT '广告机设备id',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lifts_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -550,74 +551,72 @@ LOCK TABLES `lifts` WRITE;
 /*!40000 ALTER TABLE `lifts` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
 drop table if exists `ad_devices`;
 create table `ad_devices` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `model_id` int(10) not null comment '电梯型号',
-  `factory_id` int(10) not null comment '生产商',
-  `factory_time` datetime default null comment '出厂时间',
-  `install_time` datetime default null comment '安装时间',
-  `status_id` int(10) default null comment '设备状态类别',
-  `online` boolean default true comment '设备是否在线',
-  `last_offline_time` datetime default null comment '上次离线时间',
-  `last_online_time` datetime default null comment '上次上线时间',
-  `owner_id` int(10) default null comment '责任人',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_devices_deleted_at` (`deleted_at`)
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `created_at` datetime DEFAULT NULL,
+    `updated_at` datetime DEFAULT NULL,
+    `deleted_at` datetime DEFAULT NULL,
+    `type_id` int(10) not null comment '电梯型号',
+    `factory_id` int(10) not null comment '生产商',
+    `factory_time` datetime default null comment '出厂时间',
+    `install_time` datetime default null comment '安装时间',
+    `status_id` int(10) default null comment '设备状态类别',
+    `online` boolean default true comment '设备是否在线',
+    `last_offline_time` datetime default null comment '上次离线时间',
+    `last_online_time` datetime default null comment '上次上线时间',
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `idx_ad_devices_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备表';
 
 drop table if exists `ad_device_events`;
 create table `ad_device_events` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(10) not null comment '设备id',
-  `type` int(10) not null comment '事件类型category',
-  `content` char(255) default null comment '事件内容',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `created_at` datetime DEFAULT NULL,
+    `updated_at` datetime DEFAULT NULL,
+    `deleted_at` datetime DEFAULT NULL,
+    `device_id` int(10) not null comment '设备id',
+    `type_id` int(10) not null comment '事件类型category',
+    `content` char(255) default null comment '事件内容',
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备事件表';
 
 drop table if exists `ad_device_configs`;
 create table `ad_device_configs` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(10) not null comment '设备id',
-  `global` boolean default true comment '全局配置',
-  `key` char(50) not null comment '配置键值',
-  `value` char(255) not null  comment '配置内容',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `created_at` datetime DEFAULT NULL,
+    `updated_at` datetime DEFAULT NULL,
+    `deleted_at` datetime DEFAULT NULL,
+    `key` char(50) not null comment '配置键值',
+    `value` char(255) not null  comment '配置内容',
+    `comment` char(255) default null comment '配置说明',
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备配置表';
 
 drop table if exists `ad_device_datas`;
 create table `ad_device_datas` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(10) not null comment '设备id',
-  `accx` float default 0.0 comment 'x轴加速度',
-  `accy` float default 0.0 comment 'y轴加速度',
-  `accz` float default 0.0 comment 'z轴加速度',
-  `degx` float default 0.0 comment 'x轴倾斜角',
-  `degy` float default 0.0 comment 'y轴倾斜角',
-  `degz` float default 0.0 comment 'z轴倾斜角',
-  `speedz` float default 0.0 comment '电梯速度',
-  `floor` float default 1 comment '电梯当前楼层',
-  `door_state` int(10) default null comment '电梯门状态类型',
-  `people_inside` boolean default true comment '电梯内是否有人',
-  `trouble_type` int(10) default null comment '电梯状态/故障类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
+    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `created_at` datetime DEFAULT NULL,
+    `updated_at` datetime DEFAULT NULL,
+    `deleted_at` datetime DEFAULT NULL,
+    `device_id` int(10) not null comment '设备id',
+    `accx` float default 0.0 comment 'x轴加速度',
+    `accy` float default 0.0 comment 'y轴加速度',
+    `accz` float default 0.0 comment 'z轴加速度',
+    `degx` float default 0.0 comment 'x轴倾斜角',
+    `degy` float default 0.0 comment 'y轴倾斜角',
+    `degz` float default 0.0 comment 'z轴倾斜角',
+    `speedz` float default 0.0 comment '电梯速度',
+    `floor` float default 1 comment '电梯当前楼层',
+    `door_state_id` int(10) default null comment '电梯门状态类型',
+    `people_inside` boolean default true comment '电梯内是否有人',
+    `trouble_id` int(10) default null comment '电梯状态/故障类型',
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备数据表';
+
 
 --
 -- Table structure for table `regions`
@@ -890,7 +889,7 @@ CREATE TABLE `sys_operation_records` (
   `resp` text COLLATE utf8mb4_bin COMMENT '响应Body',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1478 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1557 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1014,7 +1013,7 @@ CREATE TABLE `user_admins` (
   `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_user_admins_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1043,7 +1042,7 @@ CREATE TABLE `user_lifts` (
   `category_id` int(10) NOT NULL COMMENT '用户电梯关系类型',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_user_lifts_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户电梯关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户电梯关系表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1082,4 +1081,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-05 12:07:10
+-- Dump completed on 2020-08-09 11:27:53

@@ -2,7 +2,6 @@ package model
 
 import (
 	"gin-vue-admin/global"
-	"github.com/go-sql-driver/mysql"
 )
 
 const (

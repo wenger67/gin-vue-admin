@@ -28,3 +28,4 @@ go.sum
 
 *.iml
 /server/server
+/server/go_build_server_

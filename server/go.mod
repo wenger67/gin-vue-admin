@@ -15,11 +15,13 @@ require (
 	github.com/go-openapi/swag v0.19.8 // indirect
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/go-redis/redis v6.15.7+incompatible
-	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2 // indirect
+	github.com/gorilla/websocket v1.4.0
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/json-iterator/go v1.1.10 // indirect
+	github.com/julienschmidt/httprouter v1.2.0
 	github.com/lestrrat/go-envload v0.0.0-20180220120943-6ed08b54a570 // indirect
 	github.com/lestrrat/go-file-rotatelogs v0.0.0-20180223000712-d3151e2a480f
 	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
@@ -34,7 +36,6 @@ require (
 	github.com/piexlmax/gvaplug v0.0.8
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/qiniu/api.v7/v7 v7.4.1
-	github.com/qiniu/x v1.10.5 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
