@@ -25,11 +25,6 @@
       <div class="bottom">
          <el-row :gutter="32">
              <el-col :xs="24" :sm="24" :lg="12">
-                 <div class="chart-player">
-                     <musicPlayer />
-                 </div>
-             </el-col>
-             <el-col :xs="24" :sm="24" :lg="12">
                  <div  class="chart-player">
                      <todo-list />
                  </div>
@@ -46,7 +41,6 @@ require('echarts/theme/macarons') // echarts theme
 import RaddarChart from "./component/RaddarChart"
 import stackMap from "./component/stackMap"
 import Sunburst from "./component/Sunburst"
-import musicPlayer from "./component/musicPlayer"
 import TodoList from "./component/todoList"
 
 export default {
@@ -60,7 +54,6 @@ export default {
         RaddarChart, //雷达图
         stackMap, //堆叠图
         Sunburst, //旭日图
-        musicPlayer,  //音乐播放器
         TodoList //TodoList
     },
   mounted() {

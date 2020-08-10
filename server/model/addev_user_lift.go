@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type UserLift struct {
 	gorm.Model
 	UserId     int
-	UserAdmin  UserAdmin
+	UserAdmin  SysUser
 	LiftId     int
 	Lift       Lift
 	CategoryId int

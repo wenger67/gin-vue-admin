@@ -37,7 +37,7 @@ func Register(c *gin.Context) {
 		response.FailWithMessage(UserVerifyErr.Error(), c)
 		return
 	}
-	user := &model.SysUser{Username: R.Username, NickName: R.NickName, Password: R.Password, HeaderImg: R.HeaderImg, AuthorityId: R.AuthorityId}
+	user := &model.SysUser{PhoneNumber: R.PhoneNumber, NickName: R.NickName, Password: R.Password, Avatar: R.Avatar, AuthorityId: R.AuthorityId}
 	err, userReturn := service.Register(*user)
 	if err != nil {
 		response.FailWithDetailed(response.ERROR, resp.SysUserResponse{User: userReturn}, fmt.Sprintf("%v", err), c)
@@ -58,7 +58,7 @@ func Login(c *gin.Context) {
 	UserVerify := utils.Rules{
 		"CaptchaId": {utils.NotEmpty()},
 		"Captcha":   {utils.NotEmpty()},
-		"Username":  {utils.NotEmpty()},
+		"PhoneNumber":  {utils.NotEmpty()},
 		"Password":  {utils.NotEmpty()},
 	}
 	UserVerifyErr := utils.Verify(L, UserVerify)
@@ -67,7 +67,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	if store.Verify(L.CaptchaId, L.Captcha, true) {
-		U := &model.SysUser{Username: L.Username, Password: L.Password}
+		U := &model.SysUser{PhoneNumber: L.PhoneNumber, Password: L.Password}
 		if err, user := service.Login(U); err != nil {
 			response.FailWithMessage(fmt.Sprintf("用户名密码错误或%v", err), c)
 		} else {
@@ -110,9 +110,9 @@ func tokenNext(c *gin.Context, user model.SysUser) {
 	}
 	var loginJwt model.JwtBlacklist
 	loginJwt.Jwt = token
-	err, jwtStr := service.GetRedisJWT(user.Username)
+	err, jwtStr := service.GetRedisJWT(user.PhoneNumber)
 	if err == redis.Nil {
-		if err := service.SetRedisJWT(loginJwt, user.Username); err != nil {
+		if err := service.SetRedisJWT(loginJwt, user.PhoneNumber); err != nil {
 			response.FailWithMessage("设置登录状态失败", c)
 			return
 		}
@@ -130,7 +130,7 @@ func tokenNext(c *gin.Context, user model.SysUser) {
 			response.FailWithMessage("jwt作废失败", c)
 			return
 		}
-		if err := service.SetRedisJWT(loginJwt, user.Username); err != nil {
+		if err := service.SetRedisJWT(loginJwt, user.PhoneNumber); err != nil {
 			response.FailWithMessage("设置登录状态失败", c)
 			return
 		}
@@ -162,7 +162,7 @@ func ChangePassword(c *gin.Context) {
 		response.FailWithMessage(UserVerifyErr.Error(), c)
 		return
 	}
-	U := &model.SysUser{Username: params.Username, Password: params.Password}
+	U := &model.SysUser{PhoneNumber: params.PhoneNumber, Password: params.Password}
 	if err, _ := service.ChangePassword(U, params.NewPassword); err != nil {
 		response.FailWithMessage("修改失败，请检查用户名密码", c)
 	} else {

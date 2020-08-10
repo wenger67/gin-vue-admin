@@ -7,11 +7,17 @@ import (
 
 type SysUser struct {
 	gorm.Model
-	UUID        uuid.UUID    `json:"uuid" gorm:"comment:'用户UUID'"`
-	Username    string       `json:"userName" gorm:"comment:'用户登录名'"`
-	Password    string       `json:"-"  gorm:"comment:'用户登录密码'"`
-	NickName    string       `json:"nickName" gorm:"default:'系统用户';comment:'用户昵称'" `
-	HeaderImg   string       `json:"headerImg" gorm:"default:'http://qmplusimg.henrongyi.top/head.png';comment:'用户头像'"`
+	UUID        uuid.UUID `json:"uuid" form:"uuid"`
+	PhoneNumber string `json:"phoneNumber" form:"phoneNumber"`
+	Password    string `json:"-"`
+	RealName    string `json:"realName" form:"realName"`
+	NickName    string `json:"nickName" form:"nickName"`
+	Avatar      string `json:"avatar" form:"avatar"`
+	RoleId      int `json:"roleId" form:"roleId"`
+	Role    	Category `json:"role" form:"role" gorm:"ForiegnKey:RoleId;AssociationForiegnKey:ID"`
+	CompanyId   int `json:"companyId" form:"companyId"`
+	Company     Company `json:"company" form:"company" gorm:"ForiegnKey:CompanyId;AssociationForiegnKey:ID"`
+	Address     string `json:"address" form:"address"`
 	Authority   SysAuthority `json:"authority" gorm:"ForeignKey:AuthorityId;AssociationForeignKey:AuthorityId;comment:'用户角色'"`
 	AuthorityId string       `json:"authorityId" gorm:"default:888;comment:'用户角色ID'"`
 }

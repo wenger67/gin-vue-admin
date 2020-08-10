@@ -252,7 +252,7 @@ export default {
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -286,19 +286,19 @@ export default {
             ids.push(item.ID)
           })
         const res = await deleteCompanyByIds({ ids })
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             type: 'success',
             message: '删除成功'
           })
           this.deleteVisible = false
-          this.getTableData()
+          await this.getTableData()
         }
       },
     async updateCompany(row) {
       const res = await findCompany({ ID: row.ID });
       this.type = "update";
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.formData = res.data.recompany;
         this.dialogFormVisible = true;
       }
@@ -328,12 +328,12 @@ export default {
       })
       .then(async () => {
         const res = await deleteCompany({ ID: row.ID });
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             type: "success",
             message: "删除成功"
           });
-          this.getTableData();
+          await this.getTableData();
         }
       })
       .catch(() => {
@@ -346,15 +346,19 @@ export default {
     async enterDialog() {
       this.$refs.elForm.validate(async valid => {
         if (valid) {
-          this.type = "update";
-          let res = await updateCompany(this.formData);
-          if (res.code == 0) {
+          let res
+          if (this.type === "create") {
+             res = await createCompany(this.formData);
+          } else if (this.type === "update") {
+            res = await updateCompany(this.formData)
+          }
+          if (res.code === 0) {
             this.$message({
               type:"success",
               message:"创建/更改成功"
             })
             this.closeDialog();
-            this.getTableData();
+            await this.getTableData();
           }          
         }
       })
@@ -365,7 +369,7 @@ export default {
     },
     async getSubjects() {
       const res = await getAllSubjects();
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.subjectOptions = res.data.subjectList;
       }
     },
@@ -373,10 +377,10 @@ export default {
       const params = {
         page: 1,
         pageSize: 100,
-        ID: this.type == "create" ? this.formData.subject : this.searchInfo.subjectId
+        ID: this.type === "create" ? this.formData.subject : this.searchInfo.subjectId
       };
       const res = await getCategoriesList(params);
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.categoryOptions = res.data.list;
       }
 

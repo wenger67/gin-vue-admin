@@ -22,7 +22,7 @@
           <el-form-item prop="username">
             <el-input
               placeholder="请输入用户名"
-              v-model="loginForm.username"
+              v-model="loginForm.phoneNumber"
             >
             <i
                 class="el-input__icon el-icon-user"
@@ -98,7 +98,7 @@ export default {
   name: "Login",
   data() {
     const checkUsername = (rule, value, callback) => {
-      if (value.length < 5 || value.length > 12) {
+      if (!(/^1[3456789]\d{9}$/.test(value))) {
         return callback(new Error("请输入正确的用户名"));
       } else {
         callback();
@@ -115,13 +115,13 @@ export default {
       curYear: 0,
       lock: "lock",
       loginForm: {
-        username: "admin",
+        phoneNumber: "17612732732",
         password: "123456",
         captcha: "",
         captchaId: "",
       },
       rules: {
-        username: [{ validator: checkUsername, trigger: "blur" }],
+        phoneNumber: [{ validator: checkUsername, trigger: "blur" }],
         password: [{ validator: checkPassword, trigger: "blur" }],
       },
       logVerify: "",

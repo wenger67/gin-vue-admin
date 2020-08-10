@@ -23,7 +23,6 @@ func DBTables() {
 		model.ExaCustomer{},
 		model.SysOperationRecord{},
 		model.CategorySubject{},
-		model.UserAdmin{},
 		model.Category{},
 		model.Address{},
 		model.Lift{},

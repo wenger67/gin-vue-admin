@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.27, for osx10.14 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.31, for Linux (x86_64)
 --
 -- Host: localhost    Database: qmPlus
 -- ------------------------------------------------------
--- Server version	5.7.27
+-- Server version	5.7.31-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,220 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ad_device_config_relations`
+--
+
+DROP TABLE IF EXISTS `ad_device_config_relations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_config_relations` (
+  `ad_device_id` int(10) unsigned NOT NULL,
+  `ad_device_config_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ad_device_id`,`ad_device_config_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_config_relations`
+--
+
+LOCK TABLES `ad_device_config_relations` WRITE;
+/*!40000 ALTER TABLE `ad_device_config_relations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_config_relations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_device_configs`
+--
+
+DROP TABLE IF EXISTS `ad_device_configs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_configs` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `key` char(50) NOT NULL COMMENT '配置键值',
+  `value` char(255) NOT NULL COMMENT '配置内容',
+  `comment` char(255) DEFAULT NULL COMMENT '配置说明',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备配置表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_configs`
+--
+
+LOCK TABLES `ad_device_configs` WRITE;
+/*!40000 ALTER TABLE `ad_device_configs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_configs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_device_data`
+--
+
+DROP TABLE IF EXISTS `ad_device_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_data` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(11) DEFAULT NULL,
+  `trouble_id` int(11) DEFAULT NULL,
+  `accx` double DEFAULT NULL,
+  `accy` double DEFAULT NULL,
+  `accz` double DEFAULT NULL,
+  `degx` double DEFAULT NULL,
+  `degy` double DEFAULT NULL,
+  `degz` double DEFAULT NULL,
+  `speedz` double DEFAULT NULL,
+  `floor` double DEFAULT NULL,
+  `door_state_id` int(11) DEFAULT NULL COMMENT '开门状态',
+  `people_inside` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_ad_device_data_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_data`
+--
+
+LOCK TABLES `ad_device_data` WRITE;
+/*!40000 ALTER TABLE `ad_device_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_device_datas`
+--
+
+DROP TABLE IF EXISTS `ad_device_datas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_datas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(10) NOT NULL COMMENT '设备id',
+  `accx` float DEFAULT '0' COMMENT 'x轴加速度',
+  `accy` float DEFAULT '0' COMMENT 'y轴加速度',
+  `accz` float DEFAULT '0' COMMENT 'z轴加速度',
+  `degx` float DEFAULT '0' COMMENT 'x轴倾斜角',
+  `degy` float DEFAULT '0' COMMENT 'y轴倾斜角',
+  `degz` float DEFAULT '0' COMMENT 'z轴倾斜角',
+  `speedz` float DEFAULT '0' COMMENT '电梯速度',
+  `floor` float DEFAULT '1' COMMENT '电梯当前楼层',
+  `door_state_id` int(10) DEFAULT NULL COMMENT '电梯门状态类型',
+  `people_inside` tinyint(1) DEFAULT '1' COMMENT '电梯内是否有人',
+  `trouble_id` int(10) DEFAULT NULL COMMENT '电梯状态/故障类型',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备数据表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_datas`
+--
+
+LOCK TABLES `ad_device_datas` WRITE;
+/*!40000 ALTER TABLE `ad_device_datas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_datas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_device_events`
+--
+
+DROP TABLE IF EXISTS `ad_device_events`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_events` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `device_id` int(10) NOT NULL COMMENT '设备id',
+  `type_id` int(10) NOT NULL COMMENT '事件类型category',
+  `content` char(255) DEFAULT NULL COMMENT '事件内容',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备事件表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_events`
+--
+
+LOCK TABLES `ad_device_events` WRITE;
+/*!40000 ALTER TABLE `ad_device_events` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_events` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_device_owners`
+--
+
+DROP TABLE IF EXISTS `ad_device_owners`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_device_owners` (
+  `ad_device_id` int(10) unsigned NOT NULL,
+  `user_admin_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ad_device_id`,`user_admin_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_device_owners`
+--
+
+LOCK TABLES `ad_device_owners` WRITE;
+/*!40000 ALTER TABLE `ad_device_owners` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_device_owners` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_devices`
+--
+
+DROP TABLE IF EXISTS `ad_devices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_devices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `type_id` int(10) NOT NULL COMMENT '电梯型号',
+  `factory_id` int(10) NOT NULL COMMENT '生产商',
+  `factory_time` datetime DEFAULT NULL COMMENT '出厂时间',
+  `install_time` datetime DEFAULT NULL COMMENT '安装时间',
+  `status_id` int(10) DEFAULT NULL COMMENT '设备状态类别',
+  `online` tinyint(1) DEFAULT '1' COMMENT '设备是否在线',
+  `last_offline_time` datetime DEFAULT NULL COMMENT '上次离线时间',
+  `last_online_time` datetime DEFAULT NULL COMMENT '上次上线时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_ad_devices_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_devices`
+--
+
+LOCK TABLES `ad_devices` WRITE;
+/*!40000 ALTER TABLE `ad_devices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ad_devices` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `address_tags`
@@ -122,7 +336,7 @@ CREATE TABLE `casbin_rule` (
 
 LOCK TABLES `casbin_rule` WRITE;
 /*!40000 ALTER TABLE `casbin_rule` DISABLE KEYS */;
-INSERT INTO `casbin_rule` VALUES ('p','8881','/base/login','POST','','',''),('p','8881','/base/register','POST','','',''),('p','8881','/api/createApi','POST','','',''),('p','8881','/api/getApiList','POST','','',''),('p','8881','/api/getApiById','POST','','',''),('p','8881','/api/deleteApi','POST','','',''),('p','8881','/api/updateApi','POST','','',''),('p','8881','/api/getAllApis','POST','','',''),('p','8881','/authority/createAuthority','POST','','',''),('p','8881','/authority/deleteAuthority','POST','','',''),('p','8881','/authority/getAuthorityList','POST','','',''),('p','8881','/authority/setDataAuthority','POST','','',''),('p','8881','/menu/getMenu','POST','','',''),('p','8881','/menu/getMenuList','POST','','',''),('p','8881','/menu/addBaseMenu','POST','','',''),('p','8881','/menu/getBaseMenuTree','POST','','',''),('p','8881','/menu/addMenuAuthority','POST','','',''),('p','8881','/menu/getMenuAuthority','POST','','',''),('p','8881','/menu/deleteBaseMenu','POST','','',''),('p','8881','/menu/updateBaseMenu','POST','','',''),('p','8881','/menu/getBaseMenuById','POST','','',''),('p','8881','/user/changePassword','POST','','',''),('p','8881','/user/uploadHeaderImg','POST','','',''),('p','8881','/user/getInfoList','POST','','',''),('p','8881','/user/getUserList','POST','','',''),('p','8881','/user/setUserAuthority','POST','','',''),('p','8881','/fileUploadAndDownload/upload','POST','','',''),('p','8881','/fileUploadAndDownload/getFileList','POST','','',''),('p','8881','/fileUploadAndDownload/deleteFile','POST','','',''),('p','8881','/casbin/updateCasbin','POST','','',''),('p','8881','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','8881','/jwt/jsonInBlacklist','POST','','',''),('p','8881','/system/getSystemConfig','POST','','',''),('p','8881','/system/setSystemConfig','POST','','',''),('p','8881','/customer/customer','POST','','',''),('p','8881','/customer/customer','PUT','','',''),('p','8881','/customer/customer','DELETE','','',''),('p','8881','/customer/customer','GET','','',''),('p','8881','/customer/customerList','GET','','',''),('p','9528','/base/login','POST','','',''),('p','9528','/base/register','POST','','',''),('p','9528','/api/createApi','POST','','',''),('p','9528','/api/getApiList','POST','','',''),('p','9528','/api/getApiById','POST','','',''),('p','9528','/api/deleteApi','POST','','',''),('p','9528','/api/updateApi','POST','','',''),('p','9528','/api/getAllApis','POST','','',''),('p','9528','/authority/createAuthority','POST','','',''),('p','9528','/authority/deleteAuthority','POST','','',''),('p','9528','/authority/getAuthorityList','POST','','',''),('p','9528','/authority/setDataAuthority','POST','','',''),('p','9528','/menu/getMenu','POST','','',''),('p','9528','/menu/getMenuList','POST','','',''),('p','9528','/menu/addBaseMenu','POST','','',''),('p','9528','/menu/getBaseMenuTree','POST','','',''),('p','9528','/menu/addMenuAuthority','POST','','',''),('p','9528','/menu/getMenuAuthority','POST','','',''),('p','9528','/menu/deleteBaseMenu','POST','','',''),('p','9528','/menu/updateBaseMenu','POST','','',''),('p','9528','/menu/getBaseMenuById','POST','','',''),('p','9528','/user/changePassword','POST','','',''),('p','9528','/user/uploadHeaderImg','POST','','',''),('p','9528','/user/getInfoList','POST','','',''),('p','9528','/user/getUserList','POST','','',''),('p','9528','/user/setUserAuthority','POST','','',''),('p','9528','/fileUploadAndDownload/upload','POST','','',''),('p','9528','/fileUploadAndDownload/getFileList','POST','','',''),('p','9528','/fileUploadAndDownload/deleteFile','POST','','',''),('p','9528','/casbin/updateCasbin','POST','','',''),('p','9528','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','9528','/jwt/jsonInBlacklist','POST','','',''),('p','9528','/system/getSystemConfig','POST','','',''),('p','9528','/system/setSystemConfig','POST','','',''),('p','9528','/customer/customer','POST','','',''),('p','9528','/customer/customer','PUT','','',''),('p','9528','/customer/customer','DELETE','','',''),('p','9528','/customer/customer','GET','','',''),('p','9528','/customer/customerList','GET','','',''),('p','9528','/autoCode/createTemp','POST','','',''),('p','888','/base/login','POST','','',''),('p','888','/base/register','POST','','',''),('p','888','/api/createApi','POST','','',''),('p','888','/api/getApiList','POST','','',''),('p','888','/api/getApiById','POST','','',''),('p','888','/api/deleteApi','POST','','',''),('p','888','/api/updateApi','POST','','',''),('p','888','/api/getAllApis','POST','','',''),('p','888','/authority/createAuthority','POST','','',''),('p','888','/authority/deleteAuthority','POST','','',''),('p','888','/authority/getAuthorityList','POST','','',''),('p','888','/authority/setDataAuthority','POST','','',''),('p','888','/authority/updateAuthority','PUT','','',''),('p','888','/authority/copyAuthority','POST','','',''),('p','888','/menu/getMenu','POST','','',''),('p','888','/menu/getMenuList','POST','','',''),('p','888','/menu/addBaseMenu','POST','','',''),('p','888','/menu/getBaseMenuTree','POST','','',''),('p','888','/menu/addMenuAuthority','POST','','',''),('p','888','/menu/getMenuAuthority','POST','','',''),('p','888','/menu/deleteBaseMenu','POST','','',''),('p','888','/menu/updateBaseMenu','POST','','',''),('p','888','/menu/getBaseMenuById','POST','','',''),('p','888','/user/changePassword','POST','','',''),('p','888','/user/uploadHeaderImg','POST','','',''),('p','888','/user/getInfoList','POST','','',''),('p','888','/user/getUserList','POST','','',''),('p','888','/user/setUserAuthority','POST','','',''),('p','888','/user/deleteUser','DELETE','','',''),('p','888','/fileUploadAndDownload/upload','POST','','',''),('p','888','/fileUploadAndDownload/getFileList','POST','','',''),('p','888','/fileUploadAndDownload/deleteFile','POST','','',''),('p','888','/casbin/updateCasbin','POST','','',''),('p','888','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','888','/casbin/casbinTest/:pathParam','GET','','',''),('p','888','/jwt/jsonInBlacklist','POST','','',''),('p','888','/system/getSystemConfig','POST','','',''),('p','888','/system/setSystemConfig','POST','','',''),('p','888','/customer/customer','POST','','',''),('p','888','/customer/customer','PUT','','',''),('p','888','/customer/customer','DELETE','','',''),('p','888','/customer/customer','GET','','',''),('p','888','/customer/customerList','GET','','',''),('p','888','/autoCode/createTemp','POST','','',''),('p','888','/autoCode/getTables','GET','','',''),('p','888','/autoCode/getDB','GET','','',''),('p','888','/autoCode/getColume','GET','','',''),('p','888','/sysDictionaryDetail/createSysDictionaryDetail','POST','','',''),('p','888','/sysDictionaryDetail/deleteSysDictionaryDetail','DELETE','','',''),('p','888','/sysDictionaryDetail/updateSysDictionaryDetail','PUT','','',''),('p','888','/sysDictionaryDetail/findSysDictionaryDetail','GET','','',''),('p','888','/sysDictionaryDetail/getSysDictionaryDetailList','GET','','',''),('p','888','/sysDictionary/createSysDictionary','POST','','',''),('p','888','/sysDictionary/deleteSysDictionary','DELETE','','',''),('p','888','/sysDictionary/updateSysDictionary','PUT','','',''),('p','888','/sysDictionary/findSysDictionary','GET','','',''),('p','888','/sysDictionary/getSysDictionaryList','GET','','',''),('p','888','/sysOperationRecord/createSysOperationRecord','POST','','',''),('p','888','/sysOperationRecord/deleteSysOperationRecord','DELETE','','',''),('p','888','/sysOperationRecord/updateSysOperationRecord','PUT','','',''),('p','888','/sysOperationRecord/findSysOperationRecord','GET','','',''),('p','888','/sysOperationRecord/getSysOperationRecordList','GET','','',''),('p','888','/sysOperationRecord/deleteSysOperationRecordByIds','DELETE','','',''),('p','888','/subject/getSubjectById','POST','','',''),('p','888','/subject/getSubjectList','POST','','',''),('p','888','/subject/createSubject','POST','','',''),('p','888','/subject/updateSubject','POST','','',''),('p','888','/subject/deleteSubject','POST','','',''),('p','888','/subject/getAllSubjects','POST','','',''),('p','888','/categories/createCategories','POST','','',''),('p','888','/categories/deleteCategories','DELETE','','',''),('p','888','/categories/deleteCategoriesByIds','DELETE','','',''),('p','888','/categories/updateCategories','PUT','','',''),('p','888','/categories/findCategories','GET','','',''),('p','888','/categories/getCategoriesList','GET','','',''),('p','888','/company/createCompany','POST','','',''),('p','888','/company/deleteCompany','DELETE','','',''),('p','888','/company/deleteCompanyByIds','DELETE','','',''),('p','888','/company/updateCompany','PUT','','',''),('p','888','/company/findCompany','GET','','',''),('p','888','/company/getCompanyList','GET','','',''),('p','888','/region/createRegion','POST','','',''),('p','888','/region/deleteRegion','DELETE','','',''),('p','888','/region/deleteRegionByIds','DELETE','','',''),('p','888','/region/updateRegion','PUT','','',''),('p','888','/region/findRegion','GET','','',''),('p','888','/region/getRegionList','GET','','',''),('p','888','/address/createAddress','POST','','',''),('p','888','/address/deleteAddress','DELETE','','',''),('p','888','/address/deleteAddressByIds','DELETE','','',''),('p','888','/address/updateAddress','PUT','','',''),('p','888','/address/findAddress','GET','','',''),('p','888','/address/getAddressList','GET','','','');
+INSERT INTO `casbin_rule` VALUES ('p','8881','/base/login','POST','','',''),('p','8881','/base/register','POST','','',''),('p','8881','/api/createApi','POST','','',''),('p','8881','/api/getApiList','POST','','',''),('p','8881','/api/getApiById','POST','','',''),('p','8881','/api/deleteApi','POST','','',''),('p','8881','/api/updateApi','POST','','',''),('p','8881','/api/getAllApis','POST','','',''),('p','8881','/authority/createAuthority','POST','','',''),('p','8881','/authority/deleteAuthority','POST','','',''),('p','8881','/authority/getAuthorityList','POST','','',''),('p','8881','/authority/setDataAuthority','POST','','',''),('p','8881','/menu/getMenu','POST','','',''),('p','8881','/menu/getMenuList','POST','','',''),('p','8881','/menu/addBaseMenu','POST','','',''),('p','8881','/menu/getBaseMenuTree','POST','','',''),('p','8881','/menu/addMenuAuthority','POST','','',''),('p','8881','/menu/getMenuAuthority','POST','','',''),('p','8881','/menu/deleteBaseMenu','POST','','',''),('p','8881','/menu/updateBaseMenu','POST','','',''),('p','8881','/menu/getBaseMenuById','POST','','',''),('p','8881','/user/changePassword','POST','','',''),('p','8881','/user/uploadHeaderImg','POST','','',''),('p','8881','/user/getInfoList','POST','','',''),('p','8881','/user/getUserList','POST','','',''),('p','8881','/user/setUserAuthority','POST','','',''),('p','8881','/fileUploadAndDownload/upload','POST','','',''),('p','8881','/fileUploadAndDownload/getFileList','POST','','',''),('p','8881','/fileUploadAndDownload/deleteFile','POST','','',''),('p','8881','/casbin/updateCasbin','POST','','',''),('p','8881','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','8881','/jwt/jsonInBlacklist','POST','','',''),('p','8881','/system/getSystemConfig','POST','','',''),('p','8881','/system/setSystemConfig','POST','','',''),('p','8881','/customer/customer','POST','','',''),('p','8881','/customer/customer','PUT','','',''),('p','8881','/customer/customer','DELETE','','',''),('p','8881','/customer/customer','GET','','',''),('p','8881','/customer/customerList','GET','','',''),('p','9528','/base/login','POST','','',''),('p','9528','/base/register','POST','','',''),('p','9528','/api/createApi','POST','','',''),('p','9528','/api/getApiList','POST','','',''),('p','9528','/api/getApiById','POST','','',''),('p','9528','/api/deleteApi','POST','','',''),('p','9528','/api/updateApi','POST','','',''),('p','9528','/api/getAllApis','POST','','',''),('p','9528','/authority/createAuthority','POST','','',''),('p','9528','/authority/deleteAuthority','POST','','',''),('p','9528','/authority/getAuthorityList','POST','','',''),('p','9528','/authority/setDataAuthority','POST','','',''),('p','9528','/menu/getMenu','POST','','',''),('p','9528','/menu/getMenuList','POST','','',''),('p','9528','/menu/addBaseMenu','POST','','',''),('p','9528','/menu/getBaseMenuTree','POST','','',''),('p','9528','/menu/addMenuAuthority','POST','','',''),('p','9528','/menu/getMenuAuthority','POST','','',''),('p','9528','/menu/deleteBaseMenu','POST','','',''),('p','9528','/menu/updateBaseMenu','POST','','',''),('p','9528','/menu/getBaseMenuById','POST','','',''),('p','9528','/user/changePassword','POST','','',''),('p','9528','/user/uploadHeaderImg','POST','','',''),('p','9528','/user/getInfoList','POST','','',''),('p','9528','/user/getUserList','POST','','',''),('p','9528','/user/setUserAuthority','POST','','',''),('p','9528','/fileUploadAndDownload/upload','POST','','',''),('p','9528','/fileUploadAndDownload/getFileList','POST','','',''),('p','9528','/fileUploadAndDownload/deleteFile','POST','','',''),('p','9528','/casbin/updateCasbin','POST','','',''),('p','9528','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','9528','/jwt/jsonInBlacklist','POST','','',''),('p','9528','/system/getSystemConfig','POST','','',''),('p','9528','/system/setSystemConfig','POST','','',''),('p','9528','/customer/customer','POST','','',''),('p','9528','/customer/customer','PUT','','',''),('p','9528','/customer/customer','DELETE','','',''),('p','9528','/customer/customer','GET','','',''),('p','9528','/customer/customerList','GET','','',''),('p','9528','/autoCode/createTemp','POST','','',''),('p','888','/base/login','POST','','',''),('p','888','/base/register','POST','','',''),('p','888','/api/createApi','POST','','',''),('p','888','/api/getApiList','POST','','',''),('p','888','/api/getApiById','POST','','',''),('p','888','/api/deleteApi','POST','','',''),('p','888','/api/updateApi','POST','','',''),('p','888','/api/getAllApis','POST','','',''),('p','888','/authority/createAuthority','POST','','',''),('p','888','/authority/deleteAuthority','POST','','',''),('p','888','/authority/getAuthorityList','POST','','',''),('p','888','/authority/setDataAuthority','POST','','',''),('p','888','/authority/updateAuthority','PUT','','',''),('p','888','/authority/copyAuthority','POST','','',''),('p','888','/menu/getMenu','POST','','',''),('p','888','/menu/getMenuList','POST','','',''),('p','888','/menu/addBaseMenu','POST','','',''),('p','888','/menu/getBaseMenuTree','POST','','',''),('p','888','/menu/addMenuAuthority','POST','','',''),('p','888','/menu/getMenuAuthority','POST','','',''),('p','888','/menu/deleteBaseMenu','POST','','',''),('p','888','/menu/updateBaseMenu','POST','','',''),('p','888','/menu/getBaseMenuById','POST','','',''),('p','888','/user/changePassword','POST','','',''),('p','888','/user/uploadHeaderImg','POST','','',''),('p','888','/user/getInfoList','POST','','',''),('p','888','/user/getUserList','POST','','',''),('p','888','/user/setUserAuthority','POST','','',''),('p','888','/user/deleteUser','DELETE','','',''),('p','888','/fileUploadAndDownload/upload','POST','','',''),('p','888','/fileUploadAndDownload/getFileList','POST','','',''),('p','888','/fileUploadAndDownload/deleteFile','POST','','',''),('p','888','/casbin/updateCasbin','POST','','',''),('p','888','/casbin/getPolicyPathByAuthorityId','POST','','',''),('p','888','/casbin/casbinTest/:pathParam','GET','','',''),('p','888','/jwt/jsonInBlacklist','POST','','',''),('p','888','/system/getSystemConfig','POST','','',''),('p','888','/system/setSystemConfig','POST','','',''),('p','888','/customer/customer','POST','','',''),('p','888','/customer/customer','PUT','','',''),('p','888','/customer/customer','DELETE','','',''),('p','888','/customer/customer','GET','','',''),('p','888','/customer/customerList','GET','','',''),('p','888','/autoCode/createTemp','POST','','',''),('p','888','/autoCode/getTables','GET','','',''),('p','888','/autoCode/getDB','GET','','',''),('p','888','/autoCode/getColume','GET','','',''),('p','888','/sysDictionaryDetail/createSysDictionaryDetail','POST','','',''),('p','888','/sysDictionaryDetail/deleteSysDictionaryDetail','DELETE','','',''),('p','888','/sysDictionaryDetail/updateSysDictionaryDetail','PUT','','',''),('p','888','/sysDictionaryDetail/findSysDictionaryDetail','GET','','',''),('p','888','/sysDictionaryDetail/getSysDictionaryDetailList','GET','','',''),('p','888','/sysDictionary/createSysDictionary','POST','','',''),('p','888','/sysDictionary/deleteSysDictionary','DELETE','','',''),('p','888','/sysDictionary/updateSysDictionary','PUT','','',''),('p','888','/sysDictionary/findSysDictionary','GET','','',''),('p','888','/sysDictionary/getSysDictionaryList','GET','','',''),('p','888','/sysOperationRecord/createSysOperationRecord','POST','','',''),('p','888','/sysOperationRecord/deleteSysOperationRecord','DELETE','','',''),('p','888','/sysOperationRecord/updateSysOperationRecord','PUT','','',''),('p','888','/sysOperationRecord/findSysOperationRecord','GET','','',''),('p','888','/sysOperationRecord/getSysOperationRecordList','GET','','',''),('p','888','/sysOperationRecord/deleteSysOperationRecordByIds','DELETE','','',''),('p','888','/subject/getSubjectById','POST','','',''),('p','888','/subject/getSubjectList','POST','','',''),('p','888','/subject/createSubject','POST','','',''),('p','888','/subject/updateSubject','POST','','',''),('p','888','/subject/deleteSubject','POST','','',''),('p','888','/subject/getAllSubjects','POST','','',''),('p','888','/categories/createCategories','POST','','',''),('p','888','/categories/deleteCategories','DELETE','','',''),('p','888','/categories/deleteCategoriesByIds','DELETE','','',''),('p','888','/categories/updateCategories','PUT','','',''),('p','888','/categories/findCategories','GET','','',''),('p','888','/categories/getCategoriesList','GET','','',''),('p','888','/company/createCompany','POST','','',''),('p','888','/company/deleteCompany','DELETE','','',''),('p','888','/company/deleteCompanyByIds','DELETE','','',''),('p','888','/company/updateCompany','PUT','','',''),('p','888','/company/findCompany','GET','','',''),('p','888','/company/getCompanyList','GET','','',''),('p','888','/region/createRegion','POST','','',''),('p','888','/region/deleteRegion','DELETE','','',''),('p','888','/region/deleteRegionByIds','DELETE','','',''),('p','888','/region/updateRegion','PUT','','',''),('p','888','/region/findRegion','GET','','',''),('p','888','/region/getRegionList','GET','','',''),('p','888','/address/createAddress','POST','','',''),('p','888','/address/deleteAddress','DELETE','','',''),('p','888','/address/deleteAddressByIds','DELETE','','',''),('p','888','/address/updateAddress','PUT','','',''),('p','888','/address/findAddress','GET','','',''),('p','888','/address/getAddressList','GET','','',''),('p','888','/lift/createLift','POST','','',''),('p','888','/lift/deleteLift','DELETE','','',''),('p','888','/lift/deleteLiftByIds','DELETE','','',''),('p','888','/lift/updateLift','PUT','','',''),('p','888','/lift/findLift','GET','','',''),('p','888','/lift/getLiftList','GET','','',''),('p','888','/liftModel/createLiftModel','POST','','',''),('p','888','/liftModel/deleteLiftModel','DELETE','','',''),('p','888','/liftModel/deleteLiftModelByIds','DELETE','','',''),('p','888','/liftModel/updateLiftModel','PUT','','',''),('p','888','/liftModel/findLiftModel','GET','','',''),('p','888','/liftModel/getLiftModelList','GET','','',''),('p','888','/userAdmin/createUserAdmin','POST','','',''),('p','888','/userAdmin/deleteUserAdmin','DELETE','','',''),('p','888','/userAdmin/deleteUserAdminByIds','DELETE','','',''),('p','888','/userAdmin/updateUserAdmin','PUT','','',''),('p','888','/userAdmin/findUserAdmin','GET','','',''),('p','888','/userAdmin/getUserAdminList','GET','','','');
 /*!40000 ALTER TABLE `casbin_rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,7 +431,7 @@ CREATE TABLE `companies` (
 
 LOCK TABLES `companies` WRITE;
 /*!40000 ALTER TABLE `companies` DISABLE KEYS */;
-INSERT INTO `companies` VALUES (106,'2020-08-08 09:49:55','2020-08-08 09:49:55',NULL,'武汉智能电梯有限公司','武汉智能电梯有限公司','陈纯星','027-87928666','','420111000041704','178092678','91420111178092678B','91420111178092678B','湖北省武汉市洪山区武珞路718号',119),(107,'2020-08-08 09:55:43','2020-08-08 09:55:43',NULL,'武汉华美东菱电梯有限公司','武汉华美东菱电梯有限公司','戴俭勤','027-88082935','','420100000230772','71195427-3','91420100711954273A','91420100711954273A','湖北省武汉市洪山区花山镇附5号',117),(108,'2020-08-08 09:59:32','2020-08-08 09:59:32',NULL,'武汉博瑞通达电梯有限公司','博瑞通达','宋保山','027-88229959','','420111000163221','56835045X','9142011156835045XL','9142011156835045XL','湖北省武汉市洪山区和平街金地自在城(K2地块6期)A单元15层4-6号',119),(109,'2020-08-08 10:03:22','2020-08-08 10:03:22',NULL,'武汉星奥电梯有限公司','星奥电梯','黄亮平','027-83536667','','420111000363899','303529227','91420111303529227Y','91420111303529227Y','湖北省武汉市江汉区经济开发区江兴路25号A栋新金科技企业孵化器A704,A705室',119),(110,'2020-08-08 10:09:17','2020-08-08 10:09:17',NULL,'武汉利科电梯有限公司','利科电梯','曾怀池','13135672966','','420102000132629','555021198','91420116555021198J','91420116555021198J','湖北省武汉市黄陂区三里桥街发展大道特一号9栋1单元',117),(111,'2020-08-08 10:12:07','2020-08-08 10:12:07',NULL,'武汉奥星电梯有限公司','奥星电梯','邓友运','027-83551522','','420102000016383','764645052','91420102764645052B','91420102764645052B','湖北省武汉市江岸区二七路89号东立国际二期19栋1层29室',119),(112,'2020-08-08 10:14:50','2020-08-08 10:14:50',NULL,'武汉九井电梯有限公司','九井电梯','崔锐','13657223390','','420000000011766','728301279','914200007283012799','914200007283012799','湖北省武汉市洪山区岳家嘴公务员小区14栋801室',119),(113,'2020-08-08 10:19:54','2020-08-08 10:19:54',NULL,'武汉惠之美物业服务有限公司','惠之美物业','胡国平','027-59318888','','420100000085835','724664128','914201127246641280','914201127246641280','湖北省武汉市东西湖区银湖科技产业开发园18号',115),(114,'2020-08-08 10:24:16','2020-08-08 10:24:16',NULL,'湖北中楚物业股份有限公司','中楚物业','成学荣','027-51817371','','420106000048107','679115081','91420106679115081N','91420106679115081N','湖北省武汉市武昌区中南路3号领秀中南26层5号',115),(115,'2020-08-08 10:26:52','2020-08-08 10:26:52',NULL,'泛海物业管理武汉有限公司','泛海物业','郑翼龙','027-83871999','','420100000192187','55501107X','9142010055501107XX','9142010055501107XX','湖北省武汉市江汉区云彩路198号泛海城市广场写字楼8层',115),(116,'2020-08-08 10:30:13','2020-08-08 10:30:13',NULL,'湖北一江电梯维保服务有限公司','一江电梯','张波','13006127460','','4201160000107971','347255512','91420116347255512B','91420116347255512B','湖北省武汉市江岸区金桥大道20号中胜村K1地块1号办公栋4',116),(117,'2020-08-08 10:32:57','2020-08-08 10:32:57',NULL,'武汉中汇日安电梯维保工程有限公司','中汇日安电梯','王法玲','0','','0','MA49G5AB7','91420100MA49G5AB7Q','91420100MA49G5AB7Q','湖北省武汉市东湖高新技术开发区华师园北路18号博瀚科技光电产业园',116),(118,'2020-08-08 10:36:43','2020-08-08 10:36:43',NULL,'武汉市特种设备监督检验所','武汉市特种设备监督检验所','邹少俊','0','','0','0','12420100717957600G','12420100717957600G','湖北省武汉市江岸区惠济二路11-2号',118),(119,'2020-08-08 10:39:29','2020-08-08 10:39:29',NULL,'武汉产品质量监督检验所','武汉产品质量监督检验所','林建国','0','','0','0','12420100441354365Y','12420100441354365Y','湖北省武汉市东西湖区金银湖东二路5号',120),(120,'2020-08-08 10:42:59','2020-08-08 10:42:59',NULL,'开世艺商业管理武汉有限公司','K11','朱滨','027-87676765','','420100400101364','MA4KU8MA0','91420100MA4KU8MQ0K','91420100MA4KU8MQ0K','湖北省武汉市东湖高新技术开发区关山大道特一号',121),(121,'2020-08-08 10:46:02','2020-08-08 10:46:02',NULL,'华中科技大学','华中大','李元元','0','','0','0','12100000441626842D','12100000441626842D','湖北省武汉市洪山区珞瑜路1037号',114);
+INSERT INTO `companies` VALUES (106,'2020-08-08 09:49:55','2020-08-08 09:49:55',NULL,'武汉智能电梯有限公司','武汉智能电梯有限公司','陈纯星','027-87928666','','420111000041704','178092678','91420111178092678B','91420111178092678B','湖北省武汉市洪山区武珞路718号',119),(107,'2020-08-08 09:55:43','2020-08-08 09:55:43',NULL,'武汉华美东菱电梯有限公司','武汉华美东菱电梯有限公司','戴俭勤','027-88082935','','420100000230772','71195427-3','91420100711954273A','91420100711954273A','湖北省武汉市洪山区花山镇附5号',117),(108,'2020-08-08 09:59:32','2020-08-08 09:59:32',NULL,'武汉博瑞通达电梯有限公司','博瑞通达','宋保山','027-88229959','','420111000163221','56835045X','9142011156835045XL','9142011156835045XL','湖北省武汉市洪山区和平街金地自在城(K2地块6期)A单元15层4-6号',119),(109,'2020-08-08 10:03:22','2020-08-10 15:37:50',NULL,'武汉星奥电梯有限公司','星奥电梯','黄亮平','027-83536667','','420111000363899','303529227','91420111303529227Y','91420111303529227Y','湖北省武汉市江汉区经济开发区江兴路25号A栋新金科技企业孵化器A704,A705室',119),(110,'2020-08-08 10:09:17','2020-08-08 10:09:17',NULL,'武汉利科电梯有限公司','利科电梯','曾怀池','13135672966','','420102000132629','555021198','91420116555021198J','91420116555021198J','湖北省武汉市黄陂区三里桥街发展大道特一号9栋1单元',117),(111,'2020-08-08 10:12:07','2020-08-08 10:12:07',NULL,'武汉奥星电梯有限公司','奥星电梯','邓友运','027-83551522','','420102000016383','764645052','91420102764645052B','91420102764645052B','湖北省武汉市江岸区二七路89号东立国际二期19栋1层29室',119),(112,'2020-08-08 10:14:50','2020-08-08 10:14:50',NULL,'武汉九井电梯有限公司','九井电梯','崔锐','13657223390','','420000000011766','728301279','914200007283012799','914200007283012799','湖北省武汉市洪山区岳家嘴公务员小区14栋801室',119),(113,'2020-08-08 10:19:54','2020-08-08 10:19:54',NULL,'武汉惠之美物业服务有限公司','惠之美物业','胡国平','027-59318888','','420100000085835','724664128','914201127246641280','914201127246641280','湖北省武汉市东西湖区银湖科技产业开发园18号',115),(114,'2020-08-08 10:24:16','2020-08-08 10:24:16',NULL,'湖北中楚物业股份有限公司','中楚物业','成学荣','027-51817371','','420106000048107','679115081','91420106679115081N','91420106679115081N','湖北省武汉市武昌区中南路3号领秀中南26层5号',115),(115,'2020-08-08 10:26:52','2020-08-08 10:26:52',NULL,'泛海物业管理武汉有限公司','泛海物业','郑翼龙','027-83871999','','420100000192187','55501107X','9142010055501107XX','9142010055501107XX','湖北省武汉市江汉区云彩路198号泛海城市广场写字楼8层',115),(116,'2020-08-08 10:30:13','2020-08-08 10:30:13',NULL,'湖北一江电梯维保服务有限公司','一江电梯','张波','13006127460','','4201160000107971','347255512','91420116347255512B','91420116347255512B','湖北省武汉市江岸区金桥大道20号中胜村K1地块1号办公栋4',116),(117,'2020-08-08 10:32:57','2020-08-08 10:32:57',NULL,'武汉中汇日安电梯维保工程有限公司','中汇日安电梯','王法玲','0','','0','MA49G5AB7','91420100MA49G5AB7Q','91420100MA49G5AB7Q','湖北省武汉市东湖高新技术开发区华师园北路18号博瀚科技光电产业园',116),(118,'2020-08-08 10:36:43','2020-08-08 10:36:43',NULL,'武汉市特种设备监督检验所','武汉市特种设备监督检验所','邹少俊','0','','0','0','12420100717957600G','12420100717957600G','湖北省武汉市江岸区惠济二路11-2号',118),(119,'2020-08-08 10:39:29','2020-08-08 10:39:29',NULL,'武汉产品质量监督检验所','武汉产品质量监督检验所','林建国','0','','0','0','12420100441354365Y','12420100441354365Y','湖北省武汉市东西湖区金银湖东二路5号',120),(120,'2020-08-08 10:42:59','2020-08-08 10:42:59',NULL,'开世艺商业管理武汉有限公司','K11','朱滨','027-87676765','','420100400101364','MA4KU8MA0','91420100MA4KU8MQ0K','91420100MA4KU8MQ0K','湖北省武汉市东湖高新技术开发区关山大道特一号',121),(121,'2020-08-08 10:46:02','2020-08-08 10:46:02',NULL,'华中科技大学','华中大','李元元','0','','0','0','12100000441626842D','12100000441626842D','湖北省武汉市洪山区珞瑜路1037号',114);
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,7 +631,7 @@ CREATE TABLE `lift_models` (
   `load` int(11) DEFAULT NULL COMMENT '电梯载重',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_lift_models_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯型号表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯型号表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -426,6 +640,7 @@ CREATE TABLE `lift_models` (
 
 LOCK TABLES `lift_models` WRITE;
 /*!40000 ALTER TABLE `lift_models` DISABLE KEYS */;
+INSERT INTO `lift_models` VALUES (1,'2020-08-10 15:17:20','2020-08-10 15:36:27',NULL,109,'奥的斯','TECE-300VF',1000),(2,'2020-08-10 15:37:11','2020-08-10 15:37:11',NULL,107,'奥的斯','TECE-60VF',500),(3,'2020-08-10 15:37:38','2020-08-10 15:37:50',NULL,109,'奥的斯','E311',800),(4,'2020-08-10 15:38:20','2020-08-10 15:38:20',NULL,111,'奥的斯','TECE-3VF',600);
 /*!40000 ALTER TABLE `lift_models` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,73 +766,6 @@ LOCK TABLES `lifts` WRITE;
 /*!40000 ALTER TABLE `lifts` ENABLE KEYS */;
 UNLOCK TABLES;
 
-drop table if exists `ad_devices`;
-create table `ad_devices` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `created_at` datetime DEFAULT NULL,
-    `updated_at` datetime DEFAULT NULL,
-    `deleted_at` datetime DEFAULT NULL,
-    `type_id` int(10) not null comment '电梯型号',
-    `factory_id` int(10) not null comment '生产商',
-    `factory_time` datetime default null comment '出厂时间',
-    `install_time` datetime default null comment '安装时间',
-    `status_id` int(10) default null comment '设备状态类别',
-    `online` boolean default true comment '设备是否在线',
-    `last_offline_time` datetime default null comment '上次离线时间',
-    `last_online_time` datetime default null comment '上次上线时间',
-    PRIMARY KEY (`id`) USING BTREE,
-    KEY `idx_ad_devices_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备表';
-
-drop table if exists `ad_device_events`;
-create table `ad_device_events` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `created_at` datetime DEFAULT NULL,
-    `updated_at` datetime DEFAULT NULL,
-    `deleted_at` datetime DEFAULT NULL,
-    `device_id` int(10) not null comment '设备id',
-    `type_id` int(10) not null comment '事件类型category',
-    `content` char(255) default null comment '事件内容',
-    PRIMARY KEY (`id`) USING BTREE,
-    KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备事件表';
-
-drop table if exists `ad_device_configs`;
-create table `ad_device_configs` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `created_at` datetime DEFAULT NULL,
-    `updated_at` datetime DEFAULT NULL,
-    `deleted_at` datetime DEFAULT NULL,
-    `key` char(50) not null comment '配置键值',
-    `value` char(255) not null  comment '配置内容',
-    `comment` char(255) default null comment '配置说明',
-    PRIMARY KEY (`id`) USING BTREE,
-    KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备配置表';
-
-drop table if exists `ad_device_datas`;
-create table `ad_device_datas` (
-    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `created_at` datetime DEFAULT NULL,
-    `updated_at` datetime DEFAULT NULL,
-    `deleted_at` datetime DEFAULT NULL,
-    `device_id` int(10) not null comment '设备id',
-    `accx` float default 0.0 comment 'x轴加速度',
-    `accy` float default 0.0 comment 'y轴加速度',
-    `accz` float default 0.0 comment 'z轴加速度',
-    `degx` float default 0.0 comment 'x轴倾斜角',
-    `degy` float default 0.0 comment 'y轴倾斜角',
-    `degz` float default 0.0 comment 'z轴倾斜角',
-    `speedz` float default 0.0 comment '电梯速度',
-    `floor` float default 1 comment '电梯当前楼层',
-    `door_state_id` int(10) default null comment '电梯门状态类型',
-    `people_inside` boolean default true comment '电梯内是否有人',
-    `trouble_id` int(10) default null comment '电梯状态/故障类型',
-    PRIMARY KEY (`id`) USING BTREE,
-    KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备数据表';
-
-
 --
 -- Table structure for table `regions`
 --
@@ -668,7 +816,7 @@ CREATE TABLE `sys_apis` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_apis_deleted_at` (`deleted_at`) USING BTREE,
   KEY `idx_sys_apis_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -677,7 +825,7 @@ CREATE TABLE `sys_apis` (
 
 LOCK TABLES `sys_apis` WRITE;
 /*!40000 ALTER TABLE `sys_apis` DISABLE KEYS */;
-INSERT INTO `sys_apis` VALUES (1,'2019-09-28 03:23:49','2019-09-28 09:06:16',NULL,NULL,'/base/login','用户登录','base','POST'),(2,'2019-09-28 03:32:46','2019-09-28 09:06:11',NULL,NULL,'/base/register','用户注册','base','POST'),(3,'2019-09-28 03:33:41','2020-05-10 08:33:48',NULL,NULL,'/api/createApi','创建api','api','POST'),(4,'2019-09-28 06:09:04','2019-09-28 09:05:59',NULL,NULL,'/api/getApiList','获取api列表','api','POST'),(5,'2019-09-28 06:15:50','2019-09-28 09:05:53',NULL,NULL,'/api/getApiById','获取api详细信息','api','POST'),(7,'2019-09-28 06:19:26','2019-09-28 09:05:44',NULL,NULL,'/api/deleteApi','删除Api','api','POST'),(8,'2019-09-28 06:19:48','2019-09-28 09:05:39',NULL,NULL,'/api/updateApi','更新Api','api','POST'),(10,'2019-09-30 07:05:38','2019-09-30 07:05:38',NULL,NULL,'/api/getAllApis','获取所有api','api','POST'),(11,'2019-09-30 07:23:09','2019-09-30 07:23:09',NULL,NULL,'/authority/createAuthority','创建角色','authority','POST'),(12,'2019-09-30 07:23:33','2019-09-30 07:23:33',NULL,NULL,'/authority/deleteAuthority','删除角色','authority','POST'),(13,'2019-09-30 07:23:57','2019-09-30 07:23:57',NULL,NULL,'/authority/getAuthorityList','获取角色列表','authority','POST'),(14,'2019-09-30 07:24:20','2019-09-30 07:24:20',NULL,NULL,'/menu/getMenu','获取菜单树','menu','POST'),(15,'2019-09-30 07:24:50','2019-09-30 07:24:50',NULL,NULL,'/menu/getMenuList','分页获取基础menu列表','menu','POST'),(16,'2019-09-30 07:25:07','2019-09-30 07:25:07',NULL,NULL,'/menu/addBaseMenu','新增菜单','menu','POST'),(17,'2019-09-30 07:25:25','2019-09-30 07:25:25',NULL,NULL,'/menu/getBaseMenuTree','获取用户动态路由','menu','POST'),(18,'2019-09-30 07:25:53','2019-09-30 07:25:53',NULL,NULL,'/menu/addMenuAuthority','增加menu和角色关联关系','menu','POST'),(19,'2019-09-30 07:26:20','2019-09-30 07:26:20',NULL,NULL,'/menu/getMenuAuthority','获取指定角色menu','menu','POST'),(20,'2019-09-30 07:26:43','2019-09-30 07:26:43',NULL,NULL,'/menu/deleteBaseMenu','删除菜单','menu','POST'),(21,'2019-09-30 07:28:05','2019-09-30 07:28:05',NULL,NULL,'/menu/updateBaseMenu','更新菜单','menu','POST'),(22,'2019-09-30 07:28:21','2019-09-30 07:28:21',NULL,NULL,'/menu/getBaseMenuById','根据id获取菜单','menu','POST'),(23,'2019-09-30 07:29:19','2019-09-30 07:29:19',NULL,NULL,'/user/changePassword','修改密码','user','POST'),(24,'2019-09-30 07:29:33','2019-09-30 07:29:33',NULL,NULL,'/user/uploadHeaderImg','上传头像','user','POST'),(25,'2019-09-30 07:30:00','2019-09-30 07:30:00',NULL,NULL,'/user/getInfoList','分页获取用户列表','user','POST'),(28,'2019-10-09 07:15:17','2019-10-09 07:17:07',NULL,NULL,'/user/getUserList','获取用户列表','user','POST'),(29,'2019-10-09 15:01:40','2019-10-09 15:01:40',NULL,NULL,'/user/setUserAuthority','修改用户角色','user','POST'),(30,'2019-10-26 12:14:38','2019-10-26 12:14:38',NULL,NULL,'/fileUploadAndDownload/upload','文件上传示例','fileUploadAndDownload','POST'),(31,'2019-10-26 12:14:59','2019-10-26 12:14:59',NULL,NULL,'/fileUploadAndDownload/getFileList','获取上传文件列表','fileUploadAndDownload','POST'),(32,'2019-12-12 05:28:47','2019-12-12 05:28:47',NULL,NULL,'/casbin/updateCasbin','更改角色api权限','casbin','POST'),(33,'2019-12-12 05:28:59','2019-12-12 05:28:59',NULL,NULL,'/casbin/getPolicyPathByAuthorityId','获取权限列表','casbin','POST'),(34,'2019-12-12 09:02:15','2019-12-12 09:02:15',NULL,NULL,'/fileUploadAndDownload/deleteFile','删除文件','fileUploadAndDownload','POST'),(35,'2019-12-28 10:18:07','2019-12-28 10:18:07',NULL,NULL,'/jwt/jsonInBlacklist','jwt加入黑名单','jwt','POST'),(36,'2020-01-06 09:56:36','2020-01-06 09:56:36',NULL,NULL,'/authority/setDataAuthority','设置角色资源权限','authority','POST'),(37,'2020-01-13 06:04:05','2020-01-13 06:04:05',NULL,NULL,'/system/getSystemConfig','获取配置文件内容','system','POST'),(38,'2020-01-13 07:02:06','2020-01-13 07:02:06',NULL,NULL,'/system/setSystemConfig','设置配置文件内容','system','POST'),(39,'2020-02-25 07:32:39','2020-02-25 07:32:39',NULL,NULL,'/customer/customer','创建客户','customer','POST'),(40,'2020-02-25 07:32:51','2020-02-25 07:34:56',NULL,NULL,'/customer/customer','更新客户','customer','PUT'),(41,'2020-02-25 07:33:57','2020-02-25 07:33:57',NULL,NULL,'/customer/customer','删除客户','customer','DELETE'),(42,'2020-02-25 07:36:48','2020-02-25 07:37:16',NULL,NULL,'/customer/customer','获取单一客户','customer','GET'),(43,'2020-02-25 07:37:06','2020-02-25 07:37:06',NULL,NULL,'/customer/customerList','获取客户列表','customer','GET'),(44,'2020-03-12 06:36:54','2020-03-12 06:56:50',NULL,NULL,'/casbin/casbinTest/:pathParam','RESTFUL模式测试','casbin','GET'),(45,'2020-03-29 15:01:28','2020-03-29 15:01:28',NULL,NULL,'/autoCode/createTemp','自动化代码','autoCode','POST'),(46,'2020-04-15 04:46:58','2020-04-15 04:46:58',NULL,NULL,'/authority/updateAuthority','更新角色信息','authority','PUT'),(47,'2020-04-20 07:14:25','2020-04-20 07:14:25',NULL,NULL,'/authority/copyAuthority','拷贝角色','authority','POST'),(64,'2020-05-10 08:44:25','2020-05-10 08:44:25',NULL,NULL,'/user/deleteUser','删除用户','user','DELETE'),(81,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/createSysDictionaryDetail','新增字典内容','sysDictionaryDetail','POST'),(82,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/deleteSysDictionaryDetail','删除字典内容','sysDictionaryDetail','DELETE'),(83,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/updateSysDictionaryDetail','更新字典内容','sysDictionaryDetail','PUT'),(84,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/findSysDictionaryDetail','根据ID获取字典内容','sysDictionaryDetail','GET'),(85,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/getSysDictionaryDetailList','获取字典内容列表','sysDictionaryDetail','GET'),(86,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/createSysDictionary','新增字典','sysDictionary','POST'),(87,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/deleteSysDictionary','删除字典','sysDictionary','DELETE'),(88,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/updateSysDictionary','更新字典','sysDictionary','PUT'),(89,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/findSysDictionary','根据ID获取字典','sysDictionary','GET'),(90,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/getSysDictionaryList','获取字典列表','sysDictionary','GET'),(91,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/createSysOperationRecord','新增操作记录','sysOperationRecord','POST'),(92,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/deleteSysOperationRecord','删除操作记录','sysOperationRecord','DELETE'),(93,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/updateSysOperationRecord','更新操作记录','sysOperationRecord','PUT'),(94,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/findSysOperationRecord','根据ID获取操作记录','sysOperationRecord','GET'),(95,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/getSysOperationRecordList','获取操作记录列表','sysOperationRecord','GET'),(96,'2020-07-05 06:34:20','2020-07-05 06:34:20',NULL,NULL,'/autoCode/getTables','获取数据库表','autoCode','GET'),(97,'2020-07-05 07:02:07','2020-07-05 07:02:07',NULL,NULL,'/autoCode/getDB','获取所有数据库','autoCode','GET'),(98,'2020-07-05 08:32:08','2020-07-05 08:32:08',NULL,NULL,'/autoCode/getColume','获取所选table的所有字段','autoCode','GET'),(99,'2020-07-07 07:59:53','2020-07-07 07:59:53',NULL,NULL,'/sysOperationRecord/deleteSysOperationRecordByIds','批量删除操作历史','sysOperationRecord','DELETE'),(106,'2020-07-30 02:13:21','2020-07-30 02:13:21',NULL,NULL,'/subject/getSubjectById','getSubjectById','subject','POST'),(107,'2020-07-30 02:13:38','2020-07-30 02:13:38',NULL,NULL,'/subject/getSubjectList','getSubjectList','subject','POST'),(108,'2020-07-30 02:13:54','2020-07-30 02:13:54',NULL,NULL,'/subject/createSubject','createSubject','subject','POST'),(109,'2020-07-30 02:14:12','2020-07-30 02:14:12',NULL,NULL,'/subject/updateSubject','updateSubject','subject','POST'),(110,'2020-07-30 02:14:26','2020-07-30 02:14:26',NULL,NULL,'/subject/deleteSubject','deleteSubject','subject','POST'),(111,'2020-07-30 02:14:41','2020-07-30 02:14:41',NULL,NULL,'/subject/getAllSubjects','getAllSubjects','subject','POST'),(112,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/createCategories','新增categories表','categories','POST'),(113,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/deleteCategories','删除categories表','categories','DELETE'),(114,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/deleteCategoriesByIds','批量删除categories表','categories','DELETE'),(115,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/updateCategories','更新categories表','categories','PUT'),(116,'2020-07-30 02:31:56','2020-07-30 02:31:56',NULL,NULL,'/categories/findCategories','根据ID获取categories表','categories','GET'),(117,'2020-07-30 02:31:56','2020-07-30 02:31:56',NULL,NULL,'/categories/getCategoriesList','获取categories表列表','categories','GET'),(118,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/createCompany','新增company表','company','POST'),(119,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/deleteCompany','删除company表','company','DELETE'),(120,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/deleteCompanyByIds','批量删除company表','company','DELETE'),(121,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/updateCompany','更新company表','company','PUT'),(122,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/findCompany','根据ID获取company表','company','GET'),(123,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/getCompanyList','获取company表列表','company','GET'),(124,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/createRegion','新增region表','region','POST'),(125,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/deleteRegion','删除region表','region','DELETE'),(126,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/deleteRegionByIds','批量删除region表','region','DELETE'),(127,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/updateRegion','更新region表','region','PUT'),(128,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/findRegion','根据ID获取region表','region','GET'),(129,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/getRegionList','获取region表列表','region','GET'),(130,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/createAddress','新增address表','address','POST'),(131,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/deleteAddress','删除address表','address','DELETE'),(132,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/deleteAddressByIds','批量删除address表','address','DELETE'),(133,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/updateAddress','更新address表','address','PUT'),(134,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/findAddress','根据ID获取address表','address','GET'),(135,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/getAddressList','获取address表列表','address','GET');
+INSERT INTO `sys_apis` VALUES (1,'2019-09-28 03:23:49','2019-09-28 09:06:16',NULL,NULL,'/base/login','用户登录','base','POST'),(2,'2019-09-28 03:32:46','2019-09-28 09:06:11',NULL,NULL,'/base/register','用户注册','base','POST'),(3,'2019-09-28 03:33:41','2020-05-10 08:33:48',NULL,NULL,'/api/createApi','创建api','api','POST'),(4,'2019-09-28 06:09:04','2019-09-28 09:05:59',NULL,NULL,'/api/getApiList','获取api列表','api','POST'),(5,'2019-09-28 06:15:50','2019-09-28 09:05:53',NULL,NULL,'/api/getApiById','获取api详细信息','api','POST'),(7,'2019-09-28 06:19:26','2019-09-28 09:05:44',NULL,NULL,'/api/deleteApi','删除Api','api','POST'),(8,'2019-09-28 06:19:48','2019-09-28 09:05:39',NULL,NULL,'/api/updateApi','更新Api','api','POST'),(10,'2019-09-30 07:05:38','2019-09-30 07:05:38',NULL,NULL,'/api/getAllApis','获取所有api','api','POST'),(11,'2019-09-30 07:23:09','2019-09-30 07:23:09',NULL,NULL,'/authority/createAuthority','创建角色','authority','POST'),(12,'2019-09-30 07:23:33','2019-09-30 07:23:33',NULL,NULL,'/authority/deleteAuthority','删除角色','authority','POST'),(13,'2019-09-30 07:23:57','2019-09-30 07:23:57',NULL,NULL,'/authority/getAuthorityList','获取角色列表','authority','POST'),(14,'2019-09-30 07:24:20','2019-09-30 07:24:20',NULL,NULL,'/menu/getMenu','获取菜单树','menu','POST'),(15,'2019-09-30 07:24:50','2019-09-30 07:24:50',NULL,NULL,'/menu/getMenuList','分页获取基础menu列表','menu','POST'),(16,'2019-09-30 07:25:07','2019-09-30 07:25:07',NULL,NULL,'/menu/addBaseMenu','新增菜单','menu','POST'),(17,'2019-09-30 07:25:25','2019-09-30 07:25:25',NULL,NULL,'/menu/getBaseMenuTree','获取用户动态路由','menu','POST'),(18,'2019-09-30 07:25:53','2019-09-30 07:25:53',NULL,NULL,'/menu/addMenuAuthority','增加menu和角色关联关系','menu','POST'),(19,'2019-09-30 07:26:20','2019-09-30 07:26:20',NULL,NULL,'/menu/getMenuAuthority','获取指定角色menu','menu','POST'),(20,'2019-09-30 07:26:43','2019-09-30 07:26:43',NULL,NULL,'/menu/deleteBaseMenu','删除菜单','menu','POST'),(21,'2019-09-30 07:28:05','2019-09-30 07:28:05',NULL,NULL,'/menu/updateBaseMenu','更新菜单','menu','POST'),(22,'2019-09-30 07:28:21','2019-09-30 07:28:21',NULL,NULL,'/menu/getBaseMenuById','根据id获取菜单','menu','POST'),(23,'2019-09-30 07:29:19','2019-09-30 07:29:19',NULL,NULL,'/user/changePassword','修改密码','user','POST'),(24,'2019-09-30 07:29:33','2019-09-30 07:29:33',NULL,NULL,'/user/uploadHeaderImg','上传头像','user','POST'),(25,'2019-09-30 07:30:00','2019-09-30 07:30:00',NULL,NULL,'/user/getInfoList','分页获取用户列表','user','POST'),(28,'2019-10-09 07:15:17','2019-10-09 07:17:07',NULL,NULL,'/user/getUserList','获取用户列表','user','POST'),(29,'2019-10-09 15:01:40','2019-10-09 15:01:40',NULL,NULL,'/user/setUserAuthority','修改用户角色','user','POST'),(30,'2019-10-26 12:14:38','2019-10-26 12:14:38',NULL,NULL,'/fileUploadAndDownload/upload','文件上传示例','fileUploadAndDownload','POST'),(31,'2019-10-26 12:14:59','2019-10-26 12:14:59',NULL,NULL,'/fileUploadAndDownload/getFileList','获取上传文件列表','fileUploadAndDownload','POST'),(32,'2019-12-12 05:28:47','2019-12-12 05:28:47',NULL,NULL,'/casbin/updateCasbin','更改角色api权限','casbin','POST'),(33,'2019-12-12 05:28:59','2019-12-12 05:28:59',NULL,NULL,'/casbin/getPolicyPathByAuthorityId','获取权限列表','casbin','POST'),(34,'2019-12-12 09:02:15','2019-12-12 09:02:15',NULL,NULL,'/fileUploadAndDownload/deleteFile','删除文件','fileUploadAndDownload','POST'),(35,'2019-12-28 10:18:07','2019-12-28 10:18:07',NULL,NULL,'/jwt/jsonInBlacklist','jwt加入黑名单','jwt','POST'),(36,'2020-01-06 09:56:36','2020-01-06 09:56:36',NULL,NULL,'/authority/setDataAuthority','设置角色资源权限','authority','POST'),(37,'2020-01-13 06:04:05','2020-01-13 06:04:05',NULL,NULL,'/system/getSystemConfig','获取配置文件内容','system','POST'),(38,'2020-01-13 07:02:06','2020-01-13 07:02:06',NULL,NULL,'/system/setSystemConfig','设置配置文件内容','system','POST'),(39,'2020-02-25 07:32:39','2020-02-25 07:32:39',NULL,NULL,'/customer/customer','创建客户','customer','POST'),(40,'2020-02-25 07:32:51','2020-02-25 07:34:56',NULL,NULL,'/customer/customer','更新客户','customer','PUT'),(41,'2020-02-25 07:33:57','2020-02-25 07:33:57',NULL,NULL,'/customer/customer','删除客户','customer','DELETE'),(42,'2020-02-25 07:36:48','2020-02-25 07:37:16',NULL,NULL,'/customer/customer','获取单一客户','customer','GET'),(43,'2020-02-25 07:37:06','2020-02-25 07:37:06',NULL,NULL,'/customer/customerList','获取客户列表','customer','GET'),(44,'2020-03-12 06:36:54','2020-03-12 06:56:50',NULL,NULL,'/casbin/casbinTest/:pathParam','RESTFUL模式测试','casbin','GET'),(45,'2020-03-29 15:01:28','2020-03-29 15:01:28',NULL,NULL,'/autoCode/createTemp','自动化代码','autoCode','POST'),(46,'2020-04-15 04:46:58','2020-04-15 04:46:58',NULL,NULL,'/authority/updateAuthority','更新角色信息','authority','PUT'),(47,'2020-04-20 07:14:25','2020-04-20 07:14:25',NULL,NULL,'/authority/copyAuthority','拷贝角色','authority','POST'),(64,'2020-05-10 08:44:25','2020-05-10 08:44:25',NULL,NULL,'/user/deleteUser','删除用户','user','DELETE'),(81,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/createSysDictionaryDetail','新增字典内容','sysDictionaryDetail','POST'),(82,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/deleteSysDictionaryDetail','删除字典内容','sysDictionaryDetail','DELETE'),(83,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/updateSysDictionaryDetail','更新字典内容','sysDictionaryDetail','PUT'),(84,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/findSysDictionaryDetail','根据ID获取字典内容','sysDictionaryDetail','GET'),(85,'2020-06-23 10:40:50','2020-06-23 10:40:50',NULL,NULL,'/sysDictionaryDetail/getSysDictionaryDetailList','获取字典内容列表','sysDictionaryDetail','GET'),(86,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/createSysDictionary','新增字典','sysDictionary','POST'),(87,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/deleteSysDictionary','删除字典','sysDictionary','DELETE'),(88,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/updateSysDictionary','更新字典','sysDictionary','PUT'),(89,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/findSysDictionary','根据ID获取字典','sysDictionary','GET'),(90,'2020-06-23 10:48:13','2020-06-23 10:48:13',NULL,NULL,'/sysDictionary/getSysDictionaryList','获取字典列表','sysDictionary','GET'),(91,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/createSysOperationRecord','新增操作记录','sysOperationRecord','POST'),(92,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/deleteSysOperationRecord','删除操作记录','sysOperationRecord','DELETE'),(93,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/updateSysOperationRecord','更新操作记录','sysOperationRecord','PUT'),(94,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/findSysOperationRecord','根据ID获取操作记录','sysOperationRecord','GET'),(95,'2020-06-29 05:21:35','2020-06-29 05:21:35',NULL,NULL,'/sysOperationRecord/getSysOperationRecordList','获取操作记录列表','sysOperationRecord','GET'),(96,'2020-07-05 06:34:20','2020-07-05 06:34:20',NULL,NULL,'/autoCode/getTables','获取数据库表','autoCode','GET'),(97,'2020-07-05 07:02:07','2020-07-05 07:02:07',NULL,NULL,'/autoCode/getDB','获取所有数据库','autoCode','GET'),(98,'2020-07-05 08:32:08','2020-07-05 08:32:08',NULL,NULL,'/autoCode/getColume','获取所选table的所有字段','autoCode','GET'),(99,'2020-07-07 07:59:53','2020-07-07 07:59:53',NULL,NULL,'/sysOperationRecord/deleteSysOperationRecordByIds','批量删除操作历史','sysOperationRecord','DELETE'),(106,'2020-07-30 02:13:21','2020-07-30 02:13:21',NULL,NULL,'/subject/getSubjectById','getSubjectById','subject','POST'),(107,'2020-07-30 02:13:38','2020-07-30 02:13:38',NULL,NULL,'/subject/getSubjectList','getSubjectList','subject','POST'),(108,'2020-07-30 02:13:54','2020-07-30 02:13:54',NULL,NULL,'/subject/createSubject','createSubject','subject','POST'),(109,'2020-07-30 02:14:12','2020-07-30 02:14:12',NULL,NULL,'/subject/updateSubject','updateSubject','subject','POST'),(110,'2020-07-30 02:14:26','2020-07-30 02:14:26',NULL,NULL,'/subject/deleteSubject','deleteSubject','subject','POST'),(111,'2020-07-30 02:14:41','2020-07-30 02:14:41',NULL,NULL,'/subject/getAllSubjects','getAllSubjects','subject','POST'),(112,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/createCategories','新增categories表','categories','POST'),(113,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/deleteCategories','删除categories表','categories','DELETE'),(114,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/deleteCategoriesByIds','批量删除categories表','categories','DELETE'),(115,'2020-07-30 02:31:55','2020-07-30 02:31:55',NULL,NULL,'/categories/updateCategories','更新categories表','categories','PUT'),(116,'2020-07-30 02:31:56','2020-07-30 02:31:56',NULL,NULL,'/categories/findCategories','根据ID获取categories表','categories','GET'),(117,'2020-07-30 02:31:56','2020-07-30 02:31:56',NULL,NULL,'/categories/getCategoriesList','获取categories表列表','categories','GET'),(118,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/createCompany','新增company表','company','POST'),(119,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/deleteCompany','删除company表','company','DELETE'),(120,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/deleteCompanyByIds','批量删除company表','company','DELETE'),(121,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/updateCompany','更新company表','company','PUT'),(122,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/findCompany','根据ID获取company表','company','GET'),(123,'2020-07-30 09:53:38','2020-07-30 09:53:38',NULL,NULL,'/company/getCompanyList','获取company表列表','company','GET'),(124,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/createRegion','新增region表','region','POST'),(125,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/deleteRegion','删除region表','region','DELETE'),(126,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/deleteRegionByIds','批量删除region表','region','DELETE'),(127,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/updateRegion','更新region表','region','PUT'),(128,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/findRegion','根据ID获取region表','region','GET'),(129,'2020-07-31 05:47:42','2020-07-31 05:47:42',NULL,NULL,'/region/getRegionList','获取region表列表','region','GET'),(130,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/createAddress','新增address表','address','POST'),(131,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/deleteAddress','删除address表','address','DELETE'),(132,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/deleteAddressByIds','批量删除address表','address','DELETE'),(133,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/updateAddress','更新address表','address','PUT'),(134,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/findAddress','根据ID获取address表','address','GET'),(135,'2020-08-03 10:25:35','2020-08-03 10:25:35',NULL,NULL,'/address/getAddressList','获取address表列表','address','GET'),(136,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/createLift','新增lift表','lift','POST'),(137,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/deleteLift','删除lift表','lift','DELETE'),(138,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/deleteLiftByIds','批量删除lift表','lift','DELETE'),(139,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/updateLift','更新lift表','lift','PUT'),(140,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/findLift','根据ID获取lift表','lift','GET'),(141,'2020-08-10 03:29:15','2020-08-10 03:29:15',NULL,NULL,'/lift/getLiftList','获取lift表列表','lift','GET'),(142,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/createLiftModel','新增liftModel表','liftModel','POST'),(143,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/deleteLiftModel','删除liftModel表','liftModel','DELETE'),(144,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/deleteLiftModelByIds','批量删除liftModel表','liftModel','DELETE'),(145,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/updateLiftModel','更新liftModel表','liftModel','PUT'),(146,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/findLiftModel','根据ID获取liftModel表','liftModel','GET'),(147,'2020-08-10 05:10:53','2020-08-10 05:10:53',NULL,NULL,'/liftModel/getLiftModelList','获取liftModel表列表','liftModel','GET'),(148,'2020-08-10 09:25:07','2020-08-10 09:25:07','2020-08-10 09:26:27',NULL,'/userAdmin/createUserAdmin','新增userAdmin表','userAdmin','POST'),(149,'2020-08-10 09:25:08','2020-08-10 09:25:08','2020-08-10 09:26:29',NULL,'/userAdmin/deleteUserAdmin','删除userAdmin表','userAdmin','DELETE'),(150,'2020-08-10 09:25:08','2020-08-10 09:25:08','2020-08-10 09:26:32',NULL,'/userAdmin/deleteUserAdminByIds','批量删除userAdmin表','userAdmin','DELETE'),(151,'2020-08-10 09:25:08','2020-08-10 09:25:08','2020-08-10 09:26:34',NULL,'/userAdmin/updateUserAdmin','更新userAdmin表','userAdmin','PUT'),(152,'2020-08-10 09:25:08','2020-08-10 09:25:08','2020-08-10 09:26:36',NULL,'/userAdmin/findUserAdmin','根据ID获取userAdmin表','userAdmin','GET'),(153,'2020-08-10 09:25:08','2020-08-10 09:25:08','2020-08-10 09:26:38',NULL,'/userAdmin/getUserAdminList','获取userAdmin表列表','userAdmin','GET'),(154,'2020-08-10 09:26:51','2020-08-10 09:26:51',NULL,NULL,'/userAdmin/createUserAdmin','新增userAdmin表','userAdmin','POST'),(155,'2020-08-10 09:26:51','2020-08-10 09:26:51',NULL,NULL,'/userAdmin/deleteUserAdmin','删除userAdmin表','userAdmin','DELETE'),(156,'2020-08-10 09:26:51','2020-08-10 09:26:51',NULL,NULL,'/userAdmin/deleteUserAdminByIds','批量删除userAdmin表','userAdmin','DELETE'),(157,'2020-08-10 09:26:51','2020-08-10 09:26:51',NULL,NULL,'/userAdmin/updateUserAdmin','更新userAdmin表','userAdmin','PUT'),(158,'2020-08-10 09:26:51','2020-08-10 09:26:51',NULL,NULL,'/userAdmin/findUserAdmin','根据ID获取userAdmin表','userAdmin','GET'),(159,'2020-08-10 09:26:52','2020-08-10 09:26:52',NULL,NULL,'/userAdmin/getUserAdminList','获取userAdmin表列表','userAdmin','GET');
 /*!40000 ALTER TABLE `sys_apis` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -732,7 +880,7 @@ CREATE TABLE `sys_authority_menus` (
 
 LOCK TABLES `sys_authority_menus` WRITE;
 /*!40000 ALTER TABLE `sys_authority_menus` DISABLE KEYS */;
-INSERT INTO `sys_authority_menus` VALUES ('888',1),('888',2),('888',3),('888',4),('888',5),('888',6),('888',17),('888',18),('888',19),('888',20),('888',21),('888',22),('888',23),('888',26),('888',33),('888',34),('888',38),('888',40),('888',41),('888',42),('888',50),('888',51),('888',52),('888',54),('888',55),('888',56),('888',57),('888',58),('888',59),('888',60),('888',61),('888',62),('8881',1),('8881',2),('8881',18),('8881',38),('8881',40),('8881',41),('8881',42),('9528',1),('9528',2),('9528',3),('9528',4),('9528',5),('9528',6),('9528',17),('9528',18),('9528',19),('9528',20),('9528',21),('9528',22),('9528',23),('9528',26),('9528',33),('9528',34),('9528',38),('9528',40),('9528',41),('9528',42);
+INSERT INTO `sys_authority_menus` VALUES ('888',1),('888',2),('888',3),('888',4),('888',5),('888',6),('888',17),('888',18),('888',19),('888',20),('888',21),('888',22),('888',23),('888',26),('888',33),('888',34),('888',38),('888',40),('888',41),('888',42),('888',50),('888',51),('888',52),('888',54),('888',55),('888',56),('888',57),('888',58),('888',59),('888',60),('888',61),('888',62),('888',63),('888',64),('888',65),('888',66),('888',67),('888',68),('888',69),('888',70),('8881',1),('8881',2),('8881',18),('8881',38),('8881',40),('8881',41),('8881',42),('9528',1),('9528',2),('9528',3),('9528',4),('9528',5),('9528',6),('9528',17),('9528',18),('9528',19),('9528',20),('9528',21),('9528',22),('9528',23),('9528',26),('9528',33),('9528',34),('9528',38),('9528',40),('9528',41),('9528',42);
 /*!40000 ALTER TABLE `sys_authority_menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -763,7 +911,7 @@ CREATE TABLE `sys_base_menus` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_base_menus_deleted_at` (`deleted_at`) USING BTREE,
   KEY `idx_sys_base_menus_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -772,7 +920,7 @@ CREATE TABLE `sys_base_menus` (
 
 LOCK TABLES `sys_base_menus` WRITE;
 /*!40000 ALTER TABLE `sys_base_menus` DISABLE KEYS */;
-INSERT INTO `sys_base_menus` VALUES (1,'2019-09-19 14:05:18','2020-05-30 07:43:06',NULL,0,0,'dashboard','dashboard',0,'view/dashboard/index.vue','仪表盘','setting','仪表盘',1,0,0),(2,'2019-09-19 14:06:17','2020-07-31 01:49:33',NULL,0,0,'about','about',0,'view/about/index.vue','关于我们','info','测试菜单',80,0,0),(3,'2019-09-19 14:06:38','2020-07-31 01:49:07',NULL,0,0,'admin','superAdmin',0,'view/superAdmin/index.vue','超级管理员','user-solid','超级管理员',30,0,0),(4,'2019-09-19 14:11:53','2020-05-30 07:43:25',NULL,0,3,'authority','authority',0,'view/superAdmin/authority/authority.vue','角色管理','s-custom','角色管理',1,0,0),(5,'2019-09-19 14:13:18','2020-04-30 09:45:27',NULL,0,3,'menu','menu',0,'view/superAdmin/menu/menu.vue','菜单管理','s-order','菜单管理',2,1,0),(6,'2019-09-19 14:13:36','2020-04-24 02:16:43',NULL,0,3,'api','api',0,'view/superAdmin/api/api.vue','api管理','s-platform','api管理',3,1,0),(17,'2019-10-09 07:12:29','2020-04-24 02:16:43',NULL,0,3,'user','user',0,'view/superAdmin/user/user.vue','用户管理','coordinate','用户管理',4,0,0),(18,'2019-10-15 14:27:22','2020-07-31 01:49:19',NULL,0,0,'person','person',1,'view/person/person.vue','个人信息','message-solid','个人信息',50,0,0),(19,'2019-10-20 03:14:42','2020-07-31 01:49:29',NULL,0,0,'example','example',0,'view/example/index.vue','示例文件','s-management','示例文件',70,0,0),(20,'2019-10-20 03:18:11','2020-04-24 02:16:42',NULL,0,19,'table','table',0,'view/example/table/table.vue','表格示例','s-order','表格示例',1,0,0),(21,'2019-10-20 03:19:52','2020-04-24 02:16:43',NULL,0,19,'form','form',0,'view/example/form/form.vue','表单示例','document','表单示例',2,0,0),(22,'2019-10-20 03:22:19','2020-04-24 02:16:43',NULL,0,19,'rte','rte',0,'view/example/rte/rte.vue','富文本编辑器','reading','富文本编辑器',3,0,0),(23,'2019-10-20 03:23:39','2020-04-24 02:16:43',NULL,0,19,'excel','excel',0,'view/example/excel/excel.vue','excel导入导出','s-marketing','excel导入导出',4,0,0),(26,'2019-10-20 03:27:02','2020-04-24 02:16:43',NULL,0,19,'upload','upload',0,'view/example/upload/upload.vue','上传下载','upload','上传下载',5,0,0),(33,'2020-02-17 08:20:47','2020-04-24 02:16:43',NULL,0,19,'breakpoint','breakpoint',0,'view/example/breakpoint/breakpoint.vue','断点续传','upload','断点续传',6,0,0),(34,'2020-02-24 11:48:37','2020-04-24 02:16:43',NULL,0,19,'customer','customer',0,'view/example/customer/customer.vue','客户列表（资源示例）','s-custom','客户列表（资源示例）',7,0,0),(38,'2020-03-29 13:31:03','2020-07-31 01:49:24',NULL,0,0,'systemTools','systemTools',0,'view/systemTools/index.vue','系统工具','s-cooperation','系统工具',60,0,0),(40,'2020-03-29 13:35:10','2020-05-03 13:38:49',NULL,0,38,'autoCode','autoCode',0,'view/systemTools/autoCode/index.vue','代码生成器','cpu','代码生成器',1,1,0),(41,'2020-03-29 13:36:26','2020-05-03 13:38:43',NULL,0,38,'formCreate','formCreate',0,'view/systemTools/formCreate/index.vue','表单生成器','magic-stick','表单生成器',2,1,0),(42,'2020-04-02 06:19:36','2020-04-24 02:16:43',NULL,0,38,'system','system',0,'view/systemTools/system/system.vue','系统配置','s-operation','系统配置',3,0,0),(45,'2020-04-29 09:19:34','2020-07-31 01:48:56',NULL,0,0,'iconList','iconList',0,'view/iconList/index.vue','图标集合','star-on',NULL,20,0,0),(50,'2020-06-24 11:49:54','2020-06-28 12:34:47',NULL,0,3,'dictionary','dictionary',0,'view/superAdmin/dictionary/sysDictionary.vue','字典管理','notebook-2',NULL,5,0,0),(51,'2020-06-24 11:51:33','2020-06-28 12:35:04',NULL,0,3,'dictionaryDetail/:id','dictionaryDetail',1,'view/superAdmin/dictionary/sysDictionaryDetail.vue','字典详情','s-order',NULL,1,0,0),(52,'2020-06-29 05:31:17','2020-07-07 08:05:34',NULL,0,3,'operation','operation',0,'view/superAdmin/operation/sysOperationRecord.vue','操作历史','time',NULL,6,0,0),(54,'2020-07-30 02:05:03','2020-07-31 01:49:13',NULL,0,0,'category','category',0,'view/category/index.vue','类别管理','s-order',NULL,40,0,0),(55,'2020-07-30 02:06:20','2020-07-30 02:18:19',NULL,0,54,'subject','categorySubject',0,'view/category/subject/subject.vue','类别主体','s-shop',NULL,1,0,0),(56,'2020-07-30 02:08:20','2020-07-30 08:56:59',NULL,0,54,'categories','categoryItem',0,'view/category/categories/categories.vue','类别列表','money',NULL,2,0,0),(57,'2020-07-31 01:50:56','2020-07-31 01:51:10',NULL,0,0,'company','company',0,'view/company/index.vue','公司管理','school',NULL,35,0,0),(58,'2020-07-31 01:53:14','2020-07-31 01:55:10',NULL,0,57,'list','list',0,'view/company/list/list.vue','公司列表','s-fold',NULL,1,0,0),(59,'2020-07-31 01:58:12','2020-07-31 01:58:12',NULL,0,57,'employee','employee',0,'view/company/employee/employee.vue','员工管理','s-custom',NULL,2,0,0),(60,'2020-07-31 05:53:49','2020-07-31 05:53:49',NULL,0,0,'address','address',0,'view/address/index.vue','地址管理','add-location',NULL,45,0,0),(61,'2020-07-31 05:54:58','2020-07-31 05:54:58',NULL,0,60,'region','region',0,'view/address/region/region.vue','区域划分','notebook-1',NULL,1,0,0),(62,'2020-07-31 06:00:03','2020-07-31 06:00:03',NULL,0,60,'addressList','addressList',0,'view/address/list/address.vue','常用地址','medal-1',NULL,2,0,0);
+INSERT INTO `sys_base_menus` VALUES (1,'2019-09-19 14:05:18','2020-05-30 07:43:06',NULL,0,0,'dashboard','dashboard',0,'view/dashboard/index.vue','仪表盘','setting','仪表盘',1,0,0),(2,'2019-09-19 14:06:17','2020-07-31 01:49:33',NULL,0,0,'about','about',0,'view/about/index.vue','关于我们','info','测试菜单',80,0,0),(3,'2019-09-19 14:06:38','2020-07-31 01:49:07',NULL,0,0,'admin','superAdmin',0,'view/superAdmin/index.vue','超级管理员','user-solid','超级管理员',30,0,0),(4,'2019-09-19 14:11:53','2020-05-30 07:43:25',NULL,0,3,'authority','authority',0,'view/superAdmin/authority/authority.vue','角色管理','s-custom','角色管理',1,0,0),(5,'2019-09-19 14:13:18','2020-04-30 09:45:27',NULL,0,3,'menu','menu',0,'view/superAdmin/menu/menu.vue','菜单管理','s-order','菜单管理',2,1,0),(6,'2019-09-19 14:13:36','2020-04-24 02:16:43',NULL,0,3,'api','api',0,'view/superAdmin/api/api.vue','api管理','s-platform','api管理',3,1,0),(17,'2019-10-09 07:12:29','2020-04-24 02:16:43',NULL,0,3,'user','user',0,'view/superAdmin/user/user.vue','用户管理','coordinate','用户管理',4,0,0),(18,'2019-10-15 14:27:22','2020-07-31 01:49:19',NULL,0,0,'person','person',1,'view/person/person.vue','个人信息','message-solid','个人信息',50,0,0),(19,'2019-10-20 03:14:42','2020-07-31 01:49:29',NULL,0,0,'example','example',0,'view/example/index.vue','示例文件','s-management','示例文件',70,0,0),(20,'2019-10-20 03:18:11','2020-04-24 02:16:42',NULL,0,19,'table','table',0,'view/example/table/table.vue','表格示例','s-order','表格示例',1,0,0),(21,'2019-10-20 03:19:52','2020-04-24 02:16:43',NULL,0,19,'form','form',0,'view/example/form/form.vue','表单示例','document','表单示例',2,0,0),(22,'2019-10-20 03:22:19','2020-04-24 02:16:43',NULL,0,19,'rte','rte',0,'view/example/rte/rte.vue','富文本编辑器','reading','富文本编辑器',3,0,0),(23,'2019-10-20 03:23:39','2020-04-24 02:16:43',NULL,0,19,'excel','excel',0,'view/example/excel/excel.vue','excel导入导出','s-marketing','excel导入导出',4,0,0),(26,'2019-10-20 03:27:02','2020-04-24 02:16:43',NULL,0,19,'upload','upload',0,'view/example/upload/upload.vue','上传下载','upload','上传下载',5,0,0),(33,'2020-02-17 08:20:47','2020-04-24 02:16:43',NULL,0,19,'breakpoint','breakpoint',0,'view/example/breakpoint/breakpoint.vue','断点续传','upload','断点续传',6,0,0),(34,'2020-02-24 11:48:37','2020-04-24 02:16:43',NULL,0,19,'customer','customer',0,'view/example/customer/customer.vue','客户列表（资源示例）','s-custom','客户列表（资源示例）',7,0,0),(38,'2020-03-29 13:31:03','2020-07-31 01:49:24',NULL,0,0,'systemTools','systemTools',0,'view/systemTools/index.vue','系统工具','s-cooperation','系统工具',60,0,0),(40,'2020-03-29 13:35:10','2020-05-03 13:38:49',NULL,0,38,'autoCode','autoCode',0,'view/systemTools/autoCode/index.vue','代码生成器','cpu','代码生成器',1,1,0),(41,'2020-03-29 13:36:26','2020-05-03 13:38:43',NULL,0,38,'formCreate','formCreate',0,'view/systemTools/formCreate/index.vue','表单生成器','magic-stick','表单生成器',2,1,0),(42,'2020-04-02 06:19:36','2020-04-24 02:16:43',NULL,0,38,'system','system',0,'view/systemTools/system/system.vue','系统配置','s-operation','系统配置',3,0,0),(45,'2020-04-29 09:19:34','2020-07-31 01:48:56',NULL,0,0,'iconList','iconList',0,'view/iconList/index.vue','图标集合','star-on',NULL,20,0,0),(50,'2020-06-24 11:49:54','2020-06-28 12:34:47',NULL,0,3,'dictionary','dictionary',0,'view/superAdmin/dictionary/sysDictionary.vue','字典管理','notebook-2',NULL,5,0,0),(51,'2020-06-24 11:51:33','2020-06-28 12:35:04',NULL,0,3,'dictionaryDetail/:id','dictionaryDetail',1,'view/superAdmin/dictionary/sysDictionaryDetail.vue','字典详情','s-order',NULL,1,0,0),(52,'2020-06-29 05:31:17','2020-07-07 08:05:34',NULL,0,3,'operation','operation',0,'view/superAdmin/operation/sysOperationRecord.vue','操作历史','time',NULL,6,0,0),(54,'2020-07-30 02:05:03','2020-07-31 01:49:13',NULL,0,0,'category','category',0,'view/category/index.vue','类别管理','s-order',NULL,40,0,0),(55,'2020-07-30 02:06:20','2020-07-30 02:18:19',NULL,0,54,'subject','categorySubject',0,'view/category/subject/subject.vue','类别主体','s-shop',NULL,1,0,0),(56,'2020-07-30 02:08:20','2020-07-30 08:56:59',NULL,0,54,'categories','categoryItem',0,'view/category/categories/categories.vue','类别列表','money',NULL,2,0,0),(57,'2020-07-31 01:50:56','2020-07-31 01:51:10',NULL,0,0,'company','company',0,'view/company/index.vue','公司管理','school',NULL,35,0,0),(58,'2020-07-31 01:53:14','2020-07-31 01:55:10',NULL,0,57,'list','list',0,'view/company/list/list.vue','公司列表','s-fold',NULL,1,0,0),(59,'2020-07-31 01:58:12','2020-07-31 01:58:12',NULL,0,57,'employee','employee',0,'view/company/employee/employee.vue','员工管理','s-custom',NULL,2,0,0),(60,'2020-07-31 05:53:49','2020-07-31 05:53:49',NULL,0,0,'address','address',0,'view/address/index.vue','地址管理','add-location',NULL,45,0,0),(61,'2020-07-31 05:54:58','2020-07-31 05:54:58',NULL,0,60,'region','region',0,'view/address/region/region.vue','区域划分','notebook-1',NULL,1,0,0),(62,'2020-07-31 06:00:03','2020-07-31 06:00:03',NULL,0,60,'addressList','addressList',0,'view/address/list/address.vue','常用地址','medal-1',NULL,2,0,0),(63,'2020-08-10 03:20:05','2020-08-10 03:20:05',NULL,0,0,'lift','lift',0,'view/lift/index.vue','电梯管理','school',NULL,37,0,0),(64,'2020-08-10 03:21:31','2020-08-10 03:21:31',NULL,0,63,'list','liftList',0,'view/lift/list/list.vue','电梯列表','s-fold',NULL,0,0,0),(65,'2020-08-10 03:22:57','2020-08-10 03:22:57',NULL,0,63,'model','liftModel',0,'view/lift/model/model.vue','型号管理','setting',NULL,1,0,0),(66,'2020-08-10 03:23:57','2020-08-10 03:23:57',NULL,0,63,'change','liftChange',0,'view/lift/change/change.vue','信息变更历史','info',NULL,2,0,0),(67,'2020-08-10 03:25:19','2020-08-10 03:25:19',NULL,0,63,'record','liftRecord',0,'view/lift/record/record.vue','维保记录','s-cooperation',NULL,3,0,0),(68,'2020-08-10 03:27:05','2020-08-10 03:27:05',NULL,0,63,'trouble','liftTrouble',0,'view/lift/trouble/trouble.vue','故障救援记录','s-management',NULL,4,0,0),(69,'2020-08-10 09:32:17','2020-08-10 09:32:42',NULL,0,0,'user','userHub',0,'view/user/index.vue','用户管理','user-solid',NULL,21,0,0),(70,'2020-08-10 09:34:06','2020-08-10 09:34:06',NULL,0,69,'list','userList',0,'view/user/list/list.vue','用户列表','s-order',NULL,0,0,0);
 /*!40000 ALTER TABLE `sys_base_menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -889,42 +1037,8 @@ CREATE TABLE `sys_operation_records` (
   `resp` text COLLATE utf8mb4_bin COMMENT '响应Body',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1557 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=1714 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `sys_users`
---
-
-DROP TABLE IF EXISTS `sys_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sys_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `uuid` varbinary(255) DEFAULT NULL COMMENT 'uuid',
-  `nick_name` varchar(255) DEFAULT 'QMPlusUser' COMMENT '用户昵称',
-  `header_img` varchar(255) DEFAULT 'http://www.henrongyi.top/avatar/lufu.jpg' COMMENT '用户头像',
-  `authority_id` double DEFAULT '888' COMMENT '用户角色',
-  `username` varchar(255) DEFAULT NULL COMMENT '登录用户名',
-  `password` varchar(255) DEFAULT NULL COMMENT '登录密码',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_users_deleted_at` (`deleted_at`) USING BTREE,
-  KEY `idx_sys_users_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sys_users`
---
-
-LOCK TABLES `sys_users` WRITE;
-/*!40000 ALTER TABLE `sys_users` DISABLE KEYS */;
-INSERT INTO `sys_users` VALUES (10,'2019-09-13 09:23:46','2020-06-26 13:17:50',NULL,_binary 'ce0d6685-c15f-4126-a5b4-890bc9d2356d','超级管理员','http://qmplusimg.henrongyi.top/1571627762timg.jpg',888,'admin','e10adc3949ba59abbe56e057f20f883e'),(11,'2019-09-13 09:27:29','2019-09-13 09:27:29',NULL,_binary 'fd6ef79b-944c-4888-8377-abe2d2608858','QMPlusUser','http://qmplusimg.henrongyi.top/1572075907logo.png',9528,'a303176530','3ec063004a6f31642261936a379fde3d');
-/*!40000 ALTER TABLE `sys_users` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_workflow_step_infos`
@@ -990,13 +1104,13 @@ LOCK TABLES `sys_workflows` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_admins`
+-- Table structure for table `sys_users`
 --
 
-DROP TABLE IF EXISTS `user_admins`;
+DROP TABLE IF EXISTS `sys_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_admins` (
+CREATE TABLE `sys_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -1008,21 +1122,24 @@ CREATE TABLE `user_admins` (
   `nick_name` varchar(255) DEFAULT NULL COMMENT '用户昵称',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
   `role_id` int(10) unsigned NOT NULL COMMENT '角色id',
-  `role_name` varchar(255) DEFAULT NULL COMMENT '角色名称',
   `company_id` int(10) unsigned NOT NULL COMMENT '用户所属公司id',
   `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
+  `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_user_admins_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_admins`
+-- Dumping data for table `sys_users`
 --
 
-LOCK TABLES `user_admins` WRITE;
-/*!40000 ALTER TABLE `user_admins` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_admins` ENABLE KEYS */;
+LOCK TABLES `sys_users` WRITE;
+/*!40000 ALTER TABLE `sys_users` DISABLE KEYS */;
+INSERT INTO `sys_users` VALUES (10,'2019-09-13 09:23:46','2020-06-26 13:17:50',NULL,_binary 'ce0d6685-c15f-4126-a5b4-890bc9d2356d','17612732732','e10adc3949ba59abbe56e057f20f883e','Doctor Zhang','DZ','http://qmplusimg.henrongyi.top/1571627762timg.jpg',101,106,'湖北省武汉市洪山区武珞路718号',888),
+(11,'2019-09-13 09:27:29','2019-09-13 09:27:29',NULL,_binary 'fd6ef79b-944c-4888-8377-abe2d2608858','18827375697','3ec063004a6f31642261936a379fde3d',
+'Master Zhan','MZ','http://qmplusimg.henrongyi.top/1572075907logo.png',102, 107,'湖北省武汉市洪山区武珞路718号',9528);
+/*!40000 ALTER TABLE `sys_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1081,4 +1198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-09 11:27:53
+-- Dump completed on 2020-08-10 17:38:50

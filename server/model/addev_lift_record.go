@@ -7,16 +7,16 @@ import (
 
 type LiftRecord struct {
 	gorm.Model
-	LiftId     int
-	Lift       Lift
-	CategoryId int
-	Category   Category
-	Images     string
-	Content    string
-	StartTime  time.Time
-	EndTime    time.Time
-	WorkerId   int
-	Worker     UserAdmin
-	RecorderId int
-	Recorder   UserAdmin
+	LiftId     int `json:"liftId" form:"liftId"`
+	Lift       Lift `json:"lift" form:"lift" gorm:"ForiegnKey:LiftId;AssociationForiegnKey:ID"`
+	CategoryId int `json:"categoryId" form:"categoryId"`
+	Category   Category `json:"category" form:"category"`
+	Images     string `json:"images" form:"images"`
+	Content    string `json:"content" form:"content"`
+	StartTime  time.Time `json:"startTime" form:"startTime"`
+	EndTime    time.Time `json:"endTime" form:"endTime"`
+	WorkerId   int `json:"workerId" form:"workerId"`
+	Worker     SysUser `json:"worker" form:"worker" gorm:"ForiegnKey:WorkerId;AssociationForiegnKey:ID"`
+	RecorderId int `json:"recorderId" form:"recorderId"`
+	Recorder   SysUser `json:"recorder" form:"recorder" gorm:"ForiegnKey:RecorderId;AssociationForiegnKey:ID"`
 }

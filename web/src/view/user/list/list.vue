@@ -1,31 +1,12 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
-           {{- range .Fields}}  {{- if .FieldSearchType}} {{- if eq .FieldType "bool" }}
-            <el-form-item label="{{.FieldDesc}}" prop="{{.FieldJson}}">
-            <el-select v-model="searchInfo.{{.FieldJson}}" clear placeholder="请选择">
-                <el-option
-                    key="true"
-                    label="是"
-                    value="true">
-                </el-option>
-                <el-option
-                    key="false"
-                    label="否"
-                    value="false">
-                </el-option>
-            </el-select>
-            </el-form-item>
-                  {{- else }}
-        <el-form-item label="{{.FieldDesc}}">
-          <el-input placeholder="搜索条件" v-model="searchInfo.{{.FieldJson}}"></el-input>
-        </el-form-item> {{ end }} {{ end }}  {{ end }}
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                    
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增{{.Description}}</el-button>
+          <el-button @click="openDialog" type="primary">新增userAdmin表</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -50,25 +31,33 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
 
-    {{range .Fields}}
-    {{- if .DictType}}
-      <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" min-width="60">
-        <template slot-scope="scope">
-          {{"{{"}}filterDict(scope.row.{{.FieldJson}},"{{.DictType}}"){{"}}"}}
-        </template>
-      </el-table-column>
-    {{- else if eq .FieldType "bool" }}
-    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" min-width="60">
-         <template slot-scope="scope">{{ "{{scope.row."}}{{.FieldJson}}{{"|formatBoolean}}" }}</template>
-    </el-table-column> {{- else }}
-    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" min-width="60"></el-table-column> {{ end }}
-    {{ end }}
+    
+    <el-table-column label="uuid" prop="uuid" min-width="60"></el-table-column> 
+    
+    <el-table-column label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column> 
+    
+    <el-table-column label="登陆密码" prop="password" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户真名" prop="realName" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户昵称" prop="nickName" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户头像" prop="avatar" min-width="60"></el-table-column> 
+    
+    <el-table-column label="角色id" prop="roleId" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户所属公司id" prop="companyId" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户住址" prop="address" min-width="60"></el-table-column> 
+    
+    <el-table-column label="用户角色ID" prop="authorityId" min-width="60"></el-table-column> 
+    
       <el-table-column label="日期" min-width="60">
-        <template slot-scope="scope">{{ "{{scope.row.CreatedAt|formatDate}}" }}</template>
+        <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-button @click="update{{.StructName}}(scope.row)" size="small" type="primary">变更</el-button>
+          <el-button @click="updateUserAdmin(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -97,33 +86,27 @@
 
 <script>
 import {
-    create{{.StructName}},
-    delete{{.StructName}},
-    delete{{.StructName}}ByIds,
-    update{{.StructName}},
-    find{{.StructName}},
-    get{{.StructName}}List
-} from "@/api/{{.PackageName}}";  //  此处请自行替换地址
+    createUserAdmin,
+    deleteUserAdmin,
+    deleteUserAdminByIds,
+    updateUserAdmin,
+    findUserAdmin,
+    getUserAdminList
+} from "@/api/userAdmin";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
 export default {
-  name: "{{.StructName}}",
+  name: "list",
   mixins: [infoList],
   data() {
     return {
-      listApi: get{{.StructName}}List,
+      listApi: getUserAdminList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],
-      {{- range .Fields}}
-          {{- if .DictType }}
-            {{.DictType}}Options:[],
-          {{ end -}}
-      {{end -}}
-      formData: {
-        {{range .Fields}}{{.FieldJson}}:null,{{ end }}
+      multipleSelection: [],formData: {
+        uuid:null,phoneNumber:null,password:null,realName:null,nickName:null,avatar:null,roleId:null,companyId:null,address:null,authorityId:null,
       }
     };
   },
@@ -148,11 +131,7 @@ export default {
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 10
-        {{- range .Fields}} {{- if eq .FieldType "bool" }}      
-        if (this.searchInfo.{{.FieldJson}}===""){
-          this.searchInfo.{{.FieldJson}}=null
-        } {{ end }} {{ end }}    
+        this.pageSize = 10              
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -164,7 +143,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await delete{{.StructName}}ByIds({ ids })
+        const res = await deleteUserAdminByIds({ ids })
         if (res.code === 0) {
           this.$message({
             type: 'success',
@@ -174,29 +153,38 @@ export default {
           await this.getTableData()
         }
       },
-    async update{{.StructName}}(row) {
-      const res = await find{{.StructName}}({ ID: row.ID });
+    async updateUserAdmin(row) {
+      const res = await findUserAdmin({ ID: row.ID });
       this.type = "update";
       if (res.code === 0) {
-        this.formData = res.data.re{{.Abbreviation}};
+        this.formData = res.data.reuserAdmin;
         this.dialogFormVisible = true;
       }
     },
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        {{range .Fields}}
-          {{.FieldJson}}:null,{{ end }}
+        
+          uuid:null,
+          phoneNumber:null,
+          password:null,
+          realName:null,
+          nickName:null,
+          avatar:null,
+          roleId:null,
+          companyId:null,
+          address:null,
+          authorityId:null,
       };
     },
-    async delete{{.StructName}}(row) {
+    async deleteUserAdmin(row) {
       this.$confirm('this operation is dangerous, continue ?', 'Hint', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
       .then(async () => {
-        const res = await delete{{.StructName}}({ ID: row.ID });
+        const res = await deleteUserAdmin({ ID: row.ID });
         if (res.code === 0) {
           this.$message({
             type: "success",
@@ -216,10 +204,10 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await create{{.StructName}}(this.formData);
+          res = await createUserAdmin(this.formData);
           break;
         case "update":
-          res = await update{{.StructName}}(this.formData);
+          res = await updateUserAdmin(this.formData);
           break;
       }
       if (res.code === 0) {
@@ -237,13 +225,7 @@ export default {
     }
   },
   async created() {
-    await this.getTableData();
-  {{- range .Fields -}}
-    {{- if .DictType -}}
-      await this.getDict("{{.DictType}}")
-    {{- end -}}
-  {{- end -}}
-}
+    await this.getTableData();}
 };
 </script>
 

@@ -22,7 +22,7 @@
           <el-form-item prop="username">
             <el-input
               placeholder="请输入用户名"
-              v-model="registerForm.username"
+              v-model="registerForm.phoneNumber"
             >
             <i
                 class="el-input__icon el-icon-user"
@@ -96,8 +96,8 @@ export default {
         callback()
       }
     }
-    const checkUsername = (rule, value, callback) => {
-      if (value.length < 5 || value.length > 12) {
+    const checkPhoneNumber = (rule, value, callback) => {
+      if (!(/^1[3456789]\d{9}$/.test(value))) {
         return callback(new Error('请输入正确的用户名'))
       } else {
         callback()
@@ -114,12 +114,12 @@ export default {
     return {
       lock: 'lock',
       registerForm: {
-        username: '',
+        phoneNumber: '',
         password: '',
         rePassword: ''
       },
       rules: {
-        username: [{ validator: checkUsername, trigger: 'blur' }],
+        phoneNumber: [{ validator: checkPhoneNumber, trigger: 'blur' }],
         password: [{ validator: checkPassword, trigger: 'blur' }],
         rePassword: [{ validator: ratioPassword, trigger: 'blur' }]
       }

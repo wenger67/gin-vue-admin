@@ -47,14 +47,7 @@
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button @click="updateAddress(scope.row)" size="small" type="primary">变更</el-button>
-          <el-popover placement="top" width="160" :ref="`popover-${scope.$index}`">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="handleClosePopover(scope.$index)">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteAddress(scope.row)">确定</el-button>
-            </div>
-            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
-          </el-popover>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAddress(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -171,7 +164,6 @@ export default {
     return {
       listApi: getAddressList,
       dialogFormVisible: false,
-      visible: false,
       type: "",
       deleteVisible: false,
       inputVisible: false,
@@ -291,19 +283,30 @@ export default {
       this.districtOptions = []
     },
     async deleteAddress(row) {
-      this.visible = false;
-      const res = await deleteAddress({ ID: row.ID });
-      if (res.code == 0) {
+      this.$confirm('this operation is dangerous, continue ?', 'Hint', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(async () => {
+        const res = await deleteAddress({ ID: row.ID });
+        if (res.code == 0) {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+          this.getTableData();
+        }
+      })
+      .catch(() => {
         this.$message({
-          type: "success",
-          message: "删除成功"
-        });
-        this.getTableData();
-      }
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     async enterDialog() {
       let res;
-      console.log(this.formData)
       switch (this.type) {
         case "create":
           res = await createAddress(this.formData);

@@ -19,7 +19,7 @@ import (
 func Register(u model.SysUser) (err error, userInter model.SysUser) {
 	var user model.SysUser
 	// 判断用户名是否注册
-	notRegister := global.GVA_DB.Where("username = ?", u.Username).First(&user).RecordNotFound()
+	notRegister := global.GVA_DB.Where("phone_number = ?", u.PhoneNumber).First(&user).RecordNotFound()
 	// notRegister为false表明读取到了 不能注册
 	if !notRegister {
 		return errors.New("用户名已注册"), userInter
@@ -42,7 +42,7 @@ func Register(u model.SysUser) (err error, userInter model.SysUser) {
 func Login(u *model.SysUser) (err error, userInter *model.SysUser) {
 	var user model.SysUser
 	u.Password = utils.MD5V([]byte(u.Password))
-	err = global.GVA_DB.Where("username = ? AND password = ?", u.Username, u.Password).Preload("Authority").First(&user).Error
+	err = global.GVA_DB.Where("phone_number = ? AND password = ?", u.PhoneNumber, u.Password).Preload("Authority").First(&user).Error
 	return err, &user
 }
 
@@ -57,7 +57,7 @@ func Login(u *model.SysUser) (err error, userInter *model.SysUser) {
 func ChangePassword(u *model.SysUser, newPassword string) (err error, userInter *model.SysUser) {
 	var user model.SysUser
 	u.Password = utils.MD5V([]byte(u.Password))
-	err = global.GVA_DB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
+	err = global.GVA_DB.Where("phone_number = ? AND password = ?", u.PhoneNumber, u.Password).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
 	return err, u
 }
 
