@@ -61,7 +61,7 @@
     <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" min-width="60">
          <template slot-scope="scope">{{ "{{scope.row."}}{{.FieldJson}}{{"|formatBoolean}}" }}</template>
     </el-table-column> {{- else }}
-    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" min-width="60"></el-table-column> {{ end }}
+    <el-table-column label="{{.FieldDesc}}" prop="{{.FieldJson}}" sortable min-width="60"></el-table-column> {{ end }}
     {{ end }}
       <el-table-column label="日期" min-width="60">
         <template slot-scope="scope">{{ "{{scope.row.CreatedAt|formatDate}}" }}</template>

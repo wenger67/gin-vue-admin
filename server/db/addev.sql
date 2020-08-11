@@ -267,21 +267,12 @@ CREATE TABLE `addresses` (
   `deleted_at` datetime DEFAULT NULL,
   `region_id` int(10) NOT NULL COMMENT 'region id',
   `address_name` varchar(255) DEFAULT NULL COMMENT '地址，精确到类似小区级别',
+  `location` varchar(255) default null comment 'geo location',
   `user_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'user amount',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_addresses_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `addresses`
---
-
-LOCK TABLES `addresses` WRITE;
-/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-INSERT INTO `addresses` VALUES (111,'2020-08-04 17:16:12','2020-08-05 11:11:19',NULL,102,'阿大四大四大的',111111),(112,'2020-08-05 10:23:24','2020-08-05 10:23:24','2020-08-05 11:41:19',0,'阿大四大四大的',111111),(113,'2020-08-05 10:24:22','2020-08-05 10:24:22','2020-08-05 11:41:25',0,'阿大四大四大的',111111);
-/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Temporary table structure for view `authority_menu`
@@ -745,10 +736,8 @@ CREATE TABLE `lifts` (
   `lift_model_id` int(10) unsigned DEFAULT NULL COMMENT '电梯型号',
   `category_id` int(10) NOT NULL COMMENT '电梯类别',
   `floor_count` int(11) NOT NULL COMMENT '总楼层',
-  `latitude` decimal(10,7) DEFAULT NULL COMMENT '电梯位置地理经度',
-  `longitude` decimal(10,7) DEFAULT NULL COMMENT '电梯位置地理纬度',
+  `location` varchar(255) default null comment 'geo location',
   `address_id` int(10) DEFAULT NULL COMMENT '地址id',
-  `region_id` int(11) DEFAULT NULL COMMENT '区域id',
   `building` varchar(50) DEFAULT NULL COMMENT '楼栋',
   `cell` int(11) DEFAULT NULL COMMENT '单元',
   `ad_device_id` int(10) unsigned DEFAULT NULL COMMENT '广告机设备id',
@@ -1126,7 +1115,7 @@ CREATE TABLE `sys_users` (
   `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
   `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_user_admins_deleted_at` (`deleted_at`)
+  KEY `idx_sys_users_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 

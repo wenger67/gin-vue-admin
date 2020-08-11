@@ -25,12 +25,9 @@ type Lift struct {
 	CategoryId   int `json:"category_id" form:"category_id"`
 	Category     Category `json:"category" form:"category" gorm:"ForiegnKey:CategoryId;AssociationForiegnKey:ID;comment:'电梯用途类别'"`
 	FloorCount   int `json:"floor_count" form:"floor_count" gorm:"comment:'总楼层'"`
-	Latitude     float32 `json:"latitude" form:"latitude" sql:"type:decimal(10,7)"`
-	Longitude    float32 `json:"longitude" form:"longitude" sql:"type:decimal(10,7)"`
+	Location     string `json:"location" form:"location"`
 	AddressId    int `json:"address_id" form:"address_id"`
 	Address      Address `json:"address" form:"address" gorm:"ForiegnKey:AddressId;AssociationForiegnKey:ID;comment:'电梯地址'"`
-	RegionId     int `json:"region_id" form:"region_id"`
-	Region       Region `json:"region" form:"region" gorm:"ForiegnKey:RegionId;AssociationForiegnKey:ID;comment:'电梯区域划分'"`
 	Building     string `json:"building" form:"building" gorm:"comment:'楼栋号'"`
 	Cell         int `json:"cell" form:"cell" gorm:"comment:'单元号'"`
 	AdDeviceId   int `json:"ad_device_id" form:"ad_device_id"`

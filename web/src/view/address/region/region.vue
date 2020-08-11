@@ -30,24 +30,17 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="ID" prop="ID" min_width="60"></el-table-column> 
-    <el-table-column label="省份" prop="province" min_width="60"></el-table-column> 
-    <el-table-column label="城市" prop="city" min_width="60"></el-table-column> 
-    <el-table-column label="行政区" prop="district" min_width="60"></el-table-column> 
+    <el-table-column label="ID" prop="ID" sortable min_width="60"></el-table-column>
+    <el-table-column label="省份" prop="province" sortable min_width="60"></el-table-column>
+    <el-table-column label="城市" prop="city" sortable min_width="60"></el-table-column>
+    <el-table-column label="行政区" prop="district" sortable min_width="60"></el-table-column>
     <el-table-column label="日期" width="180">
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
       <el-table-column label="按钮组" fixed="right" witdh="200">
         <template slot-scope="scope">
           <el-button @click="updateRegion(scope.row)" size="small" type="primary">变更</el-button>
-          <el-popover placement="top" width="160" v-model="scope.row.visible">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteRegion(scope.row)">确定</el-button>
-            </div>
-            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
-          </el-popover>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRegion(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -161,7 +154,7 @@ export default {
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -192,19 +185,19 @@ export default {
           ids.push(item.ID)
         })
       const res = await deleteRegionByIds({ ids })
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.$message({
           type: 'success',
           message: '删除成功'
         })
         this.deleteVisible = false
-        this.getTableData()
+        await this.getTableData()
       }
     },
     async updateRegion(row) {
       const res = await findRegion({ ID: row.ID });
       this.type = "update";
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.formData = res.data.reregion;
         this.dialogFormVisible = true;
       }
@@ -218,15 +211,27 @@ export default {
       };
     },
     async deleteRegion(row) {
-      this.visible = false;
-      const res = await deleteRegion({ ID: row.ID });
-      if (res.code == 0) {
+      this.$confirm('this operation is dangerous, continue ? ', 'hint', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      })
+      .then(async () => {
+        const res = await deleteRegion(row)
+        if (res.code === 0) {
+          this.$message({
+            type: 'success',
+            message: 'delete success!'
+          })
+          await this.getTableData()
+        }
+      })
+      .catch(() => {
         this.$message({
-          type: "success",
-          message: "删除成功"
-        });
-        this.getTableData();
-      }
+          type: 'info',
+          message: 'delete canceled!'
+        })
+      })
     },
     async enterDialog() {
       this.$refs.elForm.validate(async valid => {
@@ -240,13 +245,13 @@ export default {
               res = await updateRegion(this.formData);
               break;
           }
-          if (res.code == 0) {
+          if (res.code === 0) {
             this.$message({
               type:"success",
               message:"创建/更改成功"
             })
             this.closeDialog();
-            this.getTableData();
+            await this.getTableData();
           }          
         }
       })
@@ -268,7 +273,7 @@ export default {
         groupKey: "province"
       }
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           // should have value field
           result.push({value: element.province})
@@ -288,7 +293,7 @@ export default {
         groupKey: "city"
       }
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           result.push({value: element.city})
         })
@@ -305,7 +310,7 @@ export default {
         groupKey: "district"
       }
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           result.push({value: element.district})
         })

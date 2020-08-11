@@ -9,6 +9,15 @@ Vue.use(ElementUI);
 // 引入封装的router
 import router from '@/router/index'
 
+// amap
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+    key:'2ace90bc407f7511c1628692685b0c5c',
+    plugin:['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+    v: '1.4.4'
+})
+
 // canvas背景插件
 import vueParticleLine from 'vue-particle-line'
 import 'vue-particle-line/dist/vue-particle-line.css'

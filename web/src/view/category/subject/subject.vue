@@ -91,7 +91,7 @@ export default {
     },
     filters: {
       formatDate: function(time) {
-        if (time != null && time != "") {
+        if (time != null && time !== "") {
           var date = new Date(time);
           return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
         } else {
@@ -103,7 +103,7 @@ export default {
       sortChange({prop, order}) {
         if (prop) {
           this.searchInfo.orderKey = toSQLLine(prop)
-          this.searchInfo.desc = order == 'descending'
+          this.searchInfo.desc = order === 'descending'
         }
         this.getTableData()
       },
@@ -149,12 +149,12 @@ export default {
         })
         .then(async () => {
           const res = await deleteSubject(row)
-          if (res.code == 0) {
+          if (res.code === 0) {
             this.$message({
               type: 'success',
               message: 'delete success!'
             })
-            this.getTableData()
+            await this.getTableData()
           }
         })
         .catch(() => {
@@ -171,28 +171,28 @@ export default {
               case 'addSubject':
                 {
                   const res = await createSubject(this.form)
-                  if (res.code == 0) {
+                  if (res.code === 0) {
                     this.$message({
                       type: 'success',
                       message: 'create success',
                       showClose: true
                     })
                   }
-                  this.getTableData()
+                  await this.getTableData()
                   this.closeDialog()
                 }
                 break
               case 'edit':
                 {
                   const res = await updateSubject(this.form)
-                  if (res.code == 0) {
+                  if (res.code === 0) {
                     this.$message({
                       type: 'success',
                       message: 'edit success',
                       showClose: true
                     })
                   }
-                  this.getTableData()
+                  await this.getTableData()
                   this.closeDialog()
                 }
                 break

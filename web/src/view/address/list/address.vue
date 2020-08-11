@@ -31,8 +31,8 @@
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="ID" prop="ID" min-width="30"></el-table-column>
-      <el-table-column label="Province" prop="region.province" min-width="60"></el-table-column> 
-      <el-table-column label="City" prop="region.city" min-width="60"></el-table-column> 
+      <el-table-column label="Province" prop="region.province" min-width="60"></el-table-column>
+      <el-table-column label="City" prop="region.city" min-width="60"></el-table-column>
       <el-table-column label="District" prop="region.district" min-width="60"></el-table-column> 
       <el-table-column label="地址 detail" prop="addressName" min-width="60"></el-table-column> 
       <el-table-column label="user amount" prop="userAmount" min-width="60"></el-table-column> 
@@ -69,7 +69,7 @@
           label-position="left">
           <el-col :span="8">
             <el-form-item label="省份" prop="province">
-              <el-select @change="getCityOptions" filterable clearable v-model="formData.region.province" placeholder="Please select province">
+              <el-select @change="getCityOptions" v-model="formData.region.province" filterable clearable placeholder="Please select province">
                 <el-option v-for="item in provinceOptions"
                   :key="item.value"
                   :label="item.value"
@@ -80,7 +80,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="城市" prop="city">
-              <el-select @change="getDistrictOptions" filterable clearable v-model="formData.region.city" :disabled="cityOptionDisable" placeholder="Please select city">
+              <el-select @change="getDistrictOptions" v-model="formData.region.city"  filterable clearable :disabled="cityOptionDisable" placeholder="Please select city">
                 <el-option v-for="item in cityOptions"
                   :key="item.value"
                   :label="item.value"
@@ -91,7 +91,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="行政区" prop="district">
-              <el-select v-model="formData.region.district" filterable clearable @change="handleSelectDistrict" :disabled="districtOptionDisable" placeholder="Please select city">
+              <el-select @change="handleDistrictChange" v-model="formData.region.district" filterable clearable :disabled="districtOptionDisable" placeholder="Please select district">
                 <el-option v-for="item in districtOptions"
                   :key="item.value"
                   :label="item.value"
@@ -100,24 +100,22 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="地址" prop="address">
-              <el-autocomplete
-                class="inline-input"
-                v-model="formData.addressName"
-                placeholder="Please input address"
-                :fetch-suggestions="getAddresses"
-                :trigger-on-focus="false"
-                @select="handleSelect"
-              ></el-autocomplete>
-            </el-form-item> 
+          <el-col :span="12">
+            <el-form-item label="address" prop="address">
+              <el-amap-search-box v-model="formData.addressName" class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+            </el-form-item>
           </el-col>
           <el-col :span="24">
+            <el-amap vid="amapDemo" :center="mapCenter" :amap-manager="aMapManager" :zoom="12" :events="events" class="amap-demo">
+              <el-amap-circle v-for="circle in circles" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" :events="circle.events"></el-amap-circle>
+            </el-amap>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="Amount" prop="userAmount">
               <el-input-number v-model="formData.userAmount" :min="1" label="Amount"></el-input-number>
             </el-form-item> 
           </el-col>
-          <el-col :span="24">
+          <el-col :span="12">
             <el-form-item label="标签" prop="tags">
               <el-select v-model="formData.tags" value-key="ID" multiple placeholder="Please select tags">
                 <el-option v-for="item in tagOptions"
@@ -148,7 +146,6 @@ import {
     getAddressList
 } from "@/api/address";
 import {
-    findRegion,
     getRegionList
 } from "@/api/region";
 import {
@@ -156,12 +153,41 @@ import {
 } from "@/api/categories";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
+import VueAMap from "vue-amap";
+let aMapManager = new VueAMap.AMapManager();
 
 export default {
   name: "Address",
   mixins: [infoList],
   data() {
     return {
+      aMapManager,
+      events: {
+        init(o) {
+          // eslint-disable-next-line no-undef
+          let marker = new AMap.Marker({
+            position: [121.59996, 31.197646]
+          });
+          marker.setMap(o);
+        }
+      },
+      circles: [
+        {
+          center: [121.5273285, 31.21515044],
+          radius: 200,
+          fillOpacity: 0.5,
+          events: {
+            click: () => {
+              alert('click');
+            }
+          }
+        }
+      ],
+      searchOption: {
+        city: '上海',
+        citylimit: true
+      },
+      mapCenter: [121.59996, 31.197646],
       listApi: getAddressList,
       dialogFormVisible: false,
       type: "",
@@ -177,8 +203,8 @@ export default {
       districtOptionDisable: true,
       tagSubjectId: 107,
       formData: {
-        ID:null, regionId: null, region: {},
-        addressName:null, userAmount: null, tags:[]
+        regionId: null, addressName:null, region: {province:null, city: null, district:null},
+        location: null, userAmount: null, tags:[]
       },
       rules: {
         address: [{
@@ -199,24 +225,24 @@ export default {
         province: [{
           required: true,
           message: '请选择省份',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         city: [{
           required: true,
           message: '请选择城市城市',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         district: [{
           required: true,
           message: '请选择行政区',
-          trigger: 'change'
+          trigger: 'blur'
         }],
       },      
     };
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -251,19 +277,19 @@ export default {
           ids.push(item.ID)
         })
       const res = await deleteAddressByIds({ ids })
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.$message({
           type: 'success',
           message: '删除成功'
         })
         this.deleteVisible = false
-        this.getTableData()
+        await this.getTableData()
       }
     },
     async updateAddress(row) {
       const res = await findAddress({ ID: row.ID });
       this.type = "update";
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.formData = res.data.readdress
 
         // TODO fill the origin data
@@ -276,8 +302,8 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        ID:null, regionId: null, region: {},
-        addressName:null, userAmount: null, tags:[]
+        regionId: null, addressName:null, region: {province:null, city: null, district:null},
+        location: null, userAmount: null, tags:[]
       };
       this.cityOptions = []
       this.districtOptions = []
@@ -290,12 +316,12 @@ export default {
       })
       .then(async () => {
         const res = await deleteAddress({ ID: row.ID });
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             type: "success",
             message: "删除成功"
           });
-          this.getTableData();
+          await this.getTableData();
         }
       })
       .catch(() => {
@@ -307,21 +333,24 @@ export default {
     },
     async enterDialog() {
       let res;
+      // void create region one more time
+      let tmp = this.formData
+      delete tmp.region
       switch (this.type) {
         case "create":
-          res = await createAddress(this.formData);
+          res = await createAddress(tmp);
           break;
         case "update":
-          res = await updateAddress(this.formData);
+          res = await updateAddress(tmp);
           break;
       }
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.$message({
           type:"success",
           message:"创建/更改成功"
         })
         this.closeDialog();
-        this.getTableData();
+        await this.getTableData();
       }
     },
     openDialog() {
@@ -336,7 +365,7 @@ export default {
         addressName: queryString,
       }
       let res = await getAddressList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           // should have value field
           result.push({value: element.province})
@@ -357,7 +386,7 @@ export default {
         groupKey: "province"
       }
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           // should have value field
           this.provinceOptions.push({value: element.province})
@@ -378,7 +407,7 @@ export default {
         groupKey: "city"
       }
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           this.cityOptions.push({value: element.city})
         })
@@ -393,12 +422,23 @@ export default {
         district: "",
         groupKey: "district"
       }
+      // change map center
+      this.searchOption.city = params.city
+      this.aMapManager.getMap().setCity(params.city)
+      let center = this.aMapManager.getMap().getCenter();
+      this.mapCenter = [center.lat, center.lng]
+
+      this.districtOptions = []
       let res = await getRegionList(params)
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           this.districtOptions.push({value: element.district, regionId: element.ID})
         })
       }
+    },
+    handleDistrictChange(val) {
+      let tmp = this.districtOptions.filter(item => item.value === val);
+      this.formData.regionId = tmp[0].regionId;
     },
     async getTags() {
       const params = {
@@ -407,17 +447,29 @@ export default {
         ID: this.tagSubjectId
       }
       let res = await getCategoriesList(params);
-      if (res.code == 0) {
+      if (res.code === 0) {
         res.data.list.forEach(element => {
           this.tagOptions.push({value: element.categoryName, data:element})
         })
       }
     },
-    handleSelect(item) {
-      this.province = item
-    },
-    handleSelectDistrict(item) {
-      this.formData.regionId = item.regionId
+    onSearchResult(pois) {
+      if (pois.length > 0) {
+        /*pois.forEach(poi => {
+          let {lng, lat} = poi;
+          lngSum += lng;
+          latSum += lat;
+        });*/
+        let center = {
+          lng: pois[0].lng,
+          lat: pois[0].lat
+        };
+        this.mapCenter = [center.lng, center.lat];
+        this.circles[0].center = [center.lng, center.lat]
+        this.aMapManager.getMap().setZoom(16)
+        this.formData.location = center.lng + "," + center.lat
+        this.formData.addressName = pois[0].address + pois[0].name
+      }
     }
   },
   async created() {
@@ -429,19 +481,12 @@ export default {
 </script>
 
 <style>
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
-  }
+    .amap-demo {
+      height: 300px!important;
+      padding: 10px 20px 20px 20px;
+    }
+
+    .search-box {
+      position: relative;
+    }
 </style>
