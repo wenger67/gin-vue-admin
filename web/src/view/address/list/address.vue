@@ -107,7 +107,14 @@
           </el-col>
           <el-col :span="24">
             <el-amap vid="amapDemo" :center="mapCenter" :amap-manager="aMapManager" :zoom="12" :events="events" class="amap-demo">
-              <el-amap-circle v-for="circle in circles" :center="circle.center" :radius="circle.radius" :fill-opacity="circle.fillOpacity" :events="circle.events"></el-amap-circle>
+              <el-amap-circle
+                      v-for="(circle, index) in circles"
+                      :center="circle.center"
+                      :radius="circle.radius"
+                      :key="index"
+                      :fill-opacity="circle.fillOpacity"
+                      :events="circle.events">
+              </el-amap-circle>
             </el-amap>
           </el-col>
           <el-col :span="12">
@@ -293,7 +300,6 @@ export default {
         this.formData = res.data.readdress
 
         // TODO fill the origin data
-
         this.cityOptionDisable = false
         this.districtOptionDisable = false
         this.dialogFormVisible = true
@@ -356,22 +362,6 @@ export default {
     openDialog() {
       this.type = "create";
       this.dialogFormVisible = true;
-    },
-    async getAddresses(queryString, cb) {
-      let result = []
-      const params = {
-        page: 1,
-        pageSize: 100,
-        addressName: queryString,
-      }
-      let res = await getAddressList(params)
-      if (res.code === 0) {
-        res.data.list.forEach(element => {
-          // should have value field
-          result.push({value: element.province})
-        })
-      }
-      cb(result)
     },
     async getProvinceOptions() {
       // clear right input component

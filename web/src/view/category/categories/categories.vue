@@ -48,14 +48,7 @@
       <el-table-column label="按钮组" width="200" fixed="right">
         <template slot-scope="scope">
           <el-button @click="updateCategories(scope.row)" size="small" type="primary">变更</el-button>
-          <el-popover placement="top" width="160" v-model="scope.row.visible">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteCategories(scope.row)">确定</el-button>
-            </div>
-            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
-          </el-popover>
+          <el-button type="danger" size="mini" @click="deleteCategories(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -139,7 +132,7 @@ export default {
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -170,24 +163,24 @@ export default {
           ids.push(item.ID)
         })
       const res = await deleteCategoriesByIds({ ids })
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.$message({
           type: 'success',
           message: '删除成功'
         })
         this.deleteVisible = false
-        this.getTableData()
+        await this.getTableData()
       }
     },
     async updateCategories(row) {
       const res = await findCategories({ ID: row.ID });
       this.type = "update";
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.formData = res.data.recategories;
         this.dialogFormVisible = true;
       }
     },
-    closeDialog(type) {
+    closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
           categorySubjectId:null,
@@ -195,15 +188,27 @@ export default {
       };
     },
     async deleteCategories(row) {
-      this.visible = false;
-      const res = await deleteCategories({ ID: row.ID });
-      if (res.code == 0) {
+      this.$confirm('this operation is dangerous, continue ?', 'Hint', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(async () => {
+        const res = await deleteCategories({ ID: row.ID });
+        if (res.code === 0) {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+          await this.getTableData();
+        }
+      })
+      .catch(() => {
         this.$message({
-          type: "success",
-          message: "删除成功"
-        });
-        this.getTableData();
-      }
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     async enterDialog() {
       let res;
@@ -214,17 +219,14 @@ export default {
         case "update":
           res = await updateCategories(this.formData);
           break;
-        default:
-          res = await createCategories(this.formData);
-          break;
       }
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.$message({
           type:"success",
           message:"创建/更改成功"
         })
         this.closeDialog();
-        this.getTableData();
+        await this.getTableData();
       }
     },
     openDialog(type) {
@@ -241,7 +243,7 @@ export default {
     },
     async getSubjects() {
       const res = await getAllSubjects();
-      if (res.code == 0) {
+      if (res.code === 0) {
         this.subjectOptions = res.data.subjectList;
       }
     }

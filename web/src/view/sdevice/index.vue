@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name:"UserAdmin",
+    name:"AdDevice",
 }
 </script>
 <style lang="scss">

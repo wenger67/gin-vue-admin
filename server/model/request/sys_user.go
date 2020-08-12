@@ -31,3 +31,14 @@ type SetUserAuth struct {
 	UUID        uuid.UUID `json:"uuid"`
 	AuthorityId string    `json:"authorityId"`
 }
+
+type CreateStruct struct {
+	PhoneNumber string `json:"phoneNumber" form:"phoneNumber"`
+	Password    string `json:"password" form:"password"`
+	RealName    string `json:"realName" form:"realName"`
+	NickName    string `json:"nickName" form:"nickName"`
+	Avatar      string `json:"avatar" form:"avatar"`
+	CompanyId   int `json:"companyId" form:"companyId"`
+	Address     string `json:"address" form:"address"`
+	AuthorityId string       `json:"authorityId" form:"authorityId" gorm:"default:888;comment:'用户角色ID'"`
+}

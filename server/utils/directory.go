@@ -3,6 +3,8 @@ package utils
 import (
 	"gin-vue-admin/global"
 	"os"
+	"os/exec"
+	"strings"
 )
 
 // @title    PathExists
@@ -44,3 +46,14 @@ func CreateDir(dirs ...string) (err error) {
 	}
 	return err
 }
+
+
+ func RootPath() string {
+     s, err := exec.LookPath(os.Args[0])
+     if err != nil {
+         global.GVA_LOG.Error("发生错误",err.Error())
+ 	 }
+     i := strings.LastIndex(s, "\\")
+     path := s[0 : i+1]
+     return path
+ }

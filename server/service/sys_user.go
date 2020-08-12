@@ -32,6 +32,21 @@ func Register(u model.SysUser) (err error, userInter model.SysUser) {
 	return err, u
 }
 
+func CreateUser(u model.SysUser) (err error, user model.SysUser) {
+	u.Password = utils.MD5V([]byte(u.Password))
+	u.UUID = uuid.NewV4()
+	// TODO create avatar
+	//avatarErr := govatar.GenerateFileForUsername(govatar.MALE, u.PhoneNumber, fileName)
+	//if avatarErr != nil {
+	//	global.GVA_LOG.Error("create avatar for user :", u.RealName, " failed", avatarErr.Error())
+	//} else {
+	//	u.Avatar = "/resource/upload/avatar/" + utils.MD5V([]byte(u.PhoneNumber)) + ".jpg";
+	//}
+	err = global.GVA_DB.Create(&u).Error
+	return err, u
+}
+
+
 // @title    Login
 // @description   login, 用户登录
 // @auth                     （2020/04/05  20:22）
@@ -75,8 +90,13 @@ func GetUserInfoList(info request.PageInfo) (err error, list interface{}, total 
 	db := global.GVA_DB.Model(&model.SysUser{})
 	var userList []model.SysUser
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Authority").Find(&userList).Error
+	err = db.Limit(limit).Offset(offset).Preload("Company").Preload("Authority").Find(&userList).Error
 	return err, userList, total
+}
+
+func GetUser(id request.GetById) (err error, user model.SysUser) {
+	err = global.GVA_DB.Where("id = ?", id.Id).Preload("Company").Preload("Authority").First(&user).Error
+	return
 }
 
 // @title    SetUserAuthority
@@ -101,6 +121,12 @@ func SetUserAuthority(uuid uuid.UUID, authorityId string) (err error) {
 func DeleteUser(id float64) (err error) {
 	var user model.SysUser
 	err = global.GVA_DB.Where("id = ?", id).Delete(&user).Error
+	return err
+}
+
+
+func DeleteUserList(ids []int) (err error) {
+	err = global.GVA_DB.Delete(&[]model.SysUser{}, "id in (?)", ids).Error
 	return err
 }
 

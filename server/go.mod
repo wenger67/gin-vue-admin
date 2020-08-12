@@ -15,7 +15,7 @@ require (
 	github.com/go-openapi/swag v0.19.8 // indirect
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/go-redis/redis v6.15.7+incompatible
-	github.com/go-sql-driver/mysql v1.5.0
+	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/gorilla/websocket v1.4.0
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
@@ -29,6 +29,7 @@ require (
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/mitchellh/mapstructure v1.2.2 // indirect
 	github.com/mojocn/base64Captcha v1.3.1
+	github.com/o1egl/govatar v0.3.0
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7

@@ -46,6 +46,32 @@ func Register(c *gin.Context) {
 	}
 }
 
+func CreateUser(c *gin.Context) {
+	var r request.CreateStruct
+	_ = c.ShouldBindJSON(&r)
+	UserVerify := utils.Rules{
+		"PhoneNumber": {utils.NotEmpty()},
+		"RealName": {utils.NotEmpty()},
+		"Password": {utils.NotEmpty()},
+		"CompanyId": {utils.NotEmpty()},
+		"AuthorityId": {utils.NotEmpty()},
+	}
+	UserVerifyErr := utils.Verify(r, UserVerify)
+	if UserVerifyErr != nil {
+		response.FailWithMessage(UserVerifyErr.Error(), c)
+		return
+	}
+
+	user := &model.SysUser{PhoneNumber: r.PhoneNumber, Password: r.Password, RealName: r.RealName,
+		NickName: r.NickName, CompanyId: r.CompanyId, AuthorityId: r.AuthorityId, Address: r.Address}
+	err, userReturn := service.CreateUser(*user)
+	if err != nil {
+		response.FailWithDetailed(response.ERROR, resp.SysUserResponse{User: userReturn}, fmt.Sprintf("%v", err), c)
+	} else {
+		response.OkDetailed(resp.SysUserResponse{User: userReturn}, "注册成功", c)
+	}
+}
+
 // @Tags Base
 // @Summary 用户登录
 // @Produce  application/json
@@ -239,6 +265,22 @@ func GetUserList(c *gin.Context) {
 	}
 }
 
+func FindUser(c *gin.Context)  {
+	var id request.GetById
+	_ = c.ShouldBindQuery(&id)
+	IdVerifyErr := utils.Verify(id, utils.CustomizeMap["IdVerify"])
+	if IdVerifyErr != nil {
+		response.FailWithMessage(IdVerifyErr.Error(), c)
+		return
+	}
+	err, reuser := service.GetUser(id)
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
+	} else {
+		response.OkWithData(gin.H{"reuser": reuser}, c)
+	}
+}
+
 // @Tags SysUser
 // @Summary 设置用户权限
 // @Security ApiKeyAuth
@@ -284,6 +326,17 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 	err := service.DeleteUser(reqId.Id)
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
+	} else {
+		response.OkWithMessage("删除成功", c)
+	}
+}
+
+func DeleteUserList(c *gin.Context) {
+	var reqId request.IdsReq
+	_ = c.ShouldBindJSON(&reqId)
+	err := service.DeleteUserList(reqId.Ids)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
 	} else {

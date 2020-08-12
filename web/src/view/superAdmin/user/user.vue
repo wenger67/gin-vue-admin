@@ -1,245 +1,335 @@
 <template>
   <div>
-    <div class="button-box clearflex">
-      <el-button @click="addUser" type="primary">新增用户</el-button>
-    </div>
-    <el-table :data="tableData" border stripe>
-      <el-table-column label="头像" min-width="50">
-        <template slot-scope="scope">
-          <div :style="{'textAlign':'center'}">
-            <img :src="scope.row.headerImg" height="35" width="35" />
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="uuid" min-width="250" prop="uuid"></el-table-column>
-      <el-table-column label="用户名" min-width="150" prop="userName"></el-table-column>
-      <el-table-column label="昵称" min-width="150" prop="nickName"></el-table-column>
-      <el-table-column label="用户角色" min-width="150">
-        <template slot-scope="scope">
-          <el-cascader
-            @change="changeAuthority(scope.row)"
-            v-model="scope.row.authority.authorityId"
-            :options="authOptions"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"
-            filterable
-          ></el-cascader>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" min-width="150">
-        <template slot-scope="scope">
-          <el-popover placement="top" width="160" v-model="scope.row.visible">
-            <p>确定要删除此用户吗</p>
+    <div class="search-term">
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+        <el-form-item>
+          <el-button @click="onSubmit" type="primary">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="openDialog" type="primary">新增userAdmin表</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-popover placement="top" v-model="deleteVisible" width="160">
+            <p>确定要删除吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteUser(scope.row)">确定</el-button>
+              <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
+              <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
             </div>
-            <el-button type="danger" icon="el-icon-delete" size="small" slot="reference">删除</el-button>
+            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
+        </el-form-item>
+      </el-form>
+    </div>
+    <el-table
+            :data="tableData"
+            @selection-change="handleSelectionChange"
+            border
+            ref="multipleTable"
+            stripe
+            style="width: 100%"
+            tooltip-effect="dark"
+    >
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="uuid" prop="uuid" min-width="60"></el-table-column>
+      <el-table-column label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column>
+      <el-table-column label="用户真名" prop="realName" min-width="60"></el-table-column>
+      <el-table-column label="用户昵称" prop="nickName" min-width="60"></el-table-column>
+      <el-table-column label="用户头像" min-width="60">
+        <template slot-scope="scope">
+          <el-image :src="scope.row.avatar" lazy/>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户所属公司" prop="company.fullName" min-width="60"></el-table-column>
+      <el-table-column label="用户住址" prop="address" min-width="60"></el-table-column>
+      <el-table-column label="用户角色" prop="authority.authorityName" min-width="60"></el-table-column>
+      <el-table-column label="日期" min-width="60">
+        <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
+      </el-table-column>
+      <el-table-column label="按钮组" fixed="right" width="200">
+        <template slot-scope="scope">
+          <el-button @click="updateUserAdmin(scope.row)" size="small" type="primary">变更</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUserAdmin(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
     <el-pagination
-      :current-page="page"
-      :page-size="pageSize"
-      :page-sizes="[10, 30, 50, 100]"
-      :style="{float:'right',padding:'20px'}"
-      :total="total"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-      layout="total, sizes, prev, pager, next, jumper"
+            :current-page="page"
+            :page-size="pageSize"
+            :page-sizes="[10, 30, 50, 100]"
+            :style="{float:'right',padding:'20px'}"
+            :total="total"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :visible.sync="addUserDialog" custom-class="user-dialog" title="新增用户">
-      <el-form :rules="rules" ref="userForm" :model="userInfo">
-        <el-form-item label="用户名" label-width="80px" prop="username">
-          <el-input v-model="userInfo.username"></el-input>
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px"
+               label-position="left">
+        <el-form-item label="手机号" prop="phoneNumber">
+          <el-input v-model="formData.phoneNumber" placeholder="请输入手机号" clearable :style="{width: '100%'}">
+          </el-input>
         </el-form-item>
-        <el-form-item label="密码" label-width="80px" prop="password">
-          <el-input v-model="userInfo.password"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="formData.password" placeholder="请输入密码" clearable show-password
+                    :style="{width: '100%'}"></el-input>
         </el-form-item>
-        <el-form-item label="别名" label-width="80px" prop="nickName">
-          <el-input v-model="userInfo.nickName"></el-input>
+        <el-form-item label="真实姓名" prop="realName">
+          <el-input v-model="formData.realName" placeholder="请输入真实姓名" clearable :style="{width: '100%'}">
+          </el-input>
         </el-form-item>
-        <el-form-item label="头像" label-width="80px">
-          <el-upload
-            :headers="{'x-token':token}"
-            :on-success="handleAvatarSuccess"
-            :show-file-list="false"
-            :action="`${path}/fileUploadAndDownload/upload?noSave=1`"
-            class="avatar-uploader"
-            name="file"
-          >
-            <img :src="userInfo.headerImg" class="avatar" v-if="userInfo.headerImg" />
-            <i class="el-icon-plus avatar-uploader-icon" v-else></i>
-          </el-upload>
+        <el-form-item label="昵称" prop="nickName">
+          <el-input v-model="formData.nickName" placeholder="请输入昵称" clearable :style="{width: '100%'}">
+          </el-input>
         </el-form-item>
-        <el-form-item label="用户角色" label-width="80px" prop="authorityId">
-          <el-cascader
-            @change="changeAuthority(scope.row)"
-            v-model="userInfo.authorityId"
-            :options="authOptions"
-            :show-all-levels="false"
-            :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"
-            filterable
-          ></el-cascader>
+        <el-form-item label="所属公司" prop="companyId">
+          <el-select v-model="formData.companyId" placeholder="请选择所属公司" filterable clearable
+                     :style="{width: '100%'}">
+            <el-option v-for="item in companyOptions"
+                       :key="item.ID"
+                       :label="item.fullName"
+                       :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="角色" prop="authorityId">
+          <el-select v-model="formData.authorityId" placeholder="请选择角色" filterable clearable
+                     :style="{width: '100%'}">
+            <el-option v-for="item in authorityOptions"
+                       :key="item.authorityId"
+                       :label="item.authorityName"
+                       :value="item.authorityId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="住址" prop="address">
+          <el-input v-model="formData.address" placeholder="请输入住址" clearable :style="{width: '100%'}">
+          </el-input>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
-        <el-button @click="closeAddUserDialog">取 消</el-button>
-        <el-button @click="enterAddUserDialog" type="primary">确 定</el-button>
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
-
 <script>
-// 获取列表内容封装在mixins内部  getTableData方法 初始化已封装完成
-const path = process.env.VUE_APP_BASE_API;
-import {
-  getUserList,
-  setUserAuthority,
-  register,
-  deleteUser
-} from "@/api/user";
-import { getAuthorityList } from "@/api/authority";
-import infoList from "@/components/mixins/infoList";
-import { mapGetters } from "vuex";
-export default {
-  name: "Api",
-  mixins: [infoList],
-  data() {
-    return {
-      listApi: getUserList,
-      path: path,
-      authOptions: [],
-      addUserDialog: false,
-      userInfo: {
-        username: "",
-        password: "",
-        nickName: "",
-        headerImg: "",
-        authorityId: ""
-      },
-      rules: {
-        username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 6, message: "最低6位字符", trigger: "blur"}
-        ],
-        password: [
-          { required: true, message: "请输入用户密码", trigger: "blur" },
-          { min: 6, message: "最低6位字符", trigger: "blur"}
-        ],
-        nickName: [
-          { required: true, message: "请输入用户昵称", trigger: "blur" }
-        ],
-        authorityId: [
-          { required: true, message: "请选择用户角色", trigger: "blur" }
-        ]
-      }
-    };
-  },
-  computed: {
-    ...mapGetters("user", ["token"])
-  },
-  methods: {
-    setOptions(authData) {
-      this.authOptions = [];
-      this.setAuthorityOptions(authData, this.authOptions);
-    },
-    setAuthorityOptions(AuthorityData, optionsData) {
-      AuthorityData &&
-        AuthorityData.map(item => {
-          if (item.children&&item.children.length) {
-            const option = {
-              authorityId: item.authorityId,
-              authorityName: item.authorityName,
-              children: []
-            };
-            this.setAuthorityOptions(item.children, option.children);
-            optionsData.push(option);
-          } else {
-            const option = {
-              authorityId: item.authorityId,
-              authorityName: item.authorityName
-            };
-            optionsData.push(option);
-          }
-        });
-    },
-    async deleteUser(row) {
-      const res = await deleteUser({ id: row.ID });
-      if (res.code == 0) {
-        this.getTableData();
-        row.visible = false;
-      }
-    },
-    async enterAddUserDialog() {
-      this.$refs.userForm.validate(async valid => {
-        if (valid) {
-          const res = await register(this.userInfo);
-          if (res.code == 0) {
-            this.$message({ type: "success", message: "创建成功" });
-          }
-          await this.getTableData();
-          this.closeAddUserDialog();
-        }
-      });
-    },
-    closeAddUserDialog() {
-      this.$refs.userForm.resetFields();
-      this.addUserDialog = false;
-    },
-    handleAvatarSuccess(res) {
-      this.userInfo.headerImg = res.data.file.url;
-    },
-    addUser() {
-      this.addUserDialog = true;
-    },
-    async changeAuthority(row) {
-      const res = await setUserAuthority({
-        uuid: row.uuid,
-        authorityId: row.authority.authorityId
-      });
-      if (res.code == 0) {
-        this.$message({ type: "success", message: "角色设置成功" });
-      }
-    }
-  },
-  async created() {
-    this.getTableData();
-    const res = await getAuthorityList({ page: 1, pageSize: 999 });
-    this.setOptions(res.data.list);
-  }
-};
-</script>
-<style scoped lang="scss">
-.button-box {
-  padding: 10px 20px;
-  .el-button {
-    float: right;
-  }
-}
+  import {
+    getUser,
+    getUserList,
+    deleteUserList,
+    deleteUser,
+    createUser
+  } from "@/api/user";
+  import { getCompanyList } from "@/api/company";
+  import { getAuthorityList } from "@/api/authority";
+  import { formatTimeToStr } from "@/utils/data";
+  import infoList from "@/components/mixins/infoList";
 
-.user-dialog {
-  .avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
-  .avatar-uploader-icon {
-    border: 1px dashed #d9d9d9 !important;
-    border-radius: 6px;
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-}
+  export default {
+    name: "list",
+    mixins: [infoList],
+    data() {
+      const checkUsername = (rule, value, callback) => {
+        if (!(/^1[3456789]\d{9}$/.test(value))) {
+          return callback(new Error("请输入正确的用户名"));
+        } else {
+          callback();
+        }
+      };
+      const checkPassword = (rule, value, callback) => {
+        if (value.length < 6 || value.length > 12) {
+          return callback(new Error("请输入正确的密码"));
+        } else {
+          callback();
+        }
+      };
+      return {
+        listApi: getUserList,
+        dialogFormVisible: false,
+        type: "",
+        deleteVisible: false,
+        multipleSelection: [],
+        companyOptions:[],
+        authorityOptions:[],
+        formData: {
+          phoneNumber:null,password:null,realName:null,nickName:null,
+          companyId:null, address:null,authorityId:null
+        },
+        rules: {
+          phoneNumber: [{
+            validator: checkUsername,
+            trigger: 'blur'
+          }],
+          password: [{
+            validator: checkPassword,
+            trigger: 'blur'
+          }],
+          realName: [{
+            required: true,
+            message: '请输入真实姓名',
+            trigger: 'blur'
+          }],
+          nickName: [{
+            required: true,
+            message: '请输入昵称',
+            trigger: 'blur'
+          }],
+          companyId: [{
+            required: true,
+            message: '请选择所属公司',
+            trigger: 'change'
+          }],
+          authorityId: [{
+            required: true,
+            message: '请选择角色',
+            trigger: 'change'
+          }],
+          address: [{
+            required: true,
+            message: '请输入住址',
+            trigger: 'blur'
+          }],
+        },
+      };
+    },
+    filters: {
+      formatDate: function(time) {
+        if (time != null && time !== "") {
+          var date = new Date(time);
+          return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+        } else {
+          return "";
+        }
+      },
+      formatBoolean: function(bool) {
+        if (bool != null) {
+          return bool ? "是" :"否";
+        } else {
+          return "";
+        }
+      }
+    },
+    methods: {
+      //条件搜索前端看此方法
+      onSubmit() {
+        this.page = 1
+        this.pageSize = 10
+        this.getTableData()
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val
+      },
+      async onDelete() {
+        const ids = []
+        this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+        const res = await deleteUserList({ ids })
+        if (res.code === 0) {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.deleteVisible = false
+          await this.getTableData()
+        }
+      },
+      async updateUserAdmin(row) {
+        const res = await getUser({ ID: row.ID });
+        this.type = "update";
+        if (res.code === 0) {
+          this.formData = res.data.reuser;
+          this.dialogFormVisible = true;
+        }
+      },
+      closeDialog() {
+        this.dialogFormVisible = false;
+        this.formData = {
+          phoneNumber:null,password:null,realName:null,nickName:null,
+          companyId:null, address:null,authorityId:null
+        };
+      },
+      async deleteUserAdmin(row) {
+        this.$confirm('this operation is dangerous, continue ?', 'Hint', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        .then(async () => {
+          const res = await deleteUser({ ID: row.ID });
+          if (res.code === 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+            await this.getTableData();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      },
+      async enterDialog() {
+        let res;
+        switch (this.type) {
+          case "create":
+            res = await createUser(this.formData);
+            break;
+          case "update":
+            res = await updateUserAdmin(this.formData);
+            break;
+        }
+        if (res.code === 0) {
+          this.$message({
+            type:"success",
+            message:"创建/更改成功"
+          })
+          this.closeDialog();
+          await this.getTableData();
+        }
+      },
+      openDialog() {
+        this.type = "create";
+        this.dialogFormVisible = true;
+      },
+      async getCompanyOptions() {
+        this.companyOptions = []
+        let res = await getCompanyList({
+          // TODO get list by querystring
+          page: 1,
+          pageSize: 9999
+        })
+        if (res.code === 0) {
+          this.companyOptions = res.data.list
+        }
+      },
+      async getAuthorityOptions() {
+        this.authorityOptions = []
+        let res = await getAuthorityList({
+          // TODO get list by querystring
+          page: 1,
+          pageSize: 9999
+        })
+        if (res.code === 0) {
+          this.authorityOptions = res.data.list
+        }
+      }
+    },
+    async created() {
+      await this.getTableData()
+      await this.getAuthorityOptions()
+      await this.getCompanyOptions()
+    }
+  };
+</script>
+
+<style>
 </style>

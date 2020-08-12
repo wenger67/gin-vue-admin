@@ -249,7 +249,7 @@ CREATE TABLE `address_tags` (
 
 LOCK TABLES `address_tags` WRITE;
 /*!40000 ALTER TABLE `address_tags` DISABLE KEYS */;
-INSERT INTO `address_tags` VALUES (111,130),(112,124),(112,125),(112,126),(112,127),(112,128),(112,129),(112,134),(113,125),(113,126),(113,127),(113,128),(113,135);
+INSERT INTO `address_tags` VALUES (111,130),(112,124),(112,125),(112,126),(112,127),(112,128),(112,129),(112,134),(113,125),(113,126),(113,127),(113,128),(113,135),(114,125),(114,127),(114,128),(114,130),(115,124),(115,125),(115,127),(115,128),(115,129),(116,125),(116,127),(116,128),(116,129),(116,130),(117,125),(117,127),(117,128),(117,129),(117,130),(118,125),(118,127),(118,128),(118,129),(118,130),(119,128),(119,129),(120,125),(120,127),(120,128),(120,129),(120,130),(121,124),(121,127),(121,128),(122,125),(122,127),(122,128),(123,125),(123,130);
 /*!40000 ALTER TABLE `address_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,12 +267,22 @@ CREATE TABLE `addresses` (
   `deleted_at` datetime DEFAULT NULL,
   `region_id` int(10) NOT NULL COMMENT 'region id',
   `address_name` varchar(255) DEFAULT NULL COMMENT '地址，精确到类似小区级别',
-  `location` varchar(255) default null comment 'geo location',
+  `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
   `user_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'user amount',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_addresses_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (114,'2020-08-11 16:00:13','2020-08-11 16:00:13','2020-08-11 16:37:01',103,'东湖高新区光谷一路与湖口一路交汇处(光谷火车站东侧)统建天成美景','114.436551,30.484905',3000),(115,'2020-08-11 16:18:13','2020-08-11 16:18:13','2020-08-11 16:37:03',104,'新技术开发区关山一路74号保利花园(关山大道)','114.41495,30.500078',2000),(116,'2020-08-11 17:09:25','2020-08-11 17:09:25','2020-08-11 17:23:11',105,'新技术开发区关山一路74号保利花园(关山大道)','114.41495,30.500078',2000),(117,'2020-08-11 17:23:38','2020-08-11 17:23:38','2020-08-11 17:25:10',106,'新技术开发区关山一路74号保利花园(关山大道)','114.41495,30.500078',2000),(118,'2020-08-11 17:25:54','2020-08-11 17:25:54','2020-08-11 17:28:23',107,'新技术开发区关山一路74号保利花园(关山大道)','114.41495,30.500078',2000),(119,'2020-08-11 17:27:55','2020-08-11 17:27:55','2020-08-11 17:28:38',100,'万松街办事处解放大道688号武商广场6层asics(武商广场购物中心北区)','114.269915,30.580497',1111),(120,'2020-08-11 17:40:24','2020-08-11 17:40:24',NULL,102,'新技术开发区关山一路74号保利花园(关山大道)','114.41495,30.499504',2000),(121,'2020-08-11 17:41:14','2020-08-11 17:41:14',NULL,102,'东湖高新区民院路555号(当代学生公寓附近)当代曙光嘉园','114.398803,30.492495',1000),(122,'2020-08-11 17:42:38','2020-08-11 17:42:38',NULL,102,'关山大道369号金地·太阳城','114.414263,30.49073',2000),(123,'2020-08-11 17:43:46','2020-08-11 17:43:46',NULL,102,'关山大道和南湖大道交汇处(光谷创意大厦与光谷天地中间)江城雅居(建设中)','114.412767,30.479478',2000);
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Temporary table structure for view `authority_menu`
@@ -356,7 +366,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (101,'2020-07-30 14:39:09','2020-07-30 14:39:09',NULL,100,'住宅客梯'),(102,'2020-07-30 17:05:44','2020-07-30 17:05:44',NULL,100,'住宅货梯'),(103,'2020-07-30 17:06:15','2020-07-30 17:06:15',NULL,100,'住宅扶梯'),(104,'2020-07-30 17:06:57','2020-07-30 17:06:57',NULL,100,'商场客梯'),(105,'2020-07-30 17:07:06','2020-07-30 17:07:06',NULL,100,'商场货梯'),(106,'2020-07-30 17:07:19','2020-07-30 17:07:19',NULL,100,'商场扶梯'),(107,'2020-07-30 17:08:45','2020-07-30 17:08:45',NULL,100,'医院客梯'),(108,'2020-07-30 17:09:00','2020-07-30 17:09:00',NULL,100,'医院货梯'),(109,'2020-07-30 17:09:11','2020-07-30 17:09:11',NULL,100,'医院扶梯'),(110,'2020-07-30 17:10:24','2020-07-30 17:10:24',NULL,100,'写字楼客梯'),(111,'2020-07-30 17:10:33','2020-07-30 17:10:33',NULL,100,'写字楼货梯'),(112,'2020-07-30 17:11:54','2020-07-30 17:11:54',NULL,100,'政府单位客梯'),(113,'2020-07-30 17:12:03','2020-07-30 17:12:03',NULL,100,'政府单位货梯'),(114,'2020-07-30 17:14:50','2020-07-30 17:14:50',NULL,101,'运营平台'),(115,'2020-07-30 17:16:21','2020-07-30 17:16:21',NULL,101,'物业'),(116,'2020-07-30 17:16:40','2020-07-30 17:16:40',NULL,101,'维保公司'),(117,'2020-07-30 17:17:15','2020-07-30 17:17:15',NULL,101,'电梯生产商'),(118,'2020-07-30 17:18:20','2020-07-30 17:18:20',NULL,101,'电梯年检单位'),(119,'2020-07-30 17:18:37','2020-07-30 17:18:37',NULL,101,'电梯安装公司'),(120,'2020-07-30 17:19:01','2020-07-30 17:19:01',NULL,101,'监督单位'),(121,'2020-07-30 17:19:21','2020-07-30 17:19:21',NULL,101,'电梯使用单位'),(122,'2020-08-03 19:57:12','2020-08-03 19:57:12',NULL,0,''),(123,'2020-08-04 13:33:54','2020-08-04 13:33:54',NULL,107,'公务员'),(124,'2020-08-04 13:58:15','2020-08-05 10:23:24',NULL,107,'教师'),(125,'2020-08-04 13:58:25','2020-08-05 10:24:22',NULL,107,'白领'),(126,'2020-08-04 13:58:34','2020-08-05 10:24:22',NULL,107,'交警'),(127,'2020-08-04 13:58:43','2020-08-05 10:24:22',NULL,107,'老年人'),(128,'2020-08-04 13:58:59','2020-08-05 10:24:22',NULL,107,'婴幼儿'),(129,'2020-08-04 13:59:09','2020-08-05 10:23:24',NULL,107,'中学生'),(130,'2020-08-04 13:59:16','2020-08-05 11:11:19',NULL,107,'大学生'),(131,'2020-08-04 15:56:36','2020-08-04 15:56:36',NULL,0,''),(132,'2020-08-04 16:22:53','2020-08-04 16:22:53',NULL,0,''),(133,'2020-08-04 16:26:40','2020-08-04 16:26:40',NULL,0,''),(134,'2020-08-05 10:23:24','2020-08-05 10:23:24',NULL,0,''),(135,'2020-08-05 10:24:22','2020-08-05 10:24:22',NULL,0,'');
+INSERT INTO `categories` VALUES (101,'2020-07-30 14:39:09','2020-07-30 14:39:09',NULL,100,'住宅客梯'),(102,'2020-07-30 17:05:44','2020-07-30 17:05:44',NULL,100,'住宅货梯'),(103,'2020-07-30 17:06:15','2020-07-30 17:06:15',NULL,100,'住宅扶梯'),(104,'2020-07-30 17:06:57','2020-07-30 17:06:57',NULL,100,'商场客梯'),(105,'2020-07-30 17:07:06','2020-07-30 17:07:06',NULL,100,'商场货梯'),(106,'2020-07-30 17:07:19','2020-07-30 17:07:19',NULL,100,'商场扶梯'),(107,'2020-07-30 17:08:45','2020-07-30 17:08:45',NULL,100,'医院客梯'),(108,'2020-07-30 17:09:00','2020-07-30 17:09:00',NULL,100,'医院货梯'),(109,'2020-07-30 17:09:11','2020-07-30 17:09:11',NULL,100,'医院扶梯'),(110,'2020-07-30 17:10:24','2020-07-30 17:10:24',NULL,100,'写字楼客梯'),(111,'2020-07-30 17:10:33','2020-07-30 17:10:33',NULL,100,'写字楼货梯'),(112,'2020-07-30 17:11:54','2020-07-30 17:11:54',NULL,100,'政府单位客梯'),(113,'2020-07-30 17:12:03','2020-07-30 17:12:03',NULL,100,'政府单位货梯'),(114,'2020-07-30 17:14:50','2020-07-30 17:14:50',NULL,101,'运营平台'),(115,'2020-07-30 17:16:21','2020-07-30 17:16:21',NULL,101,'物业'),(116,'2020-07-30 17:16:40','2020-07-30 17:16:40',NULL,101,'维保公司'),(117,'2020-07-30 17:17:15','2020-07-30 17:17:15',NULL,101,'电梯生产商'),(118,'2020-07-30 17:18:20','2020-07-30 17:18:20',NULL,101,'电梯年检单位'),(119,'2020-07-30 17:18:37','2020-07-30 17:18:37',NULL,101,'电梯安装公司'),(120,'2020-07-30 17:19:01','2020-07-30 17:19:01',NULL,101,'监督单位'),(121,'2020-07-30 17:19:21','2020-07-30 17:19:21',NULL,101,'电梯使用单位'),(122,'2020-08-03 19:57:12','2020-08-03 19:57:12','2020-08-12 14:05:25',0,''),(123,'2020-08-04 13:33:54','2020-08-04 13:33:54',NULL,107,'公务员'),(124,'2020-08-04 13:58:15','2020-08-11 17:41:14',NULL,107,'教师'),(125,'2020-08-04 13:58:25','2020-08-11 17:43:46',NULL,107,'白领'),(126,'2020-08-04 13:58:34','2020-08-05 10:24:22',NULL,107,'交警'),(127,'2020-08-04 13:58:43','2020-08-11 17:42:38',NULL,107,'老年人'),(128,'2020-08-04 13:58:59','2020-08-11 17:42:38',NULL,107,'婴幼儿'),(129,'2020-08-04 13:59:09','2020-08-11 17:40:24',NULL,107,'中学生'),(130,'2020-08-04 13:59:16','2020-08-11 17:43:46',NULL,107,'大学生'),(131,'2020-08-04 15:56:36','2020-08-04 15:56:36','2020-08-12 14:05:45',0,''),(132,'2020-08-04 16:22:53','2020-08-04 16:22:53','2020-08-12 14:05:32',0,''),(133,'2020-08-04 16:26:40','2020-08-04 16:26:40','2020-08-12 14:05:34',0,''),(134,'2020-08-05 10:23:24','2020-08-05 10:23:24','2020-08-12 14:05:35',0,''),(135,'2020-08-05 10:24:22','2020-08-05 10:24:22','2020-08-12 14:05:38',0,'');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,7 +385,7 @@ CREATE TABLE `category_subjects` (
   `subject_name` varchar(50) DEFAULT NULL COMMENT '类别主体名',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_category_subjects_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='类别主体表，电梯/公司/记录/......';
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='类别主体表，电梯/公司/记录/......';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,7 +394,7 @@ CREATE TABLE `category_subjects` (
 
 LOCK TABLES `category_subjects` WRITE;
 /*!40000 ALTER TABLE `category_subjects` DISABLE KEYS */;
-INSERT INTO `category_subjects` VALUES (100,'2020-07-30 10:22:39','2020-07-30 17:12:55',NULL,'电梯使用场景'),(101,'2020-07-30 10:23:20','2020-07-30 10:23:20',NULL,'公司类别'),(102,'2020-07-30 10:24:48','2020-07-30 16:51:36',NULL,'用户电梯关系'),(103,'2020-07-30 10:25:12','2020-07-30 17:13:10',NULL,'电梯记录'),(104,'2020-07-30 10:25:35','2020-07-30 16:51:41',NULL,'电梯故障来源'),(105,'2020-07-30 10:26:03','2020-07-30 16:51:46',NULL,'电梯故障解除方式'),(106,'2020-07-30 10:26:22','2020-07-30 16:51:49',NULL,'电梯故障原因'),(107,'2020-08-04 13:33:32','2020-08-05 10:24:22',NULL,'地址标签');
+INSERT INTO `category_subjects` VALUES (100,'2020-07-30 10:22:39','2020-07-30 17:12:55',NULL,'电梯使用场景'),(101,'2020-07-30 10:23:20','2020-07-30 10:23:20',NULL,'公司类别'),(102,'2020-07-30 10:24:48','2020-07-30 16:51:36',NULL,'用户电梯关系'),(103,'2020-07-30 10:25:12','2020-07-30 17:13:10',NULL,'电梯记录'),(104,'2020-07-30 10:25:35','2020-07-30 16:51:41',NULL,'电梯故障来源'),(105,'2020-07-30 10:26:03','2020-07-30 16:51:46',NULL,'电梯故障解除方式'),(106,'2020-07-30 10:26:22','2020-07-30 16:51:49',NULL,'电梯故障原因'),(107,'2020-08-04 13:33:32','2020-08-11 17:43:46',NULL,'地址标签'),(108,'2020-08-12 14:00:23','2020-08-12 14:00:23','2020-08-12 14:12:33','用户类别');
 /*!40000 ALTER TABLE `category_subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -736,7 +746,7 @@ CREATE TABLE `lifts` (
   `lift_model_id` int(10) unsigned DEFAULT NULL COMMENT '电梯型号',
   `category_id` int(10) NOT NULL COMMENT '电梯类别',
   `floor_count` int(11) NOT NULL COMMENT '总楼层',
-  `location` varchar(255) default null comment 'geo location',
+  `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
   `address_id` int(10) DEFAULT NULL COMMENT '地址id',
   `building` varchar(50) DEFAULT NULL COMMENT '楼栋',
   `cell` int(11) DEFAULT NULL COMMENT '单元',
@@ -772,7 +782,7 @@ CREATE TABLE `regions` (
   `district` varchar(50) DEFAULT NULL COMMENT '行政区',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_regions_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='区域表';
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='区域表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,7 +791,7 @@ CREATE TABLE `regions` (
 
 LOCK TABLES `regions` WRITE;
 /*!40000 ALTER TABLE `regions` DISABLE KEYS */;
-INSERT INTO `regions` VALUES (100,'2020-07-31 15:46:33','2020-07-31 17:46:02',NULL,'湖北省','武汉市','东西湖区'),(101,'2020-07-31 16:46:50','2020-07-31 16:46:50',NULL,'湖北省','武汉市','江岸区'),(102,'2020-08-04 14:13:02','2020-08-05 11:11:18',NULL,'湖北省','武汉市','东湖高新区');
+INSERT INTO `regions` VALUES (100,'2020-07-31 15:46:33','2020-07-31 17:46:02',NULL,'湖北省','武汉市','东西湖区'),(101,'2020-07-31 16:46:50','2020-07-31 16:46:50',NULL,'湖北省','武汉市','江岸区'),(102,'2020-08-04 14:13:02','2020-08-05 11:11:18',NULL,'湖北省','武汉市','东湖高新区'),(103,'2020-08-11 16:00:13','2020-08-11 16:00:13','2020-08-11 16:32:43','湖北省','武汉市',''),(104,'2020-08-11 16:18:13','2020-08-11 16:18:13','2020-08-11 16:32:40','湖北省','武汉市',''),(105,'2020-08-11 17:09:25','2020-08-11 17:09:25','2020-08-11 17:18:18','湖北省','武汉市','东湖高新区'),(106,'2020-08-11 17:23:38','2020-08-11 17:23:38','2020-08-11 17:25:14','湖北省','武汉市','东湖高新区'),(107,'2020-08-11 17:25:54','2020-08-11 17:25:54','2020-08-11 17:28:19','湖北省','武汉市','江岸区'),(108,'2020-08-11 17:34:07','2020-08-11 17:34:07',NULL,'湖北省','武汉市','江夏区'),(109,'2020-08-11 17:38:33','2020-08-11 17:38:33',NULL,'湖北省','武汉市','青山区'),(110,'2020-08-11 17:39:05','2020-08-11 17:39:05',NULL,'湖北省','武汉市','江汉区'),(111,'2020-08-11 17:39:53','2020-08-11 17:39:53',NULL,'湖北省','武汉市','黄陂区');
 /*!40000 ALTER TABLE `regions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -869,7 +879,7 @@ CREATE TABLE `sys_authority_menus` (
 
 LOCK TABLES `sys_authority_menus` WRITE;
 /*!40000 ALTER TABLE `sys_authority_menus` DISABLE KEYS */;
-INSERT INTO `sys_authority_menus` VALUES ('888',1),('888',2),('888',3),('888',4),('888',5),('888',6),('888',17),('888',18),('888',19),('888',20),('888',21),('888',22),('888',23),('888',26),('888',33),('888',34),('888',38),('888',40),('888',41),('888',42),('888',50),('888',51),('888',52),('888',54),('888',55),('888',56),('888',57),('888',58),('888',59),('888',60),('888',61),('888',62),('888',63),('888',64),('888',65),('888',66),('888',67),('888',68),('888',69),('888',70),('8881',1),('8881',2),('8881',18),('8881',38),('8881',40),('8881',41),('8881',42),('9528',1),('9528',2),('9528',3),('9528',4),('9528',5),('9528',6),('9528',17),('9528',18),('9528',19),('9528',20),('9528',21),('9528',22),('9528',23),('9528',26),('9528',33),('9528',34),('9528',38),('9528',40),('9528',41),('9528',42);
+INSERT INTO `sys_authority_menus` VALUES ('888',1),('888',2),('888',3),('888',4),('888',5),('888',6),('888',17),('888',18),('888',19),('888',20),('888',21),('888',22),('888',23),('888',26),('888',33),('888',34),('888',38),('888',40),('888',41),('888',42),('888',50),('888',51),('888',52),('888',54),('888',55),('888',56),('888',57),('888',58),('888',59),('888',60),('888',61),('888',62),('888',63),('888',64),('888',65),('888',66),('888',67),('888',68),('8881',1),('8881',2),('8881',18),('8881',38),('8881',40),('8881',41),('8881',42),('9528',1),('9528',2),('9528',3),('9528',4),('9528',5),('9528',6),('9528',17),('9528',18),('9528',19),('9528',20),('9528',21),('9528',22),('9528',23),('9528',26),('9528',33),('9528',34),('9528',38),('9528',40),('9528',41),('9528',42);
 /*!40000 ALTER TABLE `sys_authority_menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -909,7 +919,7 @@ CREATE TABLE `sys_base_menus` (
 
 LOCK TABLES `sys_base_menus` WRITE;
 /*!40000 ALTER TABLE `sys_base_menus` DISABLE KEYS */;
-INSERT INTO `sys_base_menus` VALUES (1,'2019-09-19 14:05:18','2020-05-30 07:43:06',NULL,0,0,'dashboard','dashboard',0,'view/dashboard/index.vue','仪表盘','setting','仪表盘',1,0,0),(2,'2019-09-19 14:06:17','2020-07-31 01:49:33',NULL,0,0,'about','about',0,'view/about/index.vue','关于我们','info','测试菜单',80,0,0),(3,'2019-09-19 14:06:38','2020-07-31 01:49:07',NULL,0,0,'admin','superAdmin',0,'view/superAdmin/index.vue','超级管理员','user-solid','超级管理员',30,0,0),(4,'2019-09-19 14:11:53','2020-05-30 07:43:25',NULL,0,3,'authority','authority',0,'view/superAdmin/authority/authority.vue','角色管理','s-custom','角色管理',1,0,0),(5,'2019-09-19 14:13:18','2020-04-30 09:45:27',NULL,0,3,'menu','menu',0,'view/superAdmin/menu/menu.vue','菜单管理','s-order','菜单管理',2,1,0),(6,'2019-09-19 14:13:36','2020-04-24 02:16:43',NULL,0,3,'api','api',0,'view/superAdmin/api/api.vue','api管理','s-platform','api管理',3,1,0),(17,'2019-10-09 07:12:29','2020-04-24 02:16:43',NULL,0,3,'user','user',0,'view/superAdmin/user/user.vue','用户管理','coordinate','用户管理',4,0,0),(18,'2019-10-15 14:27:22','2020-07-31 01:49:19',NULL,0,0,'person','person',1,'view/person/person.vue','个人信息','message-solid','个人信息',50,0,0),(19,'2019-10-20 03:14:42','2020-07-31 01:49:29',NULL,0,0,'example','example',0,'view/example/index.vue','示例文件','s-management','示例文件',70,0,0),(20,'2019-10-20 03:18:11','2020-04-24 02:16:42',NULL,0,19,'table','table',0,'view/example/table/table.vue','表格示例','s-order','表格示例',1,0,0),(21,'2019-10-20 03:19:52','2020-04-24 02:16:43',NULL,0,19,'form','form',0,'view/example/form/form.vue','表单示例','document','表单示例',2,0,0),(22,'2019-10-20 03:22:19','2020-04-24 02:16:43',NULL,0,19,'rte','rte',0,'view/example/rte/rte.vue','富文本编辑器','reading','富文本编辑器',3,0,0),(23,'2019-10-20 03:23:39','2020-04-24 02:16:43',NULL,0,19,'excel','excel',0,'view/example/excel/excel.vue','excel导入导出','s-marketing','excel导入导出',4,0,0),(26,'2019-10-20 03:27:02','2020-04-24 02:16:43',NULL,0,19,'upload','upload',0,'view/example/upload/upload.vue','上传下载','upload','上传下载',5,0,0),(33,'2020-02-17 08:20:47','2020-04-24 02:16:43',NULL,0,19,'breakpoint','breakpoint',0,'view/example/breakpoint/breakpoint.vue','断点续传','upload','断点续传',6,0,0),(34,'2020-02-24 11:48:37','2020-04-24 02:16:43',NULL,0,19,'customer','customer',0,'view/example/customer/customer.vue','客户列表（资源示例）','s-custom','客户列表（资源示例）',7,0,0),(38,'2020-03-29 13:31:03','2020-07-31 01:49:24',NULL,0,0,'systemTools','systemTools',0,'view/systemTools/index.vue','系统工具','s-cooperation','系统工具',60,0,0),(40,'2020-03-29 13:35:10','2020-05-03 13:38:49',NULL,0,38,'autoCode','autoCode',0,'view/systemTools/autoCode/index.vue','代码生成器','cpu','代码生成器',1,1,0),(41,'2020-03-29 13:36:26','2020-05-03 13:38:43',NULL,0,38,'formCreate','formCreate',0,'view/systemTools/formCreate/index.vue','表单生成器','magic-stick','表单生成器',2,1,0),(42,'2020-04-02 06:19:36','2020-04-24 02:16:43',NULL,0,38,'system','system',0,'view/systemTools/system/system.vue','系统配置','s-operation','系统配置',3,0,0),(45,'2020-04-29 09:19:34','2020-07-31 01:48:56',NULL,0,0,'iconList','iconList',0,'view/iconList/index.vue','图标集合','star-on',NULL,20,0,0),(50,'2020-06-24 11:49:54','2020-06-28 12:34:47',NULL,0,3,'dictionary','dictionary',0,'view/superAdmin/dictionary/sysDictionary.vue','字典管理','notebook-2',NULL,5,0,0),(51,'2020-06-24 11:51:33','2020-06-28 12:35:04',NULL,0,3,'dictionaryDetail/:id','dictionaryDetail',1,'view/superAdmin/dictionary/sysDictionaryDetail.vue','字典详情','s-order',NULL,1,0,0),(52,'2020-06-29 05:31:17','2020-07-07 08:05:34',NULL,0,3,'operation','operation',0,'view/superAdmin/operation/sysOperationRecord.vue','操作历史','time',NULL,6,0,0),(54,'2020-07-30 02:05:03','2020-07-31 01:49:13',NULL,0,0,'category','category',0,'view/category/index.vue','类别管理','s-order',NULL,40,0,0),(55,'2020-07-30 02:06:20','2020-07-30 02:18:19',NULL,0,54,'subject','categorySubject',0,'view/category/subject/subject.vue','类别主体','s-shop',NULL,1,0,0),(56,'2020-07-30 02:08:20','2020-07-30 08:56:59',NULL,0,54,'categories','categoryItem',0,'view/category/categories/categories.vue','类别列表','money',NULL,2,0,0),(57,'2020-07-31 01:50:56','2020-07-31 01:51:10',NULL,0,0,'company','company',0,'view/company/index.vue','公司管理','school',NULL,35,0,0),(58,'2020-07-31 01:53:14','2020-07-31 01:55:10',NULL,0,57,'list','list',0,'view/company/list/list.vue','公司列表','s-fold',NULL,1,0,0),(59,'2020-07-31 01:58:12','2020-07-31 01:58:12',NULL,0,57,'employee','employee',0,'view/company/employee/employee.vue','员工管理','s-custom',NULL,2,0,0),(60,'2020-07-31 05:53:49','2020-07-31 05:53:49',NULL,0,0,'address','address',0,'view/address/index.vue','地址管理','add-location',NULL,45,0,0),(61,'2020-07-31 05:54:58','2020-07-31 05:54:58',NULL,0,60,'region','region',0,'view/address/region/region.vue','区域划分','notebook-1',NULL,1,0,0),(62,'2020-07-31 06:00:03','2020-07-31 06:00:03',NULL,0,60,'addressList','addressList',0,'view/address/list/address.vue','常用地址','medal-1',NULL,2,0,0),(63,'2020-08-10 03:20:05','2020-08-10 03:20:05',NULL,0,0,'lift','lift',0,'view/lift/index.vue','电梯管理','school',NULL,37,0,0),(64,'2020-08-10 03:21:31','2020-08-10 03:21:31',NULL,0,63,'list','liftList',0,'view/lift/list/list.vue','电梯列表','s-fold',NULL,0,0,0),(65,'2020-08-10 03:22:57','2020-08-10 03:22:57',NULL,0,63,'model','liftModel',0,'view/lift/model/model.vue','型号管理','setting',NULL,1,0,0),(66,'2020-08-10 03:23:57','2020-08-10 03:23:57',NULL,0,63,'change','liftChange',0,'view/lift/change/change.vue','信息变更历史','info',NULL,2,0,0),(67,'2020-08-10 03:25:19','2020-08-10 03:25:19',NULL,0,63,'record','liftRecord',0,'view/lift/record/record.vue','维保记录','s-cooperation',NULL,3,0,0),(68,'2020-08-10 03:27:05','2020-08-10 03:27:05',NULL,0,63,'trouble','liftTrouble',0,'view/lift/trouble/trouble.vue','故障救援记录','s-management',NULL,4,0,0),(69,'2020-08-10 09:32:17','2020-08-10 09:32:42',NULL,0,0,'user','userHub',0,'view/user/index.vue','用户管理','user-solid',NULL,21,0,0),(70,'2020-08-10 09:34:06','2020-08-10 09:34:06',NULL,0,69,'list','userList',0,'view/user/list/list.vue','用户列表','s-order',NULL,0,0,0);
+INSERT INTO `sys_base_menus` VALUES (1,'2019-09-19 14:05:18','2020-05-30 07:43:06',NULL,0,0,'dashboard','dashboard',0,'view/dashboard/index.vue','仪表盘','setting','仪表盘',1,0,0),(2,'2019-09-19 14:06:17','2020-07-31 01:49:33',NULL,0,0,'about','about',0,'view/about/index.vue','关于我们','info','测试菜单',80,0,0),(3,'2019-09-19 14:06:38','2020-07-31 01:49:07',NULL,0,0,'admin','superAdmin',0,'view/superAdmin/index.vue','超级管理员','user-solid','超级管理员',30,0,0),(4,'2019-09-19 14:11:53','2020-05-30 07:43:25',NULL,0,3,'authority','authority',0,'view/superAdmin/authority/authority.vue','角色管理','s-custom','角色管理',1,0,0),(5,'2019-09-19 14:13:18','2020-04-30 09:45:27',NULL,0,3,'menu','menu',0,'view/superAdmin/menu/menu.vue','菜单管理','s-order','菜单管理',2,1,0),(6,'2019-09-19 14:13:36','2020-04-24 02:16:43',NULL,0,3,'api','api',0,'view/superAdmin/api/api.vue','api管理','s-platform','api管理',3,1,0),(17,'2019-10-09 07:12:29','2020-04-24 02:16:43',NULL,0,3,'user','user',0,'view/superAdmin/user/user.vue','用户管理','coordinate','用户管理',4,0,0),(18,'2019-10-15 14:27:22','2020-07-31 01:49:19',NULL,0,0,'person','person',1,'view/person/person.vue','个人信息','message-solid','个人信息',50,0,0),(19,'2019-10-20 03:14:42','2020-07-31 01:49:29',NULL,0,0,'example','example',0,'view/example/index.vue','示例文件','s-management','示例文件',70,0,0),(20,'2019-10-20 03:18:11','2020-04-24 02:16:42',NULL,0,19,'table','table',0,'view/example/table/table.vue','表格示例','s-order','表格示例',1,0,0),(21,'2019-10-20 03:19:52','2020-04-24 02:16:43',NULL,0,19,'form','form',0,'view/example/form/form.vue','表单示例','document','表单示例',2,0,0),(22,'2019-10-20 03:22:19','2020-04-24 02:16:43',NULL,0,19,'rte','rte',0,'view/example/rte/rte.vue','富文本编辑器','reading','富文本编辑器',3,0,0),(23,'2019-10-20 03:23:39','2020-04-24 02:16:43',NULL,0,19,'excel','excel',0,'view/example/excel/excel.vue','excel导入导出','s-marketing','excel导入导出',4,0,0),(26,'2019-10-20 03:27:02','2020-04-24 02:16:43',NULL,0,19,'upload','upload',0,'view/example/upload/upload.vue','上传下载','upload','上传下载',5,0,0),(33,'2020-02-17 08:20:47','2020-04-24 02:16:43',NULL,0,19,'breakpoint','breakpoint',0,'view/example/breakpoint/breakpoint.vue','断点续传','upload','断点续传',6,0,0),(34,'2020-02-24 11:48:37','2020-04-24 02:16:43',NULL,0,19,'customer','customer',0,'view/example/customer/customer.vue','客户列表（资源示例）','s-custom','客户列表（资源示例）',7,0,0),(38,'2020-03-29 13:31:03','2020-07-31 01:49:24',NULL,0,0,'systemTools','systemTools',0,'view/systemTools/index.vue','系统工具','s-cooperation','系统工具',60,0,0),(40,'2020-03-29 13:35:10','2020-05-03 13:38:49',NULL,0,38,'autoCode','autoCode',0,'view/systemTools/autoCode/index.vue','代码生成器','cpu','代码生成器',1,1,0),(41,'2020-03-29 13:36:26','2020-05-03 13:38:43',NULL,0,38,'formCreate','formCreate',0,'view/systemTools/formCreate/index.vue','表单生成器','magic-stick','表单生成器',2,1,0),(42,'2020-04-02 06:19:36','2020-04-24 02:16:43',NULL,0,38,'system','system',0,'view/systemTools/system/system.vue','系统配置','s-operation','系统配置',3,0,0),(45,'2020-04-29 09:19:34','2020-07-31 01:48:56',NULL,0,0,'iconList','iconList',0,'view/iconList/index.vue','图标集合','star-on',NULL,20,0,0),(50,'2020-06-24 11:49:54','2020-06-28 12:34:47',NULL,0,3,'dictionary','dictionary',0,'view/superAdmin/dictionary/sysDictionary.vue','字典管理','notebook-2',NULL,5,0,0),(51,'2020-06-24 11:51:33','2020-06-28 12:35:04',NULL,0,3,'dictionaryDetail/:id','dictionaryDetail',1,'view/superAdmin/dictionary/sysDictionaryDetail.vue','字典详情','s-order',NULL,1,0,0),(52,'2020-06-29 05:31:17','2020-07-07 08:05:34',NULL,0,3,'operation','operation',0,'view/superAdmin/operation/sysOperationRecord.vue','操作历史','time',NULL,6,0,0),(54,'2020-07-30 02:05:03','2020-07-31 01:49:13',NULL,0,0,'category','category',0,'view/category/index.vue','类别管理','s-order',NULL,40,0,0),(55,'2020-07-30 02:06:20','2020-07-30 02:18:19',NULL,0,54,'subject','categorySubject',0,'view/category/subject/subject.vue','类别主体','s-shop',NULL,1,0,0),(56,'2020-07-30 02:08:20','2020-07-30 08:56:59',NULL,0,54,'categories','categoryItem',0,'view/category/categories/categories.vue','类别列表','money',NULL,2,0,0),(57,'2020-07-31 01:50:56','2020-07-31 01:51:10',NULL,0,0,'company','company',0,'view/company/index.vue','公司管理','school',NULL,35,0,0),(58,'2020-07-31 01:53:14','2020-07-31 01:55:10',NULL,0,57,'list','list',0,'view/company/list/list.vue','公司列表','s-fold',NULL,1,0,0),(59,'2020-07-31 01:58:12','2020-07-31 01:58:12',NULL,0,57,'employee','employee',0,'view/company/employee/employee.vue','员工管理','s-custom',NULL,2,0,0),(60,'2020-07-31 05:53:49','2020-07-31 05:53:49',NULL,0,0,'address','address',0,'view/address/index.vue','地址管理','add-location',NULL,45,0,0),(61,'2020-07-31 05:54:58','2020-07-31 05:54:58',NULL,0,60,'region','region',0,'view/address/region/region.vue','区域划分','notebook-1',NULL,1,0,0),(62,'2020-07-31 06:00:03','2020-07-31 06:00:03',NULL,0,60,'addressList','addressList',0,'view/address/list/address.vue','常用地址','medal-1',NULL,2,0,0),(63,'2020-08-10 03:20:05','2020-08-10 03:20:05',NULL,0,0,'lift','lift',0,'view/lift/index.vue','电梯管理','school',NULL,37,0,0),(64,'2020-08-10 03:21:31','2020-08-10 03:21:31',NULL,0,63,'list','liftList',0,'view/lift/list/list.vue','电梯列表','s-fold',NULL,0,0,0),(65,'2020-08-10 03:22:57','2020-08-10 03:22:57',NULL,0,63,'model','liftModel',0,'view/lift/model/model.vue','型号管理','setting',NULL,1,0,0),(66,'2020-08-10 03:23:57','2020-08-10 03:23:57',NULL,0,63,'change','liftChange',0,'view/lift/change/change.vue','信息变更历史','info',NULL,2,0,0),(67,'2020-08-10 03:25:19','2020-08-10 03:25:19',NULL,0,63,'record','liftRecord',0,'view/lift/record/record.vue','维保记录','s-cooperation',NULL,3,0,0),(68,'2020-08-10 03:27:05','2020-08-10 03:27:05',NULL,0,63,'trouble','liftTrouble',0,'view/lift/trouble/trouble.vue','故障救援记录','s-management',NULL,4,0,0),(69,'2020-08-10 09:32:17','2020-08-10 09:32:42','2020-08-12 02:42:54',0,0,'user','userHub',0,'view/user/index.vue','用户管理','user-solid',NULL,21,0,0),(70,'2020-08-10 09:34:06','2020-08-10 09:34:06','2020-08-12 02:42:48',0,69,'list','userList',0,'view/user/list/list.vue','用户列表','s-order',NULL,0,0,0);
 /*!40000 ALTER TABLE `sys_base_menus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1026,8 +1036,44 @@ CREATE TABLE `sys_operation_records` (
   `resp` text COLLATE utf8mb4_bin COMMENT '响应Body',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1714 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2454 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_users`
+--
+
+DROP TABLE IF EXISTS `sys_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `uuid` varbinary(255) DEFAULT NULL COMMENT 'uuid',
+  `phone_number` varchar(20) NOT NULL COMMENT '登陆手机号',
+  `password` varchar(255) DEFAULT NULL COMMENT '登陆密码',
+  `real_name` varchar(255) DEFAULT NULL COMMENT '用户真名',
+  `nick_name` varchar(255) DEFAULT NULL COMMENT '用户昵称',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
+  `company_id` int(10) unsigned NOT NULL COMMENT '用户所属公司id',
+  `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
+  `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_sys_users_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_users`
+--
+
+LOCK TABLES `sys_users` WRITE;
+/*!40000 ALTER TABLE `sys_users` DISABLE KEYS */;
+INSERT INTO `sys_users` VALUES (10,'2019-09-13 09:23:46','2020-06-26 13:17:50',NULL,_binary 'ce0d6685-c15f-4126-a5b4-890bc9d2356d','17612732732','e10adc3949ba59abbe56e057f20f883e','Doctor Zhang','DZ','http://qmplusimg.henrongyi.top/1571627762timg.jpg',106,'湖北省武汉市洪山区武珞路718号','888'),(11,'2019-09-13 09:27:29','2019-09-13 09:27:29',NULL,_binary 'fd6ef79b-944c-4888-8377-abe2d2608858','18827375697','3ec063004a6f31642261936a379fde3d','Master Zhan','MZ','http://qmplusimg.henrongyi.top/1572075907logo.png',107,'湖北省武汉市洪山区武珞路718号','9528');
+/*!40000 ALTER TABLE `sys_users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `sys_workflow_step_infos`
@@ -1093,45 +1139,6 @@ LOCK TABLES `sys_workflows` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `sys_users`
---
-
-DROP TABLE IF EXISTS `sys_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sys_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `uuid` varbinary(255) DEFAULT NULL COMMENT 'uuid',
-  `phone_number` varchar(20) NOT NULL COMMENT '登陆手机号',
-  `password` varchar(255) DEFAULT NULL COMMENT '登陆密码',
-  `real_name` varchar(255) DEFAULT NULL COMMENT '用户真名',
-  `nick_name` varchar(255) DEFAULT NULL COMMENT '用户昵称',
-  `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
-  `role_id` int(10) unsigned NOT NULL COMMENT '角色id',
-  `company_id` int(10) unsigned NOT NULL COMMENT '用户所属公司id',
-  `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
-  `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_users_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sys_users`
---
-
-LOCK TABLES `sys_users` WRITE;
-/*!40000 ALTER TABLE `sys_users` DISABLE KEYS */;
-INSERT INTO `sys_users` VALUES (10,'2019-09-13 09:23:46','2020-06-26 13:17:50',NULL,_binary 'ce0d6685-c15f-4126-a5b4-890bc9d2356d','17612732732','e10adc3949ba59abbe56e057f20f883e','Doctor Zhang','DZ','http://qmplusimg.henrongyi.top/1571627762timg.jpg',101,106,'湖北省武汉市洪山区武珞路718号',888),
-(11,'2019-09-13 09:27:29','2019-09-13 09:27:29',NULL,_binary 'fd6ef79b-944c-4888-8377-abe2d2608858','18827375697','3ec063004a6f31642261936a379fde3d',
-'Master Zhan','MZ','http://qmplusimg.henrongyi.top/1572075907logo.png',102, 107,'湖北省武汉市洪山区武珞路718号',9528);
-/*!40000 ALTER TABLE `sys_users` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `user_lifts`
 --
 
@@ -1187,4 +1194,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-10 17:38:50
+-- Dump completed on 2020-08-12 14:14:30

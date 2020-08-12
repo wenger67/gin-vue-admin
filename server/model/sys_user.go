@@ -13,8 +13,6 @@ type SysUser struct {
 	RealName    string `json:"realName" form:"realName"`
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
-	RoleId      int `json:"roleId" form:"roleId"`
-	Role    	Category `json:"role" form:"role" gorm:"ForiegnKey:RoleId;AssociationForiegnKey:ID"`
 	CompanyId   int `json:"companyId" form:"companyId"`
 	Company     Company `json:"company" form:"company" gorm:"ForiegnKey:CompanyId;AssociationForiegnKey:ID"`
 	Address     string `json:"address" form:"address"`

@@ -35,6 +35,15 @@ export const register = (data) => {
             data: data
         })
     }
+
+export const createUser = (data) => {
+    return service({
+        url: "/user/createUser",
+        method: 'post',
+        data: data
+    })
+}
+
     // @Summary 修改密码
     // @Produce  application/json
     // @Param data body {username:"string",password:"string",newPassword:"string"}
@@ -62,6 +71,13 @@ export const getUserList = (data) => {
     })
 }
 
+export const getUser = (data) => {
+    return service({
+        url: "/user/getUser",
+        method: 'get',
+        data: data
+    })
+}
 
 // @Tags User
 // @Summary 设置用户权限
@@ -91,6 +107,14 @@ export const setUserAuthority = (data) => {
 export const deleteUser = (data) => {
     return service({
         url: "/user/deleteUser",
+        method: 'delete',
+        data: data
+    })
+}
+
+export const deleteUserList = (data) => {
+    return service({
+        url: "/user/deleteUserList",
         method: 'delete',
         data: data
     })

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                    
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增userAdmin表</el-button>
+          <el-button @click="openDialog" type="primary">新增liftRecord表</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -32,32 +32,28 @@
     <el-table-column type="selection" width="55"></el-table-column>
 
     
-    <el-table-column label="uuid" prop="uuid" min-width="60"></el-table-column> 
+    <el-table-column label="电梯id" prop="liftId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column> 
+    <el-table-column label="记录类别" prop="categoryId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="登陆密码" prop="password" min-width="60"></el-table-column> 
+    <el-table-column label="图片记录" prop="images" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="用户真名" prop="realName" min-width="60"></el-table-column> 
+    <el-table-column label="文字记录" prop="content" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="用户昵称" prop="nickName" min-width="60"></el-table-column> 
+    <el-table-column label="开始时间" prop="startTime" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="用户头像" prop="avatar" min-width="60"></el-table-column> 
+    <el-table-column label="结束时间" prop="endTime" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="角色id" prop="roleId" min-width="60"></el-table-column> 
+    <el-table-column label="操作人员" prop="workerId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="用户所属公司id" prop="companyId" min-width="60"></el-table-column> 
-    
-    <el-table-column label="用户住址" prop="address" min-width="60"></el-table-column> 
-    
-    <el-table-column label="用户角色ID" prop="authorityId" min-width="60"></el-table-column> 
+    <el-table-column label="记录人员" prop="recorderId" sortable min-width="60"></el-table-column> 
     
       <el-table-column label="日期" min-width="60">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-button @click="updateUserAdmin(scope.row)" size="small" type="primary">变更</el-button>
+          <el-button @click="updateLiftRecord(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -86,27 +82,27 @@
 
 <script>
 import {
-    createUserAdmin,
-    deleteUserAdmin,
-    deleteUserAdminByIds,
-    updateUserAdmin,
-    findUserAdmin,
-    getUserAdminList
-} from "@/api/userAdmin";  //  此处请自行替换地址
+    createLiftRecord,
+    deleteLiftRecord,
+    deleteLiftRecordByIds,
+    updateLiftRecord,
+    findLiftRecord,
+    getLiftRecordList
+} from "@/api/liftRecord";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
 export default {
-  name: "list",
+  name: "LiftRecord",
   mixins: [infoList],
   data() {
     return {
-      listApi: getUserAdminList,
+      listApi: getLiftRecordList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
       multipleSelection: [],formData: {
-        uuid:null,phoneNumber:null,password:null,realName:null,nickName:null,avatar:null,roleId:null,companyId:null,address:null,authorityId:null,
+        liftId:null,categoryId:null,images:null,content:null,startTime:null,endTime:null,workerId:null,recorderId:null,
       }
     };
   },
@@ -131,7 +127,7 @@ export default {
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 10              
+        this.pageSize = 10            
         this.getTableData()
       },
       handleSelectionChange(val) {
@@ -143,7 +139,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteUserAdminByIds({ ids })
+        const res = await deleteLiftRecordByIds({ ids })
         if (res.code === 0) {
           this.$message({
             type: 'success',
@@ -153,11 +149,11 @@ export default {
           await this.getTableData()
         }
       },
-    async updateUserAdmin(row) {
-      const res = await findUserAdmin({ ID: row.ID });
+    async updateLiftRecord(row) {
+      const res = await findLiftRecord({ ID: row.ID });
       this.type = "update";
       if (res.code === 0) {
-        this.formData = res.data.reuserAdmin;
+        this.formData = res.data.reliftRecord;
         this.dialogFormVisible = true;
       }
     },
@@ -165,26 +161,24 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
         
-          uuid:null,
-          phoneNumber:null,
-          password:null,
-          realName:null,
-          nickName:null,
-          avatar:null,
-          roleId:null,
-          companyId:null,
-          address:null,
-          authorityId:null,
+          liftId:null,
+          categoryId:null,
+          images:null,
+          content:null,
+          startTime:null,
+          endTime:null,
+          workerId:null,
+          recorderId:null,
       };
     },
-    async deleteUserAdmin(row) {
+    async deleteLiftRecord(row) {
       this.$confirm('this operation is dangerous, continue ?', 'Hint', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
       .then(async () => {
-        const res = await deleteUserAdmin({ ID: row.ID });
+        const res = await deleteLiftRecord({ ID: row.ID });
         if (res.code === 0) {
           this.$message({
             type: "success",
@@ -204,10 +198,10 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createUserAdmin(this.formData);
+          res = await createLiftRecord(this.formData);
           break;
         case "update":
-          res = await updateUserAdmin(this.formData);
+          res = await updateLiftRecord(this.formData);
           break;
       }
       if (res.code === 0) {
