@@ -76,6 +76,9 @@ func GetLiftInfoList(info request.LiftSearch) (err error, list interface{}, tota
     var lifts []model.Lift
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&lifts).Error
+	err = db.Limit(limit).Offset(offset).Preload("Installer").Preload("Installer.Category").Preload("Maintainer").
+		Preload("Maintainer.Category").Preload("Checker").Preload("Checker.Category").
+		Preload("Owner").Preload("Owner.Category").Preload("LiftModel").Preload("Category").
+		Preload("Address").Preload("AdDevice").Find(&lifts).Error
 	return err, lifts, total
 }

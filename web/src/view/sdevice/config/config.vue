@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增adDeviceConfig表</el-button>
+          <el-button @click="openDialog" type="primary">新增DeviceConfig</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -30,21 +30,17 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-
-    
-    <el-table-column label="配置键值" prop="key" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="配置内容" prop="value" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="配置说明" prop="comment" sortable min-width="60"></el-table-column> 
-    
+    <el-table-column label="ID" prop="ID" sortable min-width="60"></el-table-column>
+    <el-table-column label="配置键值" prop="key" sortable min-width="60"></el-table-column>
+    <el-table-column label="配置内容" prop="value" sortable min-width="60"></el-table-column>
+    <el-table-column label="配置说明" prop="comment" sortable min-width="60"></el-table-column>
       <el-table-column label="日期" min-width="60">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button @click="updateAdDeviceConfig(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdDeviceConfig(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +57,20 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      此处请使用表单生成器生成form填充 表单默认绑定 formData 如手动修改过请自行修改key
+      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px"
+               label-position="left">
+        <el-form-item label="配置项" prop="key">
+          <el-input v-model="formData.key" placeholder="请输入配置项" clearable :style="{width: '100%'}"></el-input>
+        </el-form-item>
+        <el-form-item label="配置值" prop="value">
+          <el-input v-model="formData.value" placeholder="请输入配置值" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="配置说明" prop="comment">
+          <el-input v-model="formData.comment" type="textarea" placeholder="请输入配置说明"
+                    :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
+        </el-form-item>
+      </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
@@ -78,7 +87,7 @@ import {
     updateAdDeviceConfig,
     findAdDeviceConfig,
     getAdDeviceConfigList
-} from "@/api/adDeviceConfig";  //  此处请自行替换地址
+} from "@/api/adDeviceConfig";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
@@ -91,14 +100,34 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],formData: {
-        key:null,value:null,comment:null,
-      }
+      multipleSelection: [],
+      formData: {
+        key: undefined,
+        value: undefined,
+        comment: undefined,
+      },
+      rules: {
+        key: [{
+          required: true,
+          message: '请输入配置项',
+          trigger: 'blur'
+        }],
+        value: [{
+          required: true,
+          message: '请输入配置值',
+          trigger: 'blur'
+        }],
+        comment: [{
+          required: true,
+          message: '请输入配置说明',
+          trigger: 'blur'
+        }],
+      },
     };
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -150,7 +179,6 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        
           key:null,
           value:null,
           comment:null,

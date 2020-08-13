@@ -50,17 +50,17 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
     <!-- <el-table-column label="公司全称" prop="fullName" min-width="60"></el-table-column>  -->
-    <el-table-column label="公司简称" prop="alias" min-width="80"></el-table-column>
-    <el-table-column label="法人信息" prop="legalPerson" min-width="40"></el-table-column>
+    <el-table-column sortable label="公司简称" prop="alias" min-width="80"></el-table-column>
+    <el-table-column sortable label="法人信息" prop="legalPerson" min-width="40"></el-table-column>
     <el-table-column label="联系方式" prop="phone" min-width="60"></el-table-column> 
-    <el-table-column label="公司状态" prop="status" min-width="60"></el-table-column> 
-    <el-table-column label="统一信用代码" prop="creditCode" min-width="65"></el-table-column>
+    <el-table-column sortable label="公司状态" prop="status" min-width="60"></el-table-column>
+    <el-table-column sortable label="统一信用代码" prop="creditCode" min-width="65"></el-table-column>
     <!-- <el-table-column label="工商注册号" prop="regCode" min-width="60"></el-table-column> 
     <el-table-column label="组织机构号" prop="orgCode" min-width="60"></el-table-column>    
     <el-table-column label="纳税人识别号" prop="taxCode" min-width="60"></el-table-column>  -->
-    <el-table-column label="注册地址" prop="address" min-width="60"></el-table-column> 
-    <el-table-column label="类别" prop="category.categoryName" min-width="60"></el-table-column> 
-    <el-table-column label="日期" :inline="true" min-width="80">
+    <el-table-column sortable label="注册地址" prop="address" min-width="60"></el-table-column>
+    <el-table-column sortable label="类别" prop="category.categoryName" min-width="60"></el-table-column>
+    <el-table-column sortable label="日期" :inline="true" min-width="80">
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
       <el-table-column fixed="right" width="200" label="按钮组">

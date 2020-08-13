@@ -36,12 +36,7 @@ func CreateUser(u model.SysUser) (err error, user model.SysUser) {
 	u.Password = utils.MD5V([]byte(u.Password))
 	u.UUID = uuid.NewV4()
 	// TODO create avatar
-	//avatarErr := govatar.GenerateFileForUsername(govatar.MALE, u.PhoneNumber, fileName)
-	//if avatarErr != nil {
-	//	global.GVA_LOG.Error("create avatar for user :", u.RealName, " failed", avatarErr.Error())
-	//} else {
-	//	u.Avatar = "/resource/upload/avatar/" + utils.MD5V([]byte(u.PhoneNumber)) + ".jpg";
-	//}
+
 	err = global.GVA_DB.Create(&u).Error
 	return err, u
 }

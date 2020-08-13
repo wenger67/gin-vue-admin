@@ -15,7 +15,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog('add')" type="primary">新增类别</el-button>
+          <el-button @click="openDialog" type="primary">新增类别</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -229,16 +229,9 @@ export default {
         await this.getTableData();
       }
     },
-    openDialog(type) {
-      switch(type) {
-        case 'add':
-          this.dialogTitle = 'Create Category'
-          break
-        case 'edit':
-          this.dialogTitle = 'Edit Category'
-          break
-      }
-      this.type = type;
+    openDialog() {
+      this.type = "create";
+      this.dialogTitle = 'Create Category'
       this.dialogFormVisible = true;
     },
     async getSubjects() {

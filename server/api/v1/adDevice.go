@@ -19,9 +19,10 @@ import (
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /adDevice/createAdDevice [post]
 func CreateAdDevice(c *gin.Context) {
-	var adDevice model.AdDevice
-	_ = c.ShouldBindJSON(&adDevice)
-	err := service.CreateAdDevice(adDevice)
+	var dCreate model.AdDevice
+	_ = c.ShouldBindJSON(&dCreate)
+	// TODO verify params
+	err := service.CreateAdDevice(dCreate)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {

@@ -30,18 +30,29 @@
             tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="uuid" prop="uuid" min-width="60"></el-table-column>
-      <el-table-column label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column>
-      <el-table-column label="用户真名" prop="realName" min-width="60"></el-table-column>
-      <el-table-column label="用户昵称" prop="nickName" min-width="60"></el-table-column>
-      <el-table-column label="用户头像" min-width="60">
+      <el-table-column sortable label="uuid" prop="uuid" min-width="60"></el-table-column>
+      <el-table-column sortable label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column>
+      <el-table-column sortable label="真名" prop="realName" min-width="40"></el-table-column>
+      <el-table-column sortable label="昵称" prop="nickName" min-width="30"></el-table-column>
+      <el-table-column label="用户头像" min-width="48">
         <template slot-scope="scope">
-          <el-image :src="scope.row.avatar" lazy/>
+          <el-image :src="getAvatar(scope.row)" style="width: 100px;height: 100px" lazy/>
         </template>
       </el-table-column>
-      <el-table-column label="用户所属公司" prop="company.fullName" min-width="60"></el-table-column>
-      <el-table-column label="用户住址" prop="address" min-width="60"></el-table-column>
-      <el-table-column label="用户角色" prop="authority.authorityName" min-width="60"></el-table-column>
+      <el-table-column sortable label="所属公司" prop="company.fullName" min-width="60"></el-table-column>
+      <el-table-column sortable label="住址" prop="address" min-width="60"></el-table-column>
+      <el-table-column sortable label="角色" min-width="60">
+        <template slot-scope="scope">
+          <el-cascader
+            @change="changeAuthority(scope.row)"
+            v-model="scope.row.authority.authorityId"
+            :options="authOptions"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"
+            filterable
+          ></el-cascader>
+        </template>
+      </el-table-column>
       <el-table-column label="日期" min-width="60">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
@@ -94,14 +105,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="角色" prop="authorityId">
-          <el-select v-model="formData.authorityId" placeholder="请选择角色" filterable clearable
-                     :style="{width: '100%'}">
-            <el-option v-for="item in authorityOptions"
-                       :key="item.authorityId"
-                       :label="item.authorityName"
-                       :value="item.authorityId">
-            </el-option>
-          </el-select>
+          <el-cascader
+            v-model="formData.authorityId"
+            :options="authOptions"
+            :show-all-levels="false"
+            :props="{ checkStrictly: true,label:'authorityName',value:'authorityId',disabled:'disabled',emitPath:false}"
+            filterable
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="住址" prop="address">
           <el-input v-model="formData.address" placeholder="请输入住址" clearable :style="{width: '100%'}">
@@ -122,12 +132,14 @@
     getUserList,
     deleteUserList,
     deleteUser,
-    createUser
+    createUser,
+    setUserAuthority
   } from "@/api/user";
   import { getCompanyList } from "@/api/company";
   import { getAuthorityList } from "@/api/authority";
   import { formatTimeToStr } from "@/utils/data";
   import infoList from "@/components/mixins/infoList";
+  import { generateFromString } from 'generate-avatar'
 
   export default {
     name: "list",
@@ -154,17 +166,19 @@
         deleteVisible: false,
         multipleSelection: [],
         companyOptions:[],
-        authorityOptions:[],
+        authOptions: [],
         formData: {
           phoneNumber:null,password:null,realName:null,nickName:null,
           companyId:null, address:null,authorityId:null
         },
         rules: {
           phoneNumber: [{
+            required: true,
             validator: checkUsername,
             trigger: 'blur'
           }],
           password: [{
+            required: true,
             validator: checkPassword,
             trigger: 'blur'
           }],
@@ -222,6 +236,46 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
+      },
+      getAvatar(row) {
+        if (typeof row.avatar == "undefined" || row.avatar == null || row.avatar === "") {
+          return 'data:image/svg+xml;utf8,' + generateFromString(row.phoneNumber)
+        } else {
+          return row.avatar
+        }
+      },
+      setOptions(authData) {
+        this.authOptions = [];
+        this.setAuthorityOptions(authData, this.authOptions);
+      },
+      setAuthorityOptions(AuthorityData, optionsData) {
+        AuthorityData &&
+        AuthorityData.map(item => {
+          if (item.children&&item.children.length) {
+            const option = {
+              authorityId: item.authorityId,
+              authorityName: item.authorityName,
+              children: []
+            };
+            this.setAuthorityOptions(item.children, option.children);
+            optionsData.push(option);
+          } else {
+            const option = {
+              authorityId: item.authorityId,
+              authorityName: item.authorityName
+            };
+            optionsData.push(option);
+          }
+        });
+      },
+      async changeAuthority(row) {
+        const res = await setUserAuthority({
+          uuid: row.uuid,
+          authorityId: row.authority.authorityId
+        });
+        if (res.code === 0) {
+          this.$message({ type: "success", message: "角色设置成功" });
+        }
       },
       async onDelete() {
         const ids = []
@@ -310,23 +364,13 @@
         if (res.code === 0) {
           this.companyOptions = res.data.list
         }
-      },
-      async getAuthorityOptions() {
-        this.authorityOptions = []
-        let res = await getAuthorityList({
-          // TODO get list by querystring
-          page: 1,
-          pageSize: 9999
-        })
-        if (res.code === 0) {
-          this.authorityOptions = res.data.list
-        }
       }
     },
     async created() {
       await this.getTableData()
-      await this.getAuthorityOptions()
       await this.getCompanyOptions()
+      const res = await getAuthorityList({ page: 1, pageSize: 999 });
+      this.setOptions(res.data.list);
     }
   };
 </script>

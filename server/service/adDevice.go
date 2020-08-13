@@ -13,6 +13,8 @@ import (
 // @return    err             error
 
 func CreateAdDevice(adDevice model.AdDevice) (err error) {
+	adDevice.LastOnlineTime = adDevice.InstallTime
+	adDevice.LastOfflineTime = adDevice.InstallTime
 	err = global.GVA_DB.Create(&adDevice).Error
 	return err
 }
@@ -76,6 +78,7 @@ func GetAdDeviceInfoList(info request.AdDeviceSearch) (err error, list interface
     var adDevices []model.AdDevice
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&adDevices).Error
+	err = db.Limit(limit).Offset(offset).Preload("Type").Preload("Factory").
+		Preload("Status").Preload("Owners").Find(&adDevices).Error
 	return err, adDevices, total
 }
