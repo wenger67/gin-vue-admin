@@ -52,6 +52,14 @@ import {auth} from '@/directive/auth'
 // 按钮权限指令
 auth(Vue)
 
+// websocket
+import VueNativeSocket from 'vue-native-websocket'
+Vue.use(VueNativeSocket, 'ws://127.0.0.1:8888/api/ws/endpoint', {
+    format: 'json',
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 3000
+})
 
 new Vue({
     render: h => h(App),

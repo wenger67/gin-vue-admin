@@ -1,6 +1,9 @@
 import { login } from '@/api/user'
 import { jsonInBlacklist } from '@/api/jwt'
+
 import router from '@/router/index'
+var self = this
+
 export const user = {
     namespaced: true,
     state: {
@@ -46,18 +49,18 @@ export const user = {
             commit('setUserInfo', res.data.user)
             commit('setToken', res.data.token)
             commit('setExpiresAt', res.data.expiresAt)
-            if (res.code == 0) {
+            if (res.code === 0) {
                 const redirect = router.history.current.query.redirect
                 if (redirect) {
-                    router.push({ path: redirect })
+                    await router.push({ path: redirect })
                 } else {
-                    router.push({ path: '/layout/dashboard' })
+                    await router.push({ path: '/layout/dashboard' })
                 }
             }
         },
         async LoginOut({ commit }) {
             const res = await jsonInBlacklist()
-            if (res.code == 0) {
+            if (res.code === 0) {
                 commit("LoginOut")
             }
         }

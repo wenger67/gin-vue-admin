@@ -116,7 +116,7 @@ export default {
       lock: "lock",
       loginForm: {
         phoneNumber: "17612732732",
-        password: "123456",
+        password: "111111",
         captcha: "",
         captchaId: "",
       },
@@ -140,7 +140,7 @@ export default {
     async submitForm() {
       this.$refs.loginForm.validate(async (v) => {
         if (v) {
-          this.login();
+          await this.login();
           this.loginVefify();
         } else {
           this.$message({

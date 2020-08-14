@@ -46,7 +46,6 @@
       <template slot-scope="scope">{{scope.row.installTime|formatDate}}</template>
     </el-table-column>
     <el-table-column label="状态类别" prop="status.categoryName" sortable min-width="50"></el-table-column>
-
     <el-table-column label="上次离线时间" sortable min-width="70">
       <template slot-scope="scope">{{scope.row.lastOfflineTime|formatDateTime}}</template>
     </el-table-column>
@@ -59,7 +58,7 @@
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button @click="updateAdDevice(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdDevice(scope.row)">删除</el-button>
           <!--  TODO owner && config infos         -->
         </template>
       </el-table-column>
@@ -172,6 +171,7 @@ import {getCategoriesList} from "../../../api/categories";
 import {getCompanyList} from "../../../api/company";
 import {getUserList} from "../../../api/user";
 import {getAdDeviceConfigList} from "../../../api/adDeviceConfig";
+import {mapGetters} from "vuex";
 
 export default {
   name: "AdDevice",
@@ -235,6 +235,9 @@ export default {
         }],
       },
     };
+  },
+  computed: {
+    ...mapGetters("user", ["userInfo"])
   },
   filters: {
     formatDate: function(time) {
@@ -411,6 +414,14 @@ export default {
     await this.getFactoryOptions()
     await this.getStatuOptions()
     await this.getModalOptions()
+    // TODO websocket onopen event
+    if (this.$socket !== undefined) {
+      this.$socket.sendObj({
+        target: ["server"],
+        event: "report",
+        data: this.userInfo.uuid
+      })
+    }
   }
 };
 </script>

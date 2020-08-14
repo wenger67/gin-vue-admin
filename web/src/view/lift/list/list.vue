@@ -30,39 +30,49 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="日期" width="180">
-           <template slot-scope="scope">{{scope.row.CreatedAt|formatDateTime}}</template>
+      <el-table-column label="别名" prop="nickName" min-width="60"></el-table-column>
+<!--      <el-table-column label="编号" prop="code" min-width="60"></el-table-column>-->
+<!--      <el-table-column label="安装公司" prop="installer.fullName" min-width="60"></el-table-column>-->
+<!--      <el-table-column label="维保公司" prop="maintainer.fullName" min-width="60"></el-table-column>-->
+<!--      <el-table-column label="年检公司" prop="checker.fullName" min-width="60"></el-table-column>-->
+      <el-table-column label="使用公司" prop="owner.fullName" min-width="60"></el-table-column>
+<!--      <el-table-column label="出厂时间" prop="factoryTime" min-width="60">-->
+<!--        <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>-->
+<!--      </el-table-column>-->
+      <el-table-column label="安装时间" prop="installTime" min-width="60">
+        <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="电梯别名" prop="nickName" width="120"></el-table-column>
-      <el-table-column label="电梯编号" prop="code" width="120"></el-table-column>
-      <el-table-column label="电梯安装公司id" prop="installerId" width="120"></el-table-column>
-      <el-table-column label="电梯维保公司id" prop="maintainerId" width="120"></el-table-column>
-      <el-table-column label="电梯年检公司id" prop="checkerId" width="120"></el-table-column>
-      <el-table-column label="电梯使用公司id" prop="ownerId" width="120"></el-table-column>
-      <el-table-column label="电梯出厂时间" prop="factoryTime" width="120"></el-table-column>
-      <el-table-column label="电梯安装时间" prop="installTime" width="120"></el-table-column>
-      <el-table-column label="电梯年检时间" prop="checkTime" width="120"></el-table-column>
-      <el-table-column label="电梯型号" prop="liftModelId" width="120"></el-table-column>
-      <el-table-column label="电梯类别" prop="categoryId" width="120"></el-table-column>
-      <el-table-column label="总楼层" prop="floorCount" width="120"></el-table-column>
-      <el-table-column label="电梯位置地理经度" prop="latitude" width="120"></el-table-column>
-      <el-table-column label="电梯位置地理纬度" prop="longitude" width="120"></el-table-column>
-      <el-table-column label="地址id" prop="addressId" width="120"></el-table-column>
-      <el-table-column label="区域id" prop="regionId" width="120"></el-table-column>
-      <el-table-column label="楼栋" prop="building" width="120"></el-table-column>
-      <el-table-column label="单元" prop="cell" width="120"></el-table-column>
-      <el-table-column label="广告机设备id" prop="adDeviceId" width="120"></el-table-column>
-      <el-table-column label="按钮组">
+      <el-table-column label="年检时间" prop="checkTime" min-width="60">
+        <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
+      </el-table-column>
+      <el-table-column label="型号" min-width="60">
+        <template slot-scope="scope">
+          {{ scope.row.liftModel.brand }}{{ scope.row.liftModel.modal }}
+        </template>
+      </el-table-column>
+      <el-table-column label="类别" prop="category.categoryName" min-width="48"></el-table-column>
+      <el-table-column label="总楼层" prop="floorCount" min-width="40"></el-table-column>
+      <el-table-column label="地址" min-width="120">
+        <template slot-scope="scope">
+          {{ scope.row.address.addressName }}{{ scope.row.building }}{{ scope.row.cell }}
+        </template>
+      </el-table-column>
+      <el-table-column label="设备" min-width="40">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.adDevice.online === '1' ? 'success':'warning'">
+            {{scope.row.adDevice.online|formatBoolean}}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="日期" min-width="80">
+        <template slot-scope="scope">{{scope.row.CreatedAt|formatDateTime}}</template>
+      </el-table-column>
+      <el-table-column label="按钮组" fixed="right" min-width="200">
         <template slot-scope="scope">
           <el-button @click="updateLift(scope.row)" size="small" type="primary">变更</el-button>
-          <el-popover placement="top" width="160" v-model="scope.row.visible">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="deleteLift(scope.row)">确定</el-button>
-            </div>
-            <el-button type="danger" icon="el-icon-delete" size="mini" slot="reference">删除</el-button>
-          </el-popover>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLift(scope.row)">删除</el-button>
+          <el-button type="primary" icon="el-icon-video" size="mini" @click="startVideoCall(scope.row)">Video</el-button>
+          <!--  TODO more operations  -->
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +88,7 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" :title="dialogTitle">
       <el-row :gutter="15">
         <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px"
                  label-position="left">
@@ -202,7 +212,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="地址划分" prop="addressId">
-              <el-select v-model="formData.addressId" placeholder="请选择地址划分" clearable
+              <el-select v-model="formData.addressId" @change="handleSelectAddress" placeholder="请选择地址划分" clearable
                          :style="{width: '100%'}">
                 <el-option v-for="(item, index) in addressOptions" :key="index" :label="item.addressName"
                            :value="item.ID"></el-option>
@@ -224,8 +234,8 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label-width="64px" label="总楼层" prop="floorCount">
-              <el-input v-model="formData.floorCount" placeholder="请输入总楼层" clearable :style="{width: '100%'}">
-              </el-input>
+              <el-input-number v-model="formData.floorCount" placeholder="请输入总楼层" clearable :style="{width: '100%'}">
+              </el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="5">
@@ -236,9 +246,26 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label-width="64px" label="单元号" prop="cell">
-              <el-input v-model="formData.cell" placeholder="请输入单元号" clearable :style="{width: '100%'}">
-              </el-input>
+              <el-input-number v-model="formData.cell" placeholder="请输入单元号" clearable :style="{width: '100%'}">
+              </el-input-number>
             </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="address">
+              <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-amap vid="amapDemo" :center="mapCenter" :amap-manager="aMapManager" :zoom="12" :events="events" class="amap-demo">
+              <el-amap-circle
+                      v-for="(circle, index) in circles"
+                      :center="circle.center"
+                      :radius="circle.radius"
+                      :key="index"
+                      :fill-opacity="circle.fillOpacity"
+                      :events="circle.events">
+              </el-amap-circle>
+            </el-amap>
           </el-col>
         </el-form>
       </el-row>
@@ -246,6 +273,9 @@
         <el-button @click="closeDialog">取 消</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
+    </el-dialog>
+    <el-dialog :before-close="closeVideoCall" :visible.sync="videoCallVisible" :title="videoCallTitle">
+      <video controls src=""/>
     </el-dialog>
   </div>
 </template>
@@ -258,22 +288,53 @@ import {
     updateLift,
     findLift,
     getLiftList
-} from "@/api/lift";  //  此处请自行替换地址
+} from "@/api/lift";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
-import {getCompanyList} from "../../../api/company";
-import {getLiftModelList} from "../../../api/liftModel";
-import {getCategoriesList} from "../../../api/categories";
-import {getAddressList} from "../../../api/address";
-import {getAdDeviceList} from "../../../api/adDevice";
+import {getCompanyList} from "@/api/company";
+import {getLiftModelList} from "@/api/liftModel";
+import {getCategoriesList} from "@/api/categories";
+import {getAddressList} from "@/api/address";
+import {getAdDeviceList} from "@/api/adDevice";
+import VueAMap from "vue-amap";
+import { ZegoExpressEngine } from 'zego-express-engine-webrtc';
+
+let aMapManager = new VueAMap.AMapManager();
 
 export default {
   name: "Lift",
   mixins: [infoList],
   data() {
     return {
+      aMapManager,
+      events: {
+        init(o) {
+          // eslint-disable-next-line no-undef
+          let marker = new AMap.Marker({
+            position: [121.59996, 31.197646]
+          });
+          marker.setMap(o);
+        }
+      },
+      circles: [
+        {
+          center: [121.5273285, 31.21515044],
+          radius: 200,
+          fillOpacity: 0.5,
+          events: {
+          }
+        }
+      ],
+      searchOption: {
+        city: '上海',
+        citylimit: true
+      },
+      mapCenter: [121.59996, 31.197646],
       listApi: getLiftList,
       dialogFormVisible: false,
+      videoCallVisible: false,
+      dialogTitle: "",
+      videoCallTitle: "",
       visible: false,
       type: "",
       deleteVisible: false,
@@ -408,7 +469,7 @@ export default {
     },
     formatBoolean: function(bool) {
       if (bool != null) {
-        return bool ? "是" :"否";
+        return bool ? "在线" :"离线";
       } else {
         return "";
       }
@@ -423,6 +484,27 @@ export default {
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
+      },
+      handleSelectAddress() {
+        let id = this.formData.addressId
+        let address = this.addressOptions.filter(item => item.ID === id)
+        // change map center
+        this.searchOption.city = address[0].region.city
+        this.aMapManager.getMap().setCity(address[0].region.city)
+        let center = this.aMapManager.getMap().getCenter();
+        this.mapCenter = [center.lat, center.lng]
+      },
+      onSearchResult(pois) {
+        if (pois.length > 0) {
+          let center = {
+            lng: pois[0].lng,
+            lat: pois[0].lat
+          };
+          this.mapCenter = [center.lng, center.lat];
+          this.circles[0].center = [center.lng, center.lat]
+          this.aMapManager.getMap().setZoom(16)
+          this.formData.location = center.lng + "," + center.lat
+        }
       },
       async onDelete() {
         const ids = []
@@ -443,6 +525,7 @@ export default {
     async updateLift(row) {
       const res = await findLift({ ID: row.ID });
       this.type = "update";
+      this.dialogTitle = "Update Lift"
       if (res.code === 0) {
         this.formData = res.data.relift;
         this.dialogFormVisible = true;
@@ -473,15 +556,27 @@ export default {
       };
     },
     async deleteLift(row) {
-      this.visible = false;
-      const res = await deleteLift({ ID: row.ID });
-      if (res.code === 0) {
+      this.$confirm('this operation is dangerous, continue ?', 'Hint', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(async () => {
+        const res = await deleteLift({ ID: row.ID });
+        if (res.code === 0) {
+          this.$message({
+            type: "success",
+            message: "删除成功"
+          });
+          await this.getTableData();
+        }
+      })
+      .catch(() => {
         this.$message({
-          type: "success",
-          message: "删除成功"
-        });
-        await this.getTableData();
-      }
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     async enterDialog() {
       let res;
@@ -491,9 +586,6 @@ export default {
           break;
         case "update":
           res = await updateLift(this.formData);
-          break;
-        default:
-          res = await createLift(this.formData);
           break;
       }
       if (res.code === 0) {
@@ -507,7 +599,58 @@ export default {
     },
     openDialog() {
       this.type = "create";
+      this.dialogTitle = "Create Lift"
       this.dialogFormVisible = true;
+    },
+    startVideoCall(row) {
+      this.videoCallTitle = row.ID + " - Video"
+      this.videoCallVisible = true
+
+      const userID = 'sample' + new Date().getTime();
+      const userName = 'sampleUser' + new Date().getTime();
+      const tokenUrl = 'https://wsliveroom-demo.zego.im:8282/token';
+      const publishStreamId = 'webrtc' + new Date().getTime();
+      let zg;
+      let appID = 1739272706;
+      let server = 'wss://webliveroom-test.zego.im/ws'; //'wss://wsliveroom' + appID + '-api.zego.im:8282/ws'
+      let cgiToken = '';
+      let previewVideo;
+
+      ({ appID, server, cgiToken } = this.getCgi(appID, server, cgiToken));
+      if (cgiToken && tokenUrl === 'https://wsliveroom-demo.zego.im:8282/token') {
+        Promise.get(cgiToken, rsp => {
+          cgiToken = rsp.data;
+          console.log(cgiToken);
+        });
+      }
+
+      ze  = new ZegoExpressEngine();
+
+    },
+    getCgi(appId, serverUrl, cgi) {
+      var appID = appId;
+      var server = serverUrl;
+      var cgiToken = cgi;
+      if (location.search) {
+        var arrConfig = location.search.substr(1).split('&');
+        arrConfig.forEach(function (item) {
+          var key = item.split('=')[0], value = item.split('=')[1];
+          if (key === 'appid') {
+            appID = Number(value);
+          }
+          if (key === 'server') {
+            server = decodeURIComponent(value);
+          }
+          if (key === 'cgi_token') {
+            cgiToken = decodeURIComponent(value);
+          }
+        });
+      }
+      return { appID: appID, server: server, cgiToken: cgiToken };
+    },
+    closeVideoCall() {
+      this.videoCallVisible = false
+      //TODO
     },
     async getCompanyOptions() {
       let res = await getCompanyList(this.optionParams)
@@ -549,4 +692,12 @@ export default {
 </script>
 
 <style>
+  .amap-demo {
+    height: 300px!important;
+    padding: 10px 20px 20px 20px;
+  }
+
+  .search-box {
+    position: relative;
+  }
 </style>

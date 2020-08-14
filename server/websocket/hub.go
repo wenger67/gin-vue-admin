@@ -43,6 +43,7 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
+			global.GVA_LOG.Info("client register")
 			h.clients[client] = true
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {
