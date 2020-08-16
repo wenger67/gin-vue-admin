@@ -99,6 +99,7 @@ export default {
   name: 'Layout',
   data() {
     return {
+      timer: "",
       show: false,
       isCollapse: false,
       isSider: true,
@@ -179,7 +180,14 @@ export default {
         confirmPassword: ''
       }
       this.$refs.modifyPwdForm.clearValidate()
-    }
+    },
+    reportUser() {
+      this.$socket.sendObj({
+        target: ["server"],
+        event: "report",
+        data: this.userInfo.uuid
+      })
+    },
   },
   computed: {
     ...mapGetters('user', ['userInfo']),
@@ -191,6 +199,9 @@ export default {
     }
   },
   mounted() {
+    console.log("layout mounted:" + this.userInfo.uuid)
+    this.timer = setTimeout(this.reportUser, 1000);
+
     let screenWidth = document.body.clientWidth
     if (screenWidth < 1000) {
       this.isMobile = true
@@ -227,6 +238,9 @@ export default {
         this.$bus.emit('mobile', this.isMobile)
       })()
     }
+  },
+  beforeDestroy() {
+    clearTimeout(this.timer)
   }
 }
 </script>

@@ -32,7 +32,7 @@
     <el-table-column type="selection" width="55"></el-table-column>
     <el-table-column label="在线状态" min-width="50" sortable>
       <template slot-scope="scope">
-        <el-tag :type="scope.row.online === '1' ? 'success':'warning'">
+        <el-tag :type="scope.row.online === true ? 'success':'warning'">
           {{scope.row.online|formatBoolean}}
         </el-tag>
       </template>

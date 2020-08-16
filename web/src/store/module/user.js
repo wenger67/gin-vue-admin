@@ -2,7 +2,6 @@ import { login } from '@/api/user'
 import { jsonInBlacklist } from '@/api/jwt'
 
 import router from '@/router/index'
-var self = this
 
 export const user = {
     namespaced: true,

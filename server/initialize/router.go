@@ -5,6 +5,7 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/middleware"
 	"gin-vue-admin/router"
+	"gin-vue-admin/router/dev"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -52,6 +53,10 @@ func Routers() *gin.Engine {
 	router.InitAdDeviceDataRouter(ApiGroup)
 	router.InitAdDeviceEventRouter(ApiGroup)
 	router.InitAdDeviceRouter(ApiGroup)
+
+	DevGroup := Router.Group("dev")
+	dev.InitDeviceRouter(DevGroup)
+
 	global.GVA_LOG.Info("router register success")
 	return Router
 }

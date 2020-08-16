@@ -31,13 +31,11 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 Vue.use(VueQuillEditor)
 
 // markdown插件
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-
 Vue.use(mavonEditor)
 
 import '@/permission'
@@ -51,6 +49,10 @@ Vue.use(Bus)
 import {auth} from '@/directive/auth'
 // 按钮权限指令
 auth(Vue)
+
+// http request
+import axios from 'axios'
+Vue.prototype.$http = axios
 
 // websocket
 import VueNativeSocket from 'vue-native-websocket'

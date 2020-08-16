@@ -71,7 +71,7 @@
         <template slot-scope="scope">
           <el-button @click="updateLift(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLift(scope.row)">删除</el-button>
-          <el-button type="primary" icon="el-icon-video" size="mini" @click="startVideoCall(scope.row)">Video</el-button>
+          <el-button type="success" icon="el-icon-info" size="small" @click="toDetail(scope.row)">详情</el-button>
           <!--  TODO more operations  -->
         </template>
       </el-table-column>
@@ -274,9 +274,6 @@
         <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :before-close="closeVideoCall" :visible.sync="videoCallVisible" :title="videoCallTitle">
-      <video controls src=""/>
-    </el-dialog>
   </div>
 </template>
 
@@ -297,7 +294,6 @@ import {getCategoriesList} from "@/api/categories";
 import {getAddressList} from "@/api/address";
 import {getAdDeviceList} from "@/api/adDevice";
 import VueAMap from "vue-amap";
-import { ZegoExpressEngine } from 'zego-express-engine-webrtc';
 
 let aMapManager = new VueAMap.AMapManager();
 
@@ -332,7 +328,6 @@ export default {
       mapCenter: [121.59996, 31.197646],
       listApi: getLiftList,
       dialogFormVisible: false,
-      videoCallVisible: false,
       dialogTitle: "",
       videoCallTitle: "",
       visible: false,
@@ -476,52 +471,59 @@ export default {
     }
   },
   methods: {
-      //条件搜索前端看此方法
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10                       
-        this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      handleSelectAddress() {
-        let id = this.formData.addressId
-        let address = this.addressOptions.filter(item => item.ID === id)
-        // change map center
-        this.searchOption.city = address[0].region.city
-        this.aMapManager.getMap().setCity(address[0].region.city)
-        let center = this.aMapManager.getMap().getCenter();
-        this.mapCenter = [center.lat, center.lng]
-      },
-      onSearchResult(pois) {
-        if (pois.length > 0) {
-          let center = {
-            lng: pois[0].lng,
-            lat: pois[0].lat
-          };
-          this.mapCenter = [center.lng, center.lat];
-          this.circles[0].center = [center.lng, center.lat]
-          this.aMapManager.getMap().setZoom(16)
-          this.formData.location = center.lng + "," + center.lat
+    toDetail(row){
+      this.$router.push({
+        name:"liftDetail",
+        params:{
+          id:row.ID
         }
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteLiftByIds({ ids })
-        if (res.code === 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          await this.getTableData()
-        }
-      },
+      })
+    },
+    onSubmit() {
+      this.page = 1
+      this.pageSize = 10
+      this.getTableData()
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleSelectAddress() {
+      let id = this.formData.addressId
+      let address = this.addressOptions.filter(item => item.ID === id)
+      // change map center
+      this.searchOption.city = address[0].region.city
+      this.aMapManager.getMap().setCity(address[0].region.city)
+      let center = this.aMapManager.getMap().getCenter();
+      this.mapCenter = [center.lat, center.lng]
+    },
+    onSearchResult(pois) {
+      if (pois.length > 0) {
+        let center = {
+          lng: pois[0].lng,
+          lat: pois[0].lat
+        };
+        this.mapCenter = [center.lng, center.lat];
+        this.circles[0].center = [center.lng, center.lat]
+        this.aMapManager.getMap().setZoom(16)
+        this.formData.location = center.lng + "," + center.lat
+      }
+    },
+    async onDelete() {
+      const ids = []
+      this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+      const res = await deleteLiftByIds({ ids })
+      if (res.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.deleteVisible = false
+        await this.getTableData()
+      }
+    },
     async updateLift(row) {
       const res = await findLift({ ID: row.ID });
       this.type = "update";
@@ -601,56 +603,6 @@ export default {
       this.type = "create";
       this.dialogTitle = "Create Lift"
       this.dialogFormVisible = true;
-    },
-    startVideoCall(row) {
-      this.videoCallTitle = row.ID + " - Video"
-      this.videoCallVisible = true
-
-      const userID = 'sample' + new Date().getTime();
-      const userName = 'sampleUser' + new Date().getTime();
-      const tokenUrl = 'https://wsliveroom-demo.zego.im:8282/token';
-      const publishStreamId = 'webrtc' + new Date().getTime();
-      let zg;
-      let appID = 1739272706;
-      let server = 'wss://webliveroom-test.zego.im/ws'; //'wss://wsliveroom' + appID + '-api.zego.im:8282/ws'
-      let cgiToken = '';
-      let previewVideo;
-
-      ({ appID, server, cgiToken } = this.getCgi(appID, server, cgiToken));
-      if (cgiToken && tokenUrl === 'https://wsliveroom-demo.zego.im:8282/token') {
-        Promise.get(cgiToken, rsp => {
-          cgiToken = rsp.data;
-          console.log(cgiToken);
-        });
-      }
-
-      ze  = new ZegoExpressEngine();
-
-    },
-    getCgi(appId, serverUrl, cgi) {
-      var appID = appId;
-      var server = serverUrl;
-      var cgiToken = cgi;
-      if (location.search) {
-        var arrConfig = location.search.substr(1).split('&');
-        arrConfig.forEach(function (item) {
-          var key = item.split('=')[0], value = item.split('=')[1];
-          if (key === 'appid') {
-            appID = Number(value);
-          }
-          if (key === 'server') {
-            server = decodeURIComponent(value);
-          }
-          if (key === 'cgi_token') {
-            cgiToken = decodeURIComponent(value);
-          }
-        });
-      }
-      return { appID: appID, server: server, cgiToken: cgiToken };
-    },
-    closeVideoCall() {
-      this.videoCallVisible = false
-      //TODO
     },
     async getCompanyOptions() {
       let res = await getCompanyList(this.optionParams)
