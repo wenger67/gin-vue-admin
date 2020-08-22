@@ -3,10 +3,13 @@
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                                      
         <el-form-item>
-          <el-button @click="onSubmit" type="primary">查询</el-button>
+        <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增lift表</el-button>
+          <el-button @click="refresh" type="primary">刷新</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="openDialog" type="primary">新增电梯</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -59,7 +62,7 @@
       </el-table-column>
       <el-table-column label="设备" min-width="40">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.adDevice.online === '1' ? 'success':'warning'">
+          <el-tag :type="scope.row.adDevice.online === true ? 'success':'warning'">
             {{scope.row.adDevice.online|formatBoolean}}
           </el-tag>
         </template>

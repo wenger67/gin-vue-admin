@@ -6,6 +6,7 @@ import (
 	"gin-vue-admin/service"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -19,10 +20,6 @@ func UpdateDeviceStatus(serial string, status string) {
 		// TODO handle lift only, handle others later
 		return
 	}
-	//_, err := mysql.Exec("update zx_device set update_at=now(), dev_alive=? where dev_number=?", status, serial)
-	//if err != nil {
-	//	global.GVA_LOG.Warning("update device status failed:", err)
-	//}
 	liftId := strings.Split(serial, "_")[1]
 	id, _ := strconv.Atoi(liftId)
 	err, lift := service.GetLift(uint(id))
@@ -31,12 +28,23 @@ func UpdateDeviceStatus(serial string, status string) {
 		return
 	}
 
-	var online bool
+	db := global.GVA_DB.Model(&lift.AdDevice);
+	var eventTypeId int
+	var str string
+	// update state
 	if status == DeviceOnline {
-		online = true
+		eventTypeId = 165
+		str = "上线"
+		db.Updates(map[string]interface{}{"online": true, "last_online_time": time.Now()})
 	} else {
-		online = false
+		eventTypeId = 164
+		str = "离线"
+		db.Updates(map[string]interface{}{"online": false, "last_online_time": time.Now()})
 	}
-	global.GVA_DB.Debug().Model(&model.AdDevice{}).Where("id = ?", lift.AdDeviceId).Update("online", online)
+
+	// create event
+	// 164:off 165:on
+	deviceEvent := model.AdDeviceEvent{DeviceId: lift.AdDeviceId, TypeId: eventTypeId, Content: "设备于 " + time.Now().Format("2006-01-02 15:04:05") + str}
+	service.CreateAdDeviceEvent(deviceEvent)
 }
 

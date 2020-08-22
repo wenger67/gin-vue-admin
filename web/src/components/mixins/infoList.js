@@ -32,6 +32,9 @@ export default {
             this.total = table.data.total
             this.page = table.data.page
             this.pageSize = table.data.pageSize
+        },
+        async refresh() {
+            await this.getTableData()
         }
     }
 }

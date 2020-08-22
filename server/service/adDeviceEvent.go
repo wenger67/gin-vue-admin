@@ -58,7 +58,7 @@ func UpdateAdDeviceEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
 // @return    AdDeviceEvent        AdDeviceEvent
 
 func GetAdDeviceEvent(id uint) (err error, adDeviceEvent model.AdDeviceEvent) {
-	err = global.GVA_DB.Where("id = ?", id).First(&adDeviceEvent).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Device").Preload("Type").First(&adDeviceEvent).Error
 	return
 }
 
@@ -76,6 +76,6 @@ func GetAdDeviceEventInfoList(info request.AdDeviceEventSearch) (err error, list
     var adDeviceEvents []model.AdDeviceEvent
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&adDeviceEvents).Error
+	err = db.Limit(limit).Offset(offset).Preload("Device").Preload("Type").Find(&adDeviceEvents).Error
 	return err, adDeviceEvents, total
 }

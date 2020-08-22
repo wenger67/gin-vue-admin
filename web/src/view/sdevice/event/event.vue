@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增adDeviceEvent表</el-button>
+          <el-button @click="refresh" type="primary">刷新</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -31,10 +31,9 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
 
+    <el-table-column label="设备" prop="deviceId" sortable min-width="30"></el-table-column>
     
-    <el-table-column label="设备id" prop="deviceId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="事件类型category" prop="typeId" sortable min-width="60"></el-table-column> 
+    <el-table-column label="事件类型" prop="type.categoryName" sortable min-width="60"></el-table-column>
     
     <el-table-column label="事件内容" prop="content" sortable min-width="60"></el-table-column> 
     
