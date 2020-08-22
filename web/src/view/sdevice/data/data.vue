@@ -6,9 +6,6 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增adDeviceData表</el-button>
-        </el-form-item>
-        <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
               <div style="text-align: right; margin: 0">
@@ -79,24 +76,13 @@
       @size-change="handleSizeChange"
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
-
-    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      此处请使用表单生成器生成form填充 表单默认绑定 formData 如手动修改过请自行修改key
-      <div class="dialog-footer" slot="footer">
-        <el-button @click="closeDialog">取 消</el-button>
-        <el-button @click="enterDialog" type="primary">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
-    createAdDeviceData,
     deleteAdDeviceData,
     deleteAdDeviceDataByIds,
-    updateAdDeviceData,
-    findAdDeviceData,
     getAdDeviceDataList
 } from "@/api/adDeviceData";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
@@ -111,14 +97,12 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],formData: {
-        deviceId:null,accx:null,accy:null,accz:null,degx:null,degy:null,degz:null,speedz:null,floor:null,doorStateId:null,peopleInside:null,troubleId:null,
-      }
+      multipleSelection: []
     };
   },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time !== "") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -134,59 +118,33 @@ export default {
     }
   },
   methods: {
-      //条件搜索前端看此方法
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10                
-        if (this.searchInfo.peopleInside===""){
-          this.searchInfo.peopleInside=null
-        }       
-        this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteAdDeviceDataByIds({ ids })
-        if (res.code === 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          await this.getTableData()
-        }
-      },
-    async updateAdDeviceData(row) {
-      const res = await findAdDeviceData({ ID: row.ID });
-      this.type = "update";
-      if (res.code === 0) {
-        this.formData = res.data.readDeviceData;
-        this.dialogFormVisible = true;
+    //条件搜索前端看此方法
+    onSubmit() {
+      this.page = 1
+      this.pageSize = 10
+      if (this.searchInfo.peopleInside===""){
+        this.searchInfo.peopleInside=null
       }
+      this.getTableData()
     },
-    closeDialog() {
-      this.dialogFormVisible = false;
-      this.formData = {
-        
-          deviceId:null,
-          accx:null,
-          accy:null,
-          accz:null,
-          degx:null,
-          degy:null,
-          degz:null,
-          speedz:null,
-          floor:null,
-          doorStateId:null,
-          peopleInside:null,
-          troubleId:null,
-      };
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    async onDelete() {
+      const ids = []
+      this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+      const res = await deleteAdDeviceDataByIds({ ids })
+      if (res.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.deleteVisible = false
+        await this.getTableData()
+      }
     },
     async deleteAdDeviceData(row) {
       this.$confirm('this operation is dangerous, continue ?', 'Hint', {
@@ -211,29 +169,6 @@ export default {
         })
       })
     },
-    async enterDialog() {
-      let res;
-      switch (this.type) {
-        case "create":
-          res = await createAdDeviceData(this.formData);
-          break;
-        case "update":
-          res = await updateAdDeviceData(this.formData);
-          break;
-      }
-      if (res.code === 0) {
-        this.$message({
-          type:"success",
-          message:"创建/更改成功"
-        })
-        this.closeDialog();
-        await this.getTableData();
-      }
-    },
-    openDialog() {
-      this.type = "create";
-      this.dialogFormVisible = true;
-    }
   },
   async created() {
     await this.getTableData();}

@@ -56,6 +56,7 @@ func Routers() *gin.Engine {
 
 	DevGroup := Router.Group("dev")
 	dev.InitDeviceRouter(DevGroup)
+	dev.InitDataRouter(DevGroup)
 
 	global.GVA_LOG.Info("router register success")
 	return Router
