@@ -1,6 +1,9 @@
 package request
 
-import uuid "github.com/satori/go.uuid"
+import (
+	"gin-vue-admin/model"
+	uuid "github.com/satori/go.uuid"
+)
 
 // User register structure
 type RegisterStruct struct {
@@ -41,4 +44,10 @@ type CreateStruct struct {
 	CompanyId   int `json:"companyId" form:"companyId"`
 	Address     string `json:"address" form:"address"`
 	AuthorityId string       `json:"authorityId" form:"authorityId" gorm:"default:888;comment:'用户角色ID'"`
+}
+
+type SearchUserParams struct {
+	model.SysUser
+	PageInfo
+	CompanyId int `json:"companyId" form:"companyId"`
 }

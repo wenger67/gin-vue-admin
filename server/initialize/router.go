@@ -49,6 +49,7 @@ func Routers() *gin.Engine {
 	router.InitLiftChangeRouter(ApiGroup)
 	router.InitLiftRecordRouter(ApiGroup)
 	router.InitLiftTroubleRouter(ApiGroup)
+	router.InitUserLiftRouter(ApiGroup)
 	router.InitAdDeviceConfigRouter(ApiGroup)
 	router.InitAdDeviceDataRouter(ApiGroup)
 	router.InitAdDeviceEventRouter(ApiGroup)

@@ -79,11 +79,14 @@ func ChangePassword(u *model.SysUser, newPassword string) (err error, userInter 
 // @return    list             interface{}
 // @return    total            int
 
-func GetUserInfoList(info request.PageInfo) (err error, list interface{}, total int) {
-	limit := info.PageSize
-	offset := info.PageSize * (info.Page - 1)
+func GetUserInfoList(params request.SearchUserParams) (err error, list interface{}, total int) {
+	limit := params.PageInfo.PageSize
+	offset := params.PageInfo.PageSize * (params.PageInfo.Page - 1)
 	db := global.GVA_DB.Model(&model.SysUser{})
 	var userList []model.SysUser
+	if params.CompanyId != 0 {
+		db = db.Where("company_id = ?", params.CompanyId);
+	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Preload("Company").Preload("Authority").Find(&userList).Error
 	return err, userList, total

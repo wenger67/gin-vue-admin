@@ -245,22 +245,26 @@ func UploadHeaderImg(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /user/getUserList [post]
 func GetUserList(c *gin.Context) {
-	var pageInfo request.PageInfo
-	_ = c.ShouldBindJSON(&pageInfo)
-	PageVerifyErr := utils.Verify(pageInfo, utils.CustomizeMap["PageVerify"])
+	var params request.SearchUserParams
+	_ = c.ShouldBindJSON(&params)
+
+	PageVerifyErr := utils.Verify(params, utils.Rules{
+		"Page": {utils.NotEmpty()},
+		"PageSize": {utils.NotEmpty()},
+	})
 	if PageVerifyErr != nil {
 		response.FailWithMessage(PageVerifyErr.Error(), c)
 		return
 	}
-	err, list, total := service.GetUserInfoList(pageInfo)
+	err, list, total := service.GetUserInfoList(params)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
 	} else {
 		response.OkWithData(resp.PageResult{
 			List:     list,
 			Total:    total,
-			Page:     pageInfo.Page,
-			PageSize: pageInfo.PageSize,
+			Page:     params.PageInfo.Page,
+			PageSize: params.PageInfo.PageSize,
 		}, c)
 	}
 }
