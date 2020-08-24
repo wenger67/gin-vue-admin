@@ -2,6 +2,7 @@ package v1
 
 import (
 	"fmt"
+	"gin-vue-admin/global"
 	"gin-vue-admin/global/response"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -9,6 +10,7 @@ import (
 	"gin-vue-admin/service"
 	"gin-vue-admin/utils"
 	"github.com/gin-gonic/gin"
+	"os"
 	"strings"
 )
 
@@ -21,6 +23,8 @@ import (
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"上传成功"}"
 // @Router /fileUploadAndDownload/upload [post]
 func UploadFile(c *gin.Context) {
+	dir, _ := os.Getwd()
+	global.GVA_LOG.Debug(dir)
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -46,6 +50,25 @@ func UploadFile(c *gin.Context) {
 			} else {
 				response.OkDetailed(resp.ExaFileResponse{File: file}, "上传成功", c)
 			}
+		}
+	}
+}
+
+func UploadFileLocal(c *gin.Context) {
+	dir, _ := os.Getwd()
+	global.GVA_LOG.Debug(dir)
+	_, header, err := c.Request.FormFile("file")
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
+	} else {
+		// 文件上传后拿到文件路径
+		err, filePath := utils.UploadLocal(c, header)
+		global.GVA_LOG.Debug(filePath)
+		if err != nil {
+			response.FailWithMessage(fmt.Sprintf("接收返回值失败，%v", err), c)
+		} else {
+			response.OkWithMessage("上传成功" + filePath, c)
+
 		}
 	}
 }

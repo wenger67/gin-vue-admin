@@ -19,6 +19,7 @@ func RunWindowsServer() {
 	}
 	Router := initialize.Routers()
 	Router.Static("/form-generator", "./resource/page")
+	Router.Static("/upload", "./resource/upload")
 
 	// handle websocket request
 	Router.GET("/api/ws/endpoint", websocket.ServeWS)
