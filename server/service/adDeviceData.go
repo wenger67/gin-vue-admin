@@ -76,6 +76,6 @@ func GetAdDeviceDataInfoList(info request.AdDeviceDataSearch) (err error, list i
     var adDeviceDatas []model.AdDeviceData
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&adDeviceDatas).Error
+	err = db.Limit(limit).Offset(offset).Preload("DoorState").Preload("Trouble").Preload("Device").Find(&adDeviceDatas).Error
 	return err, adDeviceDatas, total
 }

@@ -47,13 +47,13 @@
     
     <el-table-column label="电梯当前楼层" prop="floor" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="电梯门状态类型" prop="doorStateId" sortable min-width="60"></el-table-column> 
+    <el-table-column label="电梯门状态类型" prop="doorState.categoryName" sortable min-width="60"></el-table-column> 
     
     <el-table-column label="电梯内是否有人" prop="peopleInside" min-width="60">
          <template slot-scope="scope">{{scope.row.peopleInside|formatBoolean}}</template>
     </el-table-column>
     
-    <el-table-column label="电梯状态/故障类型" prop="troubleId" sortable min-width="60"></el-table-column> 
+    <el-table-column label="电梯状态/故障类型" prop="trouble.categoryName" sortable min-width="60"></el-table-column> 
     
       <el-table-column label="日期" min-width="60">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>

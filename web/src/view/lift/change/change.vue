@@ -42,7 +42,7 @@
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
           <el-button @click="updateLiftChange(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftChange(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

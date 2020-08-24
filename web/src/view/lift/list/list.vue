@@ -154,7 +154,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="使用单位" prop="ownerId">
-              <el-select v-model="formData.ownerId" placeholder="请选择使用单位" filterable clearable
+              <el-select v-model="formData.ownerId" placeholder="请选择使用单位" @change="change" filterable clearable
                          :style="{width: '100%'}">
                 <el-option
                         v-for="item in companyOptions"
@@ -487,6 +487,10 @@ export default {
       this.pageSize = 10
       this.getTableData()
     },
+    change(){
+      console.log("change")
+      console.log(this.formData.ownerId)
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -585,11 +589,20 @@ export default {
     },
     async enterDialog() {
       let res;
+      this.formData.owner = {}
+      this.formData.maintainer = {}
+      this.formData.checker = {}
+      this.formData.installer = {}
+      this.formData.liftModel = {}
+      this.formData.category = {}
+      this.formData.address = {}
+      this.formData.adDevice = {}
       switch (this.type) {
         case "create":
           res = await createLift(this.formData);
           break;
         case "update":
+          console.log(this.formData)
           res = await updateLift(this.formData);
           break;
       }
