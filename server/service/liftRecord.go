@@ -4,6 +4,7 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
+	"time"
 )
 
 // @title    CreateLiftRecord
@@ -16,6 +17,20 @@ func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
 	err = global.GVA_DB.Create(&liftRecord).Error
 	return err
 }
+
+func FillLiftRecord(fill request.LiftRecordFill) (err error) {
+	global.GVA_LOG.Debug(fill)
+	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", fill.RecordId)
+	err = db.Debug().Updates(map[string]interface{}{"content": fill.Content, "images": fill.Images, "EndTime": time.Now()}).Error
+	return
+}
+
+func ReviewLiftRecord(review request.LiftRecordReview) (err error) {
+	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", review.RecordId)
+	err = db.Updates(map[string]interface{}{"recorderId": review.RecorderId}).Error
+	return
+}
+
 
 // @title    DeleteLiftRecord
 // @description   delete a LiftRecord
@@ -58,7 +73,8 @@ func UpdateLiftRecord(liftRecord *model.LiftRecord) (err error) {
 // @return    LiftRecord        LiftRecord
 
 func GetLiftRecord(id uint) (err error, liftRecord model.LiftRecord) {
-	err = global.GVA_DB.Where("id = ?", id).First(&liftRecord).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Category").
+		Preload("Worker").Preload("Recorder").First(&liftRecord).Error
 	return
 }
 
@@ -76,6 +92,7 @@ func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list inter
     var liftRecords []model.LiftRecord
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&liftRecords).Error
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Category").
+		Preload("Worker").Preload("Recorder").Find(&liftRecords).Error
 	return err, liftRecords, total
 }

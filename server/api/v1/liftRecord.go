@@ -8,6 +8,7 @@ import (
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 // @Tags LiftRecord
@@ -19,9 +20,37 @@ import (
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /liftRecord/createLiftRecord [post]
 func CreateLiftRecord(c *gin.Context) {
-	var liftRecord model.LiftRecord
-	_ = c.ShouldBindJSON(&liftRecord)
+	var create request.LiftRecordCreate
+	_ = c.ShouldBindJSON(&create)
+
+	liftRecord := model.LiftRecord{LiftId: create.LiftId, CategoryId: create.CategoryId,
+		StartTime: time.Now(), WorkerId: create.WorkerId}
+
 	err := service.CreateLiftRecord(liftRecord)
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
+	} else {
+		response.OkWithMessage("创建成功", c)
+	}
+}
+
+func FillLiftRecord(c *gin.Context) {
+	var fill request.LiftRecordFill
+	_ = c.ShouldBindJSON(&fill)
+
+	err := service.FillLiftRecord(fill)
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
+	} else {
+		response.OkWithMessage("创建成功", c)
+	}
+}
+
+func ReviewLiftRecord(c *gin.Context) {
+	var review request.LiftRecordReview
+	_ = c.ShouldBindJSON(&review)
+
+	err := service.ReviewLiftRecord(review)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
