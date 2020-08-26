@@ -9,7 +9,7 @@ type LiftTrouble struct {
 	gorm.Model
 	LiftId           int `json:"liftId" form:"liftId"`
 	Lift             Lift `json:"lift" form:"lift" gorm:"ForiegnKey:LiftId;AssociationForiegnKey:ID"`
-	FromCategoryId   int `json:"fromCategoryId" form:"fromCategoryId"`
+	FromCategoryId   int `json:"fromCategoryId" form:"fromCategoryId"`  // subject:104
 	FromCategory     Category `json:"fromCategory" form:"fromCategory" gorm:"ForiegnKey:FromCategoryId;AssociationForiegnKey:ID"`
 	StartTime        time.Time `json:"startTime" form:"startTime"`
 	StartUserId      int `json:"startUserId" from:"startUserId"`
@@ -23,9 +23,9 @@ type LiftTrouble struct {
 	FixTime          time.Time `json:"fixTime" form:"fixTime"`
 	FixUserId        int `json:"fixUserId" from:"fixUserId"`
 	FixUser          SysUser `json:"fixUser" form:"fixUser" gorm:"ForiegnKey:FixUserId;AssociationForiegnKey:ID"`
-	FixCategoryId    int `json:"fixCategoryId" form:"fixCategoryId"`
+	FixCategoryId    int `json:"fixCategoryId" form:"fixCategoryId"` // subject:105
 	FixCategory      Category `json:"fixCategory" form:"fixCategory" gorm:"ForiegnKey:FixCategoryId;AssociationForiegnKey:ID"`
-	ReasonCategoryId int `json:"reasonCategoryId" form:"reasonCategoryId"`
+	ReasonCategoryId int `json:"reasonCategoryId" form:"reasonCategoryId"` // subject:106
 	ReasonCategory   Category `json:"reasonCategory" form:"reasonCategory" gorm:"ForiegnKey:ReasonCategoryId;AssociationForiegnKey:ID"`
 	Content          string `json:"content" form:"content"`
 	Progress         int `json:"progress" form:"progress"`

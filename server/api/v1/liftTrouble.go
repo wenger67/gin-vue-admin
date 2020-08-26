@@ -8,6 +8,7 @@ import (
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 // @Tags LiftTrouble
@@ -21,6 +22,10 @@ import (
 func CreateLiftTrouble(c *gin.Context) {
 	var liftTrouble model.LiftTrouble
 	_ = c.ShouldBindJSON(&liftTrouble)
+	if liftTrouble.Progress == 0 {
+		liftTrouble.Progress = 1 // goto step2
+	}
+	liftTrouble.StartTime = time.Now()
 	err := service.CreateLiftTrouble(liftTrouble)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)

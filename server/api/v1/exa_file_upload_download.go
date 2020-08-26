@@ -10,8 +10,11 @@ import (
 	"gin-vue-admin/service"
 	"gin-vue-admin/utils"
 	"github.com/gin-gonic/gin"
+	"mime/multipart"
 	"os"
 	"strings"
+	"syscall"
+	"time"
 )
 
 // @Tags ExaFileUploadAndDownload
@@ -23,15 +26,23 @@ import (
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"上传成功"}"
 // @Router /fileUploadAndDownload/upload [post]
 func UploadFile(c *gin.Context) {
-	dir, _ := os.Getwd()
-	global.GVA_LOG.Debug(dir)
 	noSave := c.DefaultQuery("noSave", "0")
+	var storage string
+	storage, _ = c.GetQuery("storage")
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
 	} else {
-		// 文件上传后拿到文件路径
-		err, filePath, key := utils.Upload(header)
+		var err error
+		var filePath string
+		var key string
+		if storage == "qiniu" {
+			// 文件上传后拿到文件路径
+			err, filePath, key = utils.Upload(header)
+		} else {
+			err, filePath, key = UploadLocal(c, header)
+		}
+
 		if err != nil {
 			response.FailWithMessage(fmt.Sprintf("接收返回值失败，%v", err), c)
 		} else {
@@ -54,23 +65,21 @@ func UploadFile(c *gin.Context) {
 	}
 }
 
-func UploadFileLocal(c *gin.Context) {
+func UploadLocal(c *gin.Context, header *multipart.FileHeader) (err error, path string, key string) {
 	dir, _ := os.Getwd()
 	global.GVA_LOG.Debug(dir)
-	_, header, err := c.Request.FormFile("file")
-	if err != nil {
-		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
-	} else {
-		// 文件上传后拿到文件路径
-		err, filePath := utils.UploadLocal(c, header)
-		global.GVA_LOG.Debug(filePath)
-		if err != nil {
-			response.FailWithMessage(fmt.Sprintf("接收返回值失败，%v", err), c)
-		} else {
-			response.OkWithMessage("上传成功" + filePath, c)
+	lastIndex := strings.LastIndex(header.Filename, ".")
+	fileName := header.Filename[:lastIndex] + time.Now().String()
+	fileNameByte, _ := syscall.ByteSliceFromString(fileName)
+	newName := utils.MD5V(fileNameByte)
 
-		}
-	}
+	suffix := header.Filename[lastIndex:]
+	dst :=  dir + "/resource/upload/" + newName + suffix
+	err = c.SaveUploadedFile(header, dst)
+
+	url := "http://127.0.0.1:8888/upload/" + newName +suffix
+	// TODO save database
+	return err, url, "local"
 }
 
 // @Tags ExaFileUploadAndDownload

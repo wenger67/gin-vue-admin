@@ -2,7 +2,7 @@
   <div v-loading.fullscreen.lock="fullscreenLoading">
     <div class="upload">
       <el-upload
-        :action="`${path}/fileUploadAndDownload/upload`"
+        :action="`${path}/fileUploadAndDownload/upload?storage=local`"
         :before-upload="checkFile"
         :headers="{ 'x-token': token }"
         :on-error="uploadError"
@@ -85,6 +85,9 @@ export default {
       fullscreenLoading: false,
       listApi: getFileList,
       path: path,
+      uploadParam: {
+        storage:"qiniu"
+      },
       tableData: [],
     };
   },

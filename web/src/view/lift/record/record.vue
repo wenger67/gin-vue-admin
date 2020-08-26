@@ -123,9 +123,11 @@
 
         <el-form-item v-if="stepActive == 1" label="images" prop="images">
           <el-upload
-            action="#"
+            :action="`${path}/fileUploadAndDownload/upload?storage=local`"
             :on-remove="handleRemove"
+            :on-success="handleUploadSuccess"
             multiple
+            :headers="{ 'x-token': token }"
             list-type="picture-card">
             <i class="el-icon-plus"></i>
           </el-upload>
@@ -150,6 +152,7 @@
 </template>
 
 <script>
+const path = process.env.VUE_APP_BASE_API;
 import {
     createLiftRecord,
     deleteLiftRecord,
@@ -164,6 +167,7 @@ import infoList from "@/components/mixins/infoList";
 import { getUserList } from '@/api/user';
 import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
+import { mapGetters } from "vuex";
 
 export default {
   name: "LiftRecord",
@@ -174,6 +178,8 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
+      path: path,
+      uploadFileList: [],
       stepItems: [
         {key: 1, title: "步骤 1", description: "create record", icon:"el-icon-edit"},
         {key: 2, title: "步骤 2", description: "fill record", icon:"el-icon-upload"},
@@ -191,16 +197,17 @@ export default {
     };
   },
   computed: {
-      stepActive: function() {
-        if (this.formData.content == "" && this.formData.images == "" && this.formData.startTime == "0001-01-01T00:00:00Z") {
-          return 0
-        }
-        if (this.formData.recorderId == 0 && this.formData.endTime == "0001-01-01T00:00:00Z") {
-          return 1
-        }
-
-        return 2
+    ...mapGetters("user", ["userInfo", "token"]),
+    stepActive: function() {
+      if (this.formData.content == "" && this.formData.images == "" && this.formData.startTime == "0001-01-01T00:00:00Z") {
+        return 0
       }
+      if (this.formData.recorderId == 0 && this.formData.endTime == "0001-01-01T00:00:00Z") {
+        return 1
+      }
+
+      return 2
+    }
   },
   filters: {
     formatDate: function(time) {
@@ -244,7 +251,12 @@ export default {
         } else return "success"
       },
       handleRemove(file, fileList){
-
+        console.log(file)
+        this.uploadFileList.
+      },
+      handleUploadSuccess(response, file, fileList) {
+        console.log(file)
+        this.uploadFileList.add({key: file.uid, name: file.name, url: response.data.file.url})
       },
       async onDelete() {
         const ids = []

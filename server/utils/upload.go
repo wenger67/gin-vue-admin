@@ -4,11 +4,9 @@ import (
 	"context"
 	"fmt"
 	"gin-vue-admin/global"
-	"github.com/gin-gonic/gin"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
 	"mime/multipart"
-	"os"
 	"time"
 )
 
@@ -47,17 +45,6 @@ func Upload(file *multipart.FileHeader) (err error, path string, key string) {
 	}
 	return err, global.GVA_CONFIG.Qiniu.ImgPath + "/" + ret.Key, ret.Key
 }
-
-// 接收两个参数 一个文件流 一个 bucket 你的七牛云标准空间的名字
-func UploadLocal(c *gin.Context, file *multipart.FileHeader) (err error, path string) {
-	dir, _ := os.Getwd()
-	dst :=  dir + "/resource/upload/" + file.Filename
-	err = c.SaveUploadedFile(file, dst)
-
-	// TODO save database
-	return err, dst
-}
-
 
 func DeleteFile(key string) error {
 

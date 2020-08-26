@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增liftTrouble表</el-button>
+          <el-button @click="openDialog" type="primary">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -31,48 +31,47 @@
     >
     <el-table-column type="selection" width="55"></el-table-column>
 
+    <el-table-column label="故障进度" sortable min-width="100">
+      <template slot-scope="scope">{{ scope.row.progress|formatProgress }}</template>
+    </el-table-column>
+    <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60"></el-table-column> 
+    <el-table-column label="来源类别" prop="fromCategory.categoryName" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="电梯id" prop="liftId" sortable min-width="60"></el-table-column> 
+    <el-table-column label="开始时间" sortable min-width="80">
+      <template slot-scope="scope">{{ scope.row.startTime | formatDate }}</template>
+    </el-table-column> 
     
-    <el-table-column label="故障来源类别" prop="fromCategoryId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="故障开始时间" prop="startTime" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="发起故障人员" prop="startUserId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="故障响应时间" prop="responseTime" sortable min-width="60"></el-table-column> 
-    
+    <el-table-column label="发起人员" prop="startUser.realName" sortable min-width="60"></el-table-column> 
+    <!-- <el-table-column label="故障响应时间" sortable min-width="60">
+      <template slot-scope="scope">{{ scope.row.responseTime | formatDate }}</template>    
+    </el-table-column> 
     <el-table-column label="故障响应人员" prop="responseUserId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="达到现场时间" prop="sceneTime" sortable min-width="60"></el-table-column> 
-    
+    <el-table-column label="达到现场时间" sortable min-width="60">
+      <template slot-scope="scope">{{ scope.row.sceneTime | formatDate }}</template>
+    </el-table-column> 
     <el-table-column label="达到现场人员" prop="sceneUserId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="解除故障时间" prop="fixTime" sortable min-width="60"></el-table-column> 
-    
+    <el-table-column label="解除故障时间" sortable min-width="60">
+      <template slot-scope="scope">{{ scope.row.fixTime | formatDate }}</template>
+    </el-table-column> 
     <el-table-column label="解除故障人员" prop="fixUserId" sortable min-width="60"></el-table-column> 
     
     <el-table-column label="解除故障方式类别" prop="fixCategoryId" sortable min-width="60"></el-table-column> 
-    
     <el-table-column label="故障原因类别" prop="reasonCategoryId" sortable min-width="60"></el-table-column> 
     
-    <el-table-column label="故障详情" prop="content" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="故障进度" prop="progress" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="记录人员" prop="recorderId" sortable min-width="60"></el-table-column> 
-    
+    <el-table-column label="故障详情" prop="content" sortable min-width="60"></el-table-column>  -->
+
+    <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60"></el-table-column> 
     <el-table-column label="反馈内容" prop="feedbackContent" sortable min-width="60"></el-table-column> 
-    
     <el-table-column label="反馈评分" prop="feedbackRate" sortable min-width="60"></el-table-column> 
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column label="日期" min-width="80">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="200">
         <template slot-scope="scope">
-          <el-button @click="updateLiftTrouble(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button @click="updateLiftTrouble(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftTrouble(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -89,7 +88,153 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      此处请使用表单生成器生成form填充 表单默认绑定 formData 如手动修改过请自行修改key
+       <el-steps :active="stepActive" :style="{marginLeft:'30px', marginRight:'30px'}">
+        <el-step v-for="item in stepItems"
+          :key="item.key"
+          :title="item.title"
+          :description="item.description"
+          :icon="item.icon">
+        </el-step>
+      </el-steps>
+      <el-form :model="formData" ref="formData" label-width="100px" size="medium" label-postion="left" :style="{marginTop:'30px'}">
+        <el-form-item v-if="stepActive == 0" label="lift id" prop="liftId">
+          <el-select v-model="formData.liftId" filter clearable placeholder="please select lift" >
+            <el-option v-for="item in liftOptions"
+              :key="item.ID"
+              :label="item.nickName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 0" label="lift id" prop="liftId">
+          <el-input v-model="formData.lift.nickName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 0" label="from category" prop="fromCategoryId">
+          <el-select v-model="formData.fromCategoryId" filter clearable placeholder="please select fromCategoryId" >
+            <el-option v-for="item in fromOptions"
+              :key="item.ID"
+              :label="item.categoryName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 0" label="from category" prop="fromCategoryId">
+          <el-input v-model="formData.fromCategory.categoryName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 0" label="creator" prop="startUserId">
+          <el-select v-model="formData.startUserId" filter clearable placeholder="please select startUserId" >
+            <el-option v-for="item in userOptions"
+              :key="item.ID"
+              :label="item.realName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 0" label="creator" prop="startUserId">
+          <el-input v-model="formData.startUser.realName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 1" label="response" prop="responseUserId">
+          <el-select v-model="formData.responseUserId" filter clearable placeholder="please select responseUserId" >
+            <el-option v-for="item in userOptions"
+              :key="item.ID"
+              :label="item.realName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 1" label="response" prop="responseUserId">
+          <el-input v-model="formData.responseUser.realName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 2" label="scene" prop="sceneUserId">
+          <el-select v-model="formData.sceneUserId" filter clearable placeholder="please select sceneUserId" >
+            <el-option v-for="item in userOptions"
+              :key="item.ID"
+              :label="item.realName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 2" label="scene" prop="sceneUserId">
+          <el-input v-model="formData.sceneUser.realName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 3" label="fixUser" prop="fixUserId">
+          <el-select v-model="formData.fixUserId" filter clearable placeholder="please select fixUserId" >
+            <el-option v-for="item in userOptions"
+              :key="item.ID"
+              :label="item.realName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 3" label="fixUser" prop="fixUserId">
+          <el-input v-model="formData.fixUser.realName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 3" label="fixCategory" prop="fixCategoryId">
+          <el-select v-model="formData.fixCategoryId" filter clearable placeholder="please select fixCategoryId" >
+            <el-option v-for="item in fixOptions"
+              :key="item.ID"
+              :label="item.categoryName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 3" label="fixCategory" prop="fixCategoryId">
+          <el-input v-model="formData.fixCategory.categoryName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 3" label="reasonCategory" prop="reasonCategoryId">
+          <el-select v-model="formData.reasonCategoryId" filter clearable placeholder="please select reasonCategoryId" >
+            <el-option v-for="item in reasonOptions"
+              :key="item.ID"
+              :label="item.categoryName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 3" label="reasonCategory" prop="reasonCategoryId">
+          <el-input v-model="formData.reasonCategory.categoryName" disabled placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 3" label="content" prop="content">
+          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input trouble content"></el-input>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 3" label="content" prop="content">
+          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 4" label="feedbackContent" prop="feedbackContent">
+          <el-input v-model="formData.feedbackContent" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input feedbackContent"></el-input>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 4" label="feedbackContent" prop="feedbackContent">
+          <el-input v-model="formData.feedbackContent" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 4" label="feedbackRate" prop="feedbackRate">
+           <el-input-number v-model="formData.feedbackRate" :min="1" :max="100" placeholder="please input feedbackRate"></el-input-number>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 4" label="feedbackRate" prop="feedbackRate">
+           <el-input-number v-model="formData.feedbackRate" :min="1" :max="100" placeholder="please input feedbackRate"></el-input-number>
+        </el-form-item>
+
+        <el-form-item v-if="stepActive == 5" label="recorder" prop="recorderId">
+          <el-select v-model="formData.recorderId" filter clearable placeholder="please select recorderId" >
+            <el-option v-for="item in userOptions"
+              :key="item.ID"
+              :label="item.realName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 5" label="recorder" prop="recorderId">
+          <el-input v-model="formData.recorder.realName" disabled placeholder=""></el-input>
+        </el-form-item>
+      </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
         <el-button @click="enterDialog" type="primary">确 定</el-button>
@@ -109,6 +254,9 @@ import {
 } from "@/api/liftTrouble";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
+import { getUserList } from '@/api/user';
+import { getCategoriesList } from '@/api/categories';
+import { getLiftList } from "@/api/lift";
 
 export default {
   name: "LiftTrouble",
@@ -119,14 +267,37 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
+       stepItems: [
+        {key: 1, title: "步骤 1", description: "create trouble", icon:"el-icon-edit"},
+        {key: 2, title: "步骤 2", description: "response", icon:"el-icon-alarm-clock"},
+        {key: 3, title: "步骤 3", description: "scene", icon:"el-icon-location-information"},
+        {key: 4, title: "步骤 4", description: "fix", icon:"el-icon-s-tools"},
+        {key: 5, title: "步骤 5", description: "feedback", icon:"el-icon-s-comment"},
+        {key: 6, title: "步骤 6", description: "review", icon:"el-icon-s-promotion"}
+      ],
+      liftOptions:[],
+      fromOptions:[],
+      userOptions:[],
+      fixOptions:[],
+      reasonOptions:[],
       multipleSelection: [],formData: {
-        liftId:null,fromCategoryId:null,startTime:null,startUserId:null,responseTime:null,responseUserId:null,sceneTime:null,sceneUserId:null,fixTime:null,fixUserId:null,fixCategoryId:null,reasonCategoryId:null,content:null,progress:null,recorderId:null,feedbackContent:null,feedbackRate:null,
+        liftId:null,lift:{}, fromCategoryId:null,fromCategory:{}, startTime:"0001-01-01T00:00:00Z",
+        startUserId:null,startUser:{},responseTime:"0001-01-01T00:00:00Z",responseUserId:null,
+        responseUser:{}, sceneTime:"0001-01-01T00:00:00Z",sceneUserId:null,sceneUser:{},
+        fixTime:"0001-01-01T00:00:00Z",fixUserId:null,fixUser:{}, fixCategoryId:null,
+        fixCategory:{},reasonCategoryId:null,reasonCategory:{}, content:null,progress:0,
+        recorderId:null,recorder:{},feedbackContent:null,feedbackRate:null
       }
     };
   },
+  computed: {
+    stepActive: function() {
+      return this.formData.progress
+    }
+  },
   filters: {
     formatDate: function(time) {
-      if (time != null && time != "") {
+      if (time != null && time != "" && time != "0001-01-01T00:00:00Z") {
         var date = new Date(time);
         return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
       } else {
@@ -139,37 +310,63 @@ export default {
       } else {
         return "";
       }
+    },
+    formatTitle: function(row) {
+      if (row.recorderId == 0) {
+        return "InProcess"
+      } else {
+        return "View"
+      }
+    },
+    formatProgress: function(progress) {
+      switch(progress) {
+        case 1:
+          return "created, need response"
+        case 2:
+          return "responsed, need scene"
+        case 3:
+          return "scened, need fix"
+        case 4:
+          return "fixed, neesd feedback"
+        case 5:
+          return "feedbacked, need review"
+        case 6:
+          return "reviewed"
+      }
     }
   },
   methods: {
-      //条件搜索前端看此方法
-      onSubmit() {
-        this.page = 1
-        this.pageSize = 10                     
-        this.getTableData()
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val
-      },
-      async onDelete() {
-        const ids = []
-        this.multipleSelection &&
-          this.multipleSelection.map(item => {
-            ids.push(item.ID)
-          })
-        const res = await deleteLiftTroubleByIds({ ids })
-        if (res.code === 0) {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
-          })
-          this.deleteVisible = false
-          await this.getTableData()
-        }
-      },
+    onSubmit() {
+      this.page = 1
+      this.pageSize = 10                     
+      this.getTableData()
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    getButtonType(row) {
+      if (row.recorderId == 0) {
+        return "warning"
+      } else return "success"
+    },
+    async onDelete() {
+      const ids = []
+      this.multipleSelection &&
+        this.multipleSelection.map(item => {
+          ids.push(item.ID)
+        })
+      const res = await deleteLiftTroubleByIds({ ids })
+      if (res.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.deleteVisible = false
+        await this.getTableData()
+      }
+    },
     async updateLiftTrouble(row) {
       const res = await findLiftTrouble({ ID: row.ID });
-      this.type = "update";
       if (res.code === 0) {
         this.formData = res.data.reliftTrouble;
         this.dialogFormVisible = true;
@@ -178,24 +375,12 @@ export default {
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-        
-          liftId:null,
-          fromCategoryId:null,
-          startTime:null,
-          startUserId:null,
-          responseTime:null,
-          responseUserId:null,
-          sceneTime:null,
-          sceneUserId:null,
-          fixTime:null,
-          fixUserId:null,
-          fixCategoryId:null,
-          reasonCategoryId:null,
-          content:null,
-          progress:null,
-          recorderId:null,
-          feedbackContent:null,
-          feedbackRate:null,
+        liftId:null,lift:{}, fromCategoryId:null,fromCategory:{}, startTime:"0001-01-01T00:00:00Z",
+        startUserId:null,startUser:{},responseTime:"0001-01-01T00:00:00Z",responseUserId:null,
+        responseUser:{}, sceneTime:"0001-01-01T00:00:00Z",sceneUserId:null,sceneUser:{},
+        fixTime:"0001-01-01T00:00:00Z",fixUserId:null,fixUser:{}, fixCategoryId:null,
+        fixCategory:{},reasonCategoryId:null,reasonCategory:{}, content:null,progress:0,
+        recorderId:null,recorder:{},feedbackContent:null,feedbackRate:null
       };
     },
     async deleteLiftTrouble(row) {
@@ -222,6 +407,8 @@ export default {
       })
     },
     async enterDialog() {
+      this.type = this.stepActive == 0 ? "create":"update"
+
       let res;
       switch (this.type) {
         case "create":
@@ -243,10 +430,64 @@ export default {
     openDialog() {
       this.type = "create";
       this.dialogFormVisible = true;
-    }
+    },
+    async getUserOptions() {
+      let res = await getUserList({
+        page: 1,
+        pageSize: 9999
+      })
+      if (res.code == 0) {
+        this.userOptions = res.data.list
+      }
+    },
+    async getLiftOptions() {
+      let res = await getLiftList({
+        page: 1,
+        pageSize: 9999
+      })
+      if (res.code == 0) {
+        this.liftOptions = res.data.list
+      }
+    },
+    async getFromOptions(){
+      let res = await getCategoriesList({
+        ID: 104,
+        page: 1,
+        pageSize: 9999
+      })
+      if (res.code == 0) {
+        this.fromOptions = res.data.list
+      }
+    },
+    async getFixOptions(){
+      let res = await getCategoriesList({
+        ID: 105,
+        page: 1,
+        pageSize: 9999
+      })
+      if (res.code == 0) {
+        this.fixOptions = res.data.list
+      }
+    },
+    async getReasonOptions(){
+      let res = await getCategoriesList({
+        ID: 106,
+        page: 1,
+        pageSize: 9999
+      })
+      if (res.code == 0) {
+        this.reasonOptions = res.data.list
+      }
+    },
   },
   async created() {
-    await this.getTableData();}
+    await this.getTableData()
+    await this.getLiftOptions()
+    await this.getUserOptions()
+    await this.getFromOptions()
+    await this.getFixOptions()
+    await this.getReasonOptions()
+  }
 };
 </script>
 
