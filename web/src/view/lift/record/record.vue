@@ -49,7 +49,7 @@
       <el-table-column label="按钮组" fixed="right" min-width="200">
         <template slot-scope="scope">
           <el-button @click="updateLiftRecord(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftRecord(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -128,11 +128,20 @@
             :on-success="handleUploadSuccess"
             multiple
             :headers="{ 'x-token': token }"
+            :file-list="uploadFileList"
             list-type="picture-card">
             <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
         
+        <el-form-item v-if="stepActive == 2" label="images">
+          <el-carousel height="150px">
+            <el-carousel-item v-for="item in uploadFileList" :key="item.uid">
+              <img :src="item.url" />
+            </el-carousel-item>
+          </el-carousel>   
+        </el-form-item>
+
         <el-form-item v-if="stepActive == 2" label="recorder" prop="recorderId">
           <el-select v-model="formData.recorderId" filter clearable placeholder="please select recorderId">
             <el-option v-for="item in userOptions"
@@ -251,12 +260,13 @@ export default {
         } else return "success"
       },
       handleRemove(file, fileList){
-        console.log(file)
-        this.uploadFileList.
+        this._.remove(this.uploadFileList, function(item) {
+          return item.uid == file.uid  
+        })
+        console.log(this.uploadFileList)
       },
       handleUploadSuccess(response, file, fileList) {
-        console.log(file)
-        this.uploadFileList.add({key: file.uid, name: file.name, url: response.data.file.url})
+        this.uploadFileList.push({name: file.name, url: response.data.file.url})
       },
       async onDelete() {
         const ids = []
@@ -278,6 +288,7 @@ export default {
       const res = await findLiftRecord({ ID: row.ID });
       if (res.code === 0) {
         this.formData = res.data.reliftRecord;
+        this.uploadFileList = JSON.parse(this.formData.images)
         this.dialogFormVisible = true;
       }
     },
@@ -313,9 +324,9 @@ export default {
       })
     },
     async enterDialog() {
-      if (this.stepActive == 1) {
+      if (this.stepActive == 0) {
         this.type = "create"
-      } else if (this.stepActive == 2) {
+      } else if (this.stepActive == 1) {
         this.type = "fill"
       } else this.type = "review"
 
@@ -331,7 +342,7 @@ export default {
         case "fill":
           param.recordId = this.formData.ID
           param.content = this.formData.content
-          param.images = this.formData.images
+          param.images = JSON.stringify(this.uploadFileList)
           res = await fillLiftRecord(param);
           break;
         case "review":

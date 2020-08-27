@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"container/list"
 	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/global/response"
@@ -65,9 +66,58 @@ func UploadFile(c *gin.Context) {
 	}
 }
 
+func UploadFiles(c *gin.Context)  {
+	noSave := c.DefaultQuery("noSave", "0")
+	var storage string
+	storage, _ = c.GetQuery("storage")
+
+	form, err := c.MultipartForm()
+	files := form.File["files"]
+	if err != nil {
+		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
+	} else {
+		fileLift := list.New()
+		for _, fileHeader := range files {
+			var err error
+			var filePath string
+			var key string
+			if storage == "qiniu" {
+				// 文件上传后拿到文件路径
+				err, filePath, key = utils.Upload(fileHeader)
+			} else {
+				err, filePath, key = UploadLocal(c, fileHeader)
+			}
+
+			if err != nil {
+				global.GVA_LOG.Warning("get file path failed " , fileHeader.Filename)
+			} else {
+				// 修改数据库后得到修改后的user并且返回供前端使用
+				var file model.ExaFileUploadAndDownload
+				file.Url = filePath
+				file.Name = fileHeader.Filename
+				s := strings.Split(file.Name, ".")
+				file.Tag = s[len(s)-1]
+				file.Key = key
+				if noSave == "0" {
+					err = service.Upload(file)
+				}
+				if err != nil {
+					global.GVA_LOG.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
+				} else {
+					fileLift.PushBack(file)
+				}
+			}
+		}
+		if fileLift.Len() == 0 {
+			response.FailWithMessage("upload file list all failed", c)
+		} else {
+			response.OkDetailed(fileLift, "上传成功", c)
+		}
+	}
+}
+
 func UploadLocal(c *gin.Context, header *multipart.FileHeader) (err error, path string, key string) {
 	dir, _ := os.Getwd()
-	global.GVA_LOG.Debug(dir)
 	lastIndex := strings.LastIndex(header.Filename, ".")
 	fileName := header.Filename[:lastIndex] + time.Now().String()
 	fileNameByte, _ := syscall.ByteSliceFromString(fileName)

@@ -10,6 +10,7 @@ func InitFileUploadAndDownloadRouter(Router *gin.RouterGroup) {
 	// .Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
 	{
 		FileUploadAndDownloadGroup.POST("/upload", v1.UploadFile)                                 // 上传文件
+		FileUploadAndDownloadGroup.POST("/uploadList", v1.UploadFiles)
 		FileUploadAndDownloadGroup.POST("/getFileList", v1.GetFileList)                           // 获取上传文件列表
 		FileUploadAndDownloadGroup.POST("/deleteFile", v1.DeleteFile)                             // 删除指定文件
 		FileUploadAndDownloadGroup.POST("/breakpointContinue", v1.BreakpointContinue)             // 断点续传

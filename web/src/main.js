@@ -63,6 +63,10 @@ Vue.use(VueNativeSocket, 'ws://127.0.0.1:8888/api/ws/endpoint', {
     reconnectionDelay: 3000
 })
 
+// lodash
+import _ from 'lodash'
+Vue.prototype._ = _
+
 new Vue({
     render: h => h(App),
     router,
