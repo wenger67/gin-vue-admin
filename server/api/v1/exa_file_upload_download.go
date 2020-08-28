@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"container/list"
 	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/global/response"
@@ -76,7 +75,7 @@ func UploadFiles(c *gin.Context)  {
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
 	} else {
-		fileLift := list.New()
+		fileList := make([]model.ExaFileUploadAndDownload, 0)
 		for _, fileHeader := range files {
 			var err error
 			var filePath string
@@ -104,14 +103,14 @@ func UploadFiles(c *gin.Context)  {
 				if err != nil {
 					global.GVA_LOG.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
 				} else {
-					fileLift.PushBack(file)
+					fileList = append(fileList, file)
 				}
 			}
 		}
-		if fileLift.Len() == 0 {
+		if len(fileList) == 0 {
 			response.FailWithMessage("upload file list all failed", c)
 		} else {
-			response.OkDetailed(fileLift, "上传成功", c)
+			response.OkDetailed(resp.ExaFilesResponse{Files: fileList}, "上传成功", c)
 		}
 	}
 }
