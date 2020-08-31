@@ -71,6 +71,9 @@ func UploadFiles(c *gin.Context)  {
 	storage, _ = c.GetQuery("storage")
 
 	form, err := c.MultipartForm()
+	if form == nil {
+		global.GVA_LOG.Debug(form, err)
+	}
 	files := form.File["files"]
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("上传文件失败，%v", err), c)
