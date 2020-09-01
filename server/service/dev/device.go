@@ -12,3 +12,13 @@ func FindLift(id uint) (err error, lift model.Lift) {
 		Preload("Address").Preload("Address.Region").Preload("AdDevice").First(&lift).Error
 	return
 }
+
+func CreateEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
+	err = global.GVA_DB.Create(adDeviceEvent).Error
+	return err
+}
+
+func UpdateEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
+	err = global.GVA_DB.Save(adDeviceEvent).Error
+	return err
+}
