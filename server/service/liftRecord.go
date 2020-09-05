@@ -14,6 +14,7 @@ import (
 // @return    err             error
 
 func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
+	liftRecord.Progress = 1
 	err = global.GVA_DB.Create(&liftRecord).Error
 	return err
 }
@@ -21,13 +22,13 @@ func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
 func FillLiftRecord(fill request.LiftRecordFill) (err error) {
 	global.GVA_LOG.Debug(fill)
 	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", fill.RecordId)
-	err = db.Debug().Updates(map[string]interface{}{"content": fill.Content, "images": fill.Images, "EndTime": time.Now()}).Error
+	err = db.Debug().Updates(map[string]interface{}{"content": fill.Content, "images": fill.Images, "EndTime": time.Now(), "progress": 2}).Error
 	return
 }
 
 func ReviewLiftRecord(review request.LiftRecordReview) (err error) {
 	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", review.RecordId)
-	err = db.Updates(map[string]interface{}{"recorderId": review.RecorderId}).Error
+	err = db.Updates(map[string]interface{}{"recorderId": review.RecorderId, "progress": 3}).Error
 	return
 }
 

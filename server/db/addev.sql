@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `ad_device_config_relations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_config_relations` (
-  `ad_device_id` int(10) unsigned NOT NULL,
-  `ad_device_config_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`ad_device_id`,`ad_device_config_id`)
+                                              `ad_device_id` int(10) unsigned NOT NULL,
+                                              `ad_device_config_id` int(10) unsigned NOT NULL,
+                                              PRIMARY KEY (`ad_device_id`,`ad_device_config_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -47,15 +47,15 @@ DROP TABLE IF EXISTS `ad_device_configs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_configs` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `key` char(50) NOT NULL COMMENT '配置键值',
-  `value` char(255) NOT NULL COMMENT '配置内容',
-  `comment` char(255) DEFAULT NULL COMMENT '配置说明',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
+                                     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                     `created_at` datetime DEFAULT NULL,
+                                     `updated_at` datetime DEFAULT NULL,
+                                     `deleted_at` datetime DEFAULT NULL,
+                                     `key` char(50) NOT NULL COMMENT '配置键值',
+                                     `value` char(255) NOT NULL COMMENT '配置内容',
+                                     `comment` char(255) DEFAULT NULL COMMENT '配置说明',
+                                     PRIMARY KEY (`id`) USING BTREE,
+                                     KEY `idx_ad_device_configs_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -77,24 +77,24 @@ DROP TABLE IF EXISTS `ad_device_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_data` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(11) DEFAULT NULL,
-  `trouble_id` int(11) DEFAULT NULL,
-  `accx` double DEFAULT NULL,
-  `accy` double DEFAULT NULL,
-  `accz` double DEFAULT NULL,
-  `degx` double DEFAULT NULL,
-  `degy` double DEFAULT NULL,
-  `degz` double DEFAULT NULL,
-  `speedz` double DEFAULT NULL,
-  `floor` double DEFAULT NULL,
-  `door_state_id` int(11) DEFAULT NULL COMMENT '开门状态',
-  `people_inside` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_ad_device_data_deleted_at` (`deleted_at`)
+                                  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                  `created_at` datetime DEFAULT NULL,
+                                  `updated_at` datetime DEFAULT NULL,
+                                  `deleted_at` datetime DEFAULT NULL,
+                                  `device_id` int(11) DEFAULT NULL,
+                                  `trouble_id` int(11) DEFAULT NULL,
+                                  `accx` double DEFAULT NULL,
+                                  `accy` double DEFAULT NULL,
+                                  `accz` double DEFAULT NULL,
+                                  `degx` double DEFAULT NULL,
+                                  `degy` double DEFAULT NULL,
+                                  `degz` double DEFAULT NULL,
+                                  `speedz` double DEFAULT NULL,
+                                  `floor` double DEFAULT NULL,
+                                  `door_state_id` int(11) DEFAULT NULL COMMENT '开门状态',
+                                  `people_inside` tinyint(1) DEFAULT NULL,
+                                  PRIMARY KEY (`id`),
+                                  KEY `idx_ad_device_data_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1251 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -116,24 +116,24 @@ DROP TABLE IF EXISTS `ad_device_datas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_datas` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(10) NOT NULL COMMENT '设备id',
-  `accx` float DEFAULT '0' COMMENT 'x轴加速度',
-  `accy` float DEFAULT '0' COMMENT 'y轴加速度',
-  `accz` float DEFAULT '0' COMMENT 'z轴加速度',
-  `degx` float DEFAULT '0' COMMENT 'x轴倾斜角',
-  `degy` float DEFAULT '0' COMMENT 'y轴倾斜角',
-  `degz` float DEFAULT '0' COMMENT 'z轴倾斜角',
-  `speedz` float DEFAULT '0' COMMENT '电梯速度',
-  `floor` float DEFAULT '1' COMMENT '电梯当前楼层',
-  `door_state_id` int(10) DEFAULT NULL COMMENT '电梯门状态类型',
-  `people_inside` tinyint(1) DEFAULT '1' COMMENT '电梯内是否有人',
-  `trouble_id` int(10) DEFAULT NULL COMMENT '电梯状态/故障类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
+                                   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                   `created_at` datetime DEFAULT NULL,
+                                   `updated_at` datetime DEFAULT NULL,
+                                   `deleted_at` datetime DEFAULT NULL,
+                                   `device_id` int(10) NOT NULL COMMENT '设备id',
+                                   `accx` float DEFAULT '0' COMMENT 'x轴加速度',
+                                   `accy` float DEFAULT '0' COMMENT 'y轴加速度',
+                                   `accz` float DEFAULT '0' COMMENT 'z轴加速度',
+                                   `degx` float DEFAULT '0' COMMENT 'x轴倾斜角',
+                                   `degy` float DEFAULT '0' COMMENT 'y轴倾斜角',
+                                   `degz` float DEFAULT '0' COMMENT 'z轴倾斜角',
+                                   `speedz` float DEFAULT '0' COMMENT '电梯速度',
+                                   `floor` float DEFAULT '1' COMMENT '电梯当前楼层',
+                                   `door_state_id` int(10) DEFAULT NULL COMMENT '电梯门状态类型',
+                                   `people_inside` tinyint(1) DEFAULT '1' COMMENT '电梯内是否有人',
+                                   `trouble_id` int(10) DEFAULT NULL COMMENT '电梯状态/故障类型',
+                                   PRIMARY KEY (`id`) USING BTREE,
+                                   KEY `idx_ad_device_datas_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -154,15 +154,15 @@ DROP TABLE IF EXISTS `ad_device_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_events` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `device_id` int(10) NOT NULL COMMENT '设备id',
-  `type_id` int(10) NOT NULL COMMENT '事件类型category',
-  `content` text COMMENT '事件内容',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
+                                    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                    `created_at` datetime DEFAULT NULL,
+                                    `updated_at` datetime DEFAULT NULL,
+                                    `deleted_at` datetime DEFAULT NULL,
+                                    `device_id` int(10) NOT NULL COMMENT '设备id',
+                                    `type_id` int(10) NOT NULL COMMENT '事件类型category',
+                                    `content` text COMMENT '事件内容',
+                                    PRIMARY KEY (`id`) USING BTREE,
+                                    KEY `idx_ad_device_events_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=704 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备事件表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -184,9 +184,9 @@ DROP TABLE IF EXISTS `ad_device_owners`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_device_owners` (
-  `ad_device_id` int(10) unsigned NOT NULL,
-  `sys_user_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`ad_device_id`,`sys_user_id`)
+                                    `ad_device_id` int(10) unsigned NOT NULL,
+                                    `sys_user_id` int(10) unsigned NOT NULL,
+                                    PRIMARY KEY (`ad_device_id`,`sys_user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -208,20 +208,20 @@ DROP TABLE IF EXISTS `ad_devices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_devices` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `type_id` int(10) NOT NULL COMMENT '电梯型号',
-  `factory_id` int(10) NOT NULL COMMENT '生产商',
-  `factory_time` datetime DEFAULT NULL COMMENT '出厂时间',
-  `install_time` datetime DEFAULT NULL COMMENT '安装时间',
-  `status_id` int(10) DEFAULT NULL COMMENT '设备状态类别',
-  `online` tinyint(1) DEFAULT '0' COMMENT '设备是否在线',
-  `last_offline_time` datetime DEFAULT NULL COMMENT '上次离线时间',
-  `last_online_time` datetime DEFAULT NULL COMMENT '上次上线时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_ad_devices_deleted_at` (`deleted_at`)
+                              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                              `created_at` datetime DEFAULT NULL,
+                              `updated_at` datetime DEFAULT NULL,
+                              `deleted_at` datetime DEFAULT NULL,
+                              `type_id` int(10) NOT NULL COMMENT '电梯型号',
+                              `factory_id` int(10) NOT NULL COMMENT '生产商',
+                              `factory_time` datetime DEFAULT NULL COMMENT '出厂时间',
+                              `install_time` datetime DEFAULT NULL COMMENT '安装时间',
+                              `status_id` int(10) DEFAULT NULL COMMENT '设备状态类别',
+                              `online` tinyint(1) DEFAULT '0' COMMENT '设备是否在线',
+                              `last_offline_time` datetime DEFAULT NULL COMMENT '上次离线时间',
+                              `last_online_time` datetime DEFAULT NULL COMMENT '上次上线时间',
+                              PRIMARY KEY (`id`) USING BTREE,
+                              KEY `idx_ad_devices_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='广告机设备表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -243,9 +243,9 @@ DROP TABLE IF EXISTS `address_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `address_tags` (
-  `address_id` int(10) unsigned NOT NULL,
-  `category_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`address_id`,`category_id`)
+                                `address_id` int(10) unsigned NOT NULL,
+                                `category_id` int(10) unsigned NOT NULL,
+                                PRIMARY KEY (`address_id`,`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -267,16 +267,16 @@ DROP TABLE IF EXISTS `addresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `addresses` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `region_id` int(10) NOT NULL COMMENT 'region id',
-  `address_name` varchar(255) DEFAULT NULL COMMENT '地址，精确到类似小区级别',
-  `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
-  `user_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'user amount',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_addresses_deleted_at` (`deleted_at`)
+                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                             `created_at` datetime DEFAULT NULL,
+                             `updated_at` datetime DEFAULT NULL,
+                             `deleted_at` datetime DEFAULT NULL,
+                             `region_id` int(10) NOT NULL COMMENT 'region id',
+                             `address_name` varchar(255) DEFAULT NULL COMMENT '地址，精确到类似小区级别',
+                             `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
+                             `user_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'user amount',
+                             PRIMARY KEY (`id`) USING BTREE,
+                             KEY `idx_addresses_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='地址表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -299,24 +299,24 @@ DROP TABLE IF EXISTS `authority_menu`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `authority_menu` AS SELECT
- 1 AS `id`,
- 1 AS `created_at`,
- 1 AS `updated_at`,
- 1 AS `deleted_at`,
- 1 AS `menu_level`,
- 1 AS `parent_id`,
- 1 AS `path`,
- 1 AS `name`,
- 1 AS `hidden`,
- 1 AS `component`,
- 1 AS `title`,
- 1 AS `icon`,
- 1 AS `nick_name`,
- 1 AS `sort`,
- 1 AS `authority_id`,
- 1 AS `menu_id`,
- 1 AS `keep_alive`,
- 1 AS `default_menu`*/;
+                                             1 AS `id`,
+                                             1 AS `created_at`,
+                                             1 AS `updated_at`,
+                                             1 AS `deleted_at`,
+                                             1 AS `menu_level`,
+                                             1 AS `parent_id`,
+                                             1 AS `path`,
+                                             1 AS `name`,
+                                             1 AS `hidden`,
+                                             1 AS `component`,
+                                             1 AS `title`,
+                                             1 AS `icon`,
+                                             1 AS `nick_name`,
+                                             1 AS `sort`,
+                                             1 AS `authority_id`,
+                                             1 AS `menu_id`,
+                                             1 AS `keep_alive`,
+                                             1 AS `default_menu`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -327,13 +327,13 @@ DROP TABLE IF EXISTS `casbin_rule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `casbin_rule` (
-  `p_type` varchar(100) DEFAULT NULL,
-  `v0` varchar(100) DEFAULT NULL,
-  `v1` varchar(100) DEFAULT NULL,
-  `v2` varchar(100) DEFAULT NULL,
-  `v3` varchar(100) DEFAULT NULL,
-  `v4` varchar(100) DEFAULT NULL,
-  `v5` varchar(100) DEFAULT NULL
+                               `p_type` varchar(100) DEFAULT NULL,
+                               `v0` varchar(100) DEFAULT NULL,
+                               `v1` varchar(100) DEFAULT NULL,
+                               `v2` varchar(100) DEFAULT NULL,
+                               `v3` varchar(100) DEFAULT NULL,
+                               `v4` varchar(100) DEFAULT NULL,
+                               `v5` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -355,14 +355,14 @@ DROP TABLE IF EXISTS `categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `categories` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `category_subject_id` int(10) NOT NULL COMMENT '类别主体id',
-  `category_name` varchar(50) DEFAULT NULL COMMENT '公司类别名',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_categories_deleted_at` (`deleted_at`)
+                              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                              `created_at` datetime DEFAULT NULL,
+                              `updated_at` datetime DEFAULT NULL,
+                              `deleted_at` datetime DEFAULT NULL,
+                              `category_subject_id` int(10) NOT NULL COMMENT '类别主体id',
+                              `category_name` varchar(50) DEFAULT NULL COMMENT '公司类别名',
+                              PRIMARY KEY (`id`) USING BTREE,
+                              KEY `idx_categories_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯类别表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -384,13 +384,13 @@ DROP TABLE IF EXISTS `category_subjects`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `category_subjects` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `subject_name` varchar(50) DEFAULT NULL COMMENT '类别主体名',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_category_subjects_deleted_at` (`deleted_at`)
+                                     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                     `created_at` datetime DEFAULT NULL,
+                                     `updated_at` datetime DEFAULT NULL,
+                                     `deleted_at` datetime DEFAULT NULL,
+                                     `subject_name` varchar(50) DEFAULT NULL COMMENT '类别主体名',
+                                     PRIMARY KEY (`id`) USING BTREE,
+                                     KEY `idx_category_subjects_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='类别主体表，电梯/公司/记录/......';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -412,23 +412,23 @@ DROP TABLE IF EXISTS `companies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `companies` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `full_name` varchar(50) DEFAULT NULL COMMENT '公司全称',
-  `alias` varchar(50) DEFAULT NULL COMMENT '公司简称',
-  `legal_person` varchar(50) DEFAULT NULL COMMENT '法人信息',
-  `phone_number` varchar(20) DEFAULT NULL COMMENT '联系方式',
-  `status` varchar(20) DEFAULT '正常营业' COMMENT '公司状态',
-  `reg_code` varchar(20) DEFAULT NULL COMMENT '工商注册号',
-  `org_code` varchar(20) DEFAULT NULL COMMENT '组织机构号',
-  `credit_code` varchar(20) DEFAULT NULL COMMENT '统一信用代码',
-  `tax_code` varchar(20) DEFAULT NULL COMMENT '纳税人识别号',
-  `address` varchar(255) DEFAULT NULL COMMENT '注册地址',
-  `category_id` int(10) NOT NULL COMMENT '电梯类别',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_companies_deleted_at` (`deleted_at`)
+                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                             `created_at` datetime DEFAULT NULL,
+                             `updated_at` datetime DEFAULT NULL,
+                             `deleted_at` datetime DEFAULT NULL,
+                             `full_name` varchar(50) DEFAULT NULL COMMENT '公司全称',
+                             `alias` varchar(50) DEFAULT NULL COMMENT '公司简称',
+                             `legal_person` varchar(50) DEFAULT NULL COMMENT '法人信息',
+                             `phone_number` varchar(20) DEFAULT NULL COMMENT '联系方式',
+                             `status` varchar(20) DEFAULT '正常营业' COMMENT '公司状态',
+                             `reg_code` varchar(20) DEFAULT NULL COMMENT '工商注册号',
+                             `org_code` varchar(20) DEFAULT NULL COMMENT '组织机构号',
+                             `credit_code` varchar(20) DEFAULT NULL COMMENT '统一信用代码',
+                             `tax_code` varchar(20) DEFAULT NULL COMMENT '纳税人识别号',
+                             `address` varchar(255) DEFAULT NULL COMMENT '注册地址',
+                             `category_id` int(10) NOT NULL COMMENT '电梯类别',
+                             PRIMARY KEY (`id`) USING BTREE,
+                             KEY `idx_companies_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='公司表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -450,16 +450,16 @@ DROP TABLE IF EXISTS `exa_customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exa_customers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `customer_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户名',
-  `customer_phone_data` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '客户电话',
-  `sys_user_id` int(10) unsigned DEFAULT NULL COMMENT '负责员工id',
-  `sys_user_authority_id` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '负责员工角色',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_exa_customers_deleted_at` (`deleted_at`) USING BTREE
+                                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                 `created_at` timestamp NULL DEFAULT NULL,
+                                 `updated_at` timestamp NULL DEFAULT NULL,
+                                 `deleted_at` timestamp NULL DEFAULT NULL,
+                                 `customer_name` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '客户名',
+                                 `customer_phone_data` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '客户电话',
+                                 `sys_user_id` int(10) unsigned DEFAULT NULL COMMENT '负责员工id',
+                                 `sys_user_authority_id` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '负责员工角色',
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 KEY `idx_exa_customers_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -481,15 +481,15 @@ DROP TABLE IF EXISTS `exa_file_chunks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exa_file_chunks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `exa_file_id` int(10) unsigned DEFAULT NULL COMMENT '文件id',
-  `file_chunk_path` varchar(255) DEFAULT NULL COMMENT '切片路径',
-  `file_chunk_number` int(11) DEFAULT NULL COMMENT '切片标号',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_exa_file_chunks_deleted_at` (`deleted_at`) USING BTREE
+                                   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                   `created_at` timestamp NULL DEFAULT NULL,
+                                   `updated_at` timestamp NULL DEFAULT NULL,
+                                   `deleted_at` timestamp NULL DEFAULT NULL,
+                                   `exa_file_id` int(10) unsigned DEFAULT NULL COMMENT '文件id',
+                                   `file_chunk_path` varchar(255) DEFAULT NULL COMMENT '切片路径',
+                                   `file_chunk_number` int(11) DEFAULT NULL COMMENT '切片标号',
+                                   PRIMARY KEY (`id`) USING BTREE,
+                                   KEY `idx_exa_file_chunks_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -510,17 +510,17 @@ DROP TABLE IF EXISTS `exa_file_upload_and_downloads`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exa_file_upload_and_downloads` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL COMMENT '文件名',
-  `url` varchar(255) DEFAULT NULL COMMENT '文件URL',
-  `tag` varchar(255) DEFAULT NULL COMMENT '文件类型',
-  `key` varchar(255) DEFAULT NULL COMMENT '标记',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_file_upload_and_downloads_deleted_at` (`deleted_at`) USING BTREE,
-  KEY `idx_exa_file_upload_and_downloads_deleted_at` (`deleted_at`) USING BTREE
+                                                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                                 `created_at` timestamp NULL DEFAULT NULL,
+                                                 `updated_at` timestamp NULL DEFAULT NULL,
+                                                 `deleted_at` timestamp NULL DEFAULT NULL,
+                                                 `name` varchar(255) DEFAULT NULL COMMENT '文件名',
+                                                 `url` varchar(255) DEFAULT NULL COMMENT '文件URL',
+                                                 `tag` varchar(255) DEFAULT NULL COMMENT '文件类型',
+                                                 `key` varchar(255) DEFAULT NULL COMMENT '标记',
+                                                 PRIMARY KEY (`id`) USING BTREE,
+                                                 KEY `idx_file_upload_and_downloads_deleted_at` (`deleted_at`) USING BTREE,
+                                                 KEY `idx_exa_file_upload_and_downloads_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1902 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -542,17 +542,17 @@ DROP TABLE IF EXISTS `exa_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exa_files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `file_name` varchar(255) DEFAULT NULL COMMENT '文件名',
-  `file_md5` varchar(255) DEFAULT NULL COMMENT '文件md5',
-  `file_path` varchar(255) DEFAULT NULL COMMENT '文件路径',
-  `chunk_total` int(11) DEFAULT NULL COMMENT '切片总数',
-  `is_finish` tinyint(1) DEFAULT NULL COMMENT '是否完整',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_exa_files_deleted_at` (`deleted_at`) USING BTREE
+                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                             `created_at` timestamp NULL DEFAULT NULL,
+                             `updated_at` timestamp NULL DEFAULT NULL,
+                             `deleted_at` timestamp NULL DEFAULT NULL,
+                             `file_name` varchar(255) DEFAULT NULL COMMENT '文件名',
+                             `file_md5` varchar(255) DEFAULT NULL COMMENT '文件md5',
+                             `file_path` varchar(255) DEFAULT NULL COMMENT '文件路径',
+                             `chunk_total` int(11) DEFAULT NULL COMMENT '切片总数',
+                             `is_finish` tinyint(1) DEFAULT NULL COMMENT '是否完整',
+                             PRIMARY KEY (`id`) USING BTREE,
+                             KEY `idx_exa_files_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -573,13 +573,13 @@ DROP TABLE IF EXISTS `jwt_blacklists`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `jwt_blacklists` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `jwt` text COMMENT 'jwt',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_jwt_blacklists_deleted_at` (`deleted_at`) USING BTREE
+                                  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                  `created_at` timestamp NULL DEFAULT NULL,
+                                  `updated_at` timestamp NULL DEFAULT NULL,
+                                  `deleted_at` timestamp NULL DEFAULT NULL,
+                                  `jwt` text COMMENT 'jwt',
+                                  PRIMARY KEY (`id`) USING BTREE,
+                                  KEY `idx_jwt_blacklists_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -601,14 +601,14 @@ DROP TABLE IF EXISTS `lift_changes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lift_changes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
-  `content` text COMMENT '变更内容',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_lift_changes_deleted_at` (`deleted_at`)
+                                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                `created_at` datetime DEFAULT NULL,
+                                `updated_at` datetime DEFAULT NULL,
+                                `deleted_at` datetime DEFAULT NULL,
+                                `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
+                                `content` text COMMENT '变更内容',
+                                PRIMARY KEY (`id`) USING BTREE,
+                                KEY `idx_lift_changes_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯变更表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -630,16 +630,16 @@ DROP TABLE IF EXISTS `lift_models`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lift_models` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `factory_id` int(10) unsigned DEFAULT NULL COMMENT '电梯生产商id',
-  `brand` varchar(50) DEFAULT NULL COMMENT '电梯品牌',
-  `modal` varchar(50) DEFAULT NULL COMMENT '电梯型号',
-  `load` int(11) DEFAULT NULL COMMENT '电梯载重',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_lift_models_deleted_at` (`deleted_at`)
+                               `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                               `created_at` datetime DEFAULT NULL,
+                               `updated_at` datetime DEFAULT NULL,
+                               `deleted_at` datetime DEFAULT NULL,
+                               `factory_id` int(10) unsigned DEFAULT NULL COMMENT '电梯生产商id',
+                               `brand` varchar(50) DEFAULT NULL COMMENT '电梯品牌',
+                               `modal` varchar(50) DEFAULT NULL COMMENT '电梯型号',
+                               `load` int(11) DEFAULT NULL COMMENT '电梯载重',
+                               PRIMARY KEY (`id`) USING BTREE,
+                               KEY `idx_lift_models_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯型号表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -661,20 +661,20 @@ DROP TABLE IF EXISTS `lift_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lift_records` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
-  `category_id` int(10) unsigned NOT NULL COMMENT '记录类别',
-  `images` text COMMENT '图片记录',
-  `content` text COMMENT '文字记录',
-  `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
-  `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
-  `worker_id` int(10) unsigned NOT NULL COMMENT '操作人员',
-  `recorder_id` int(10) unsigned NOT NULL COMMENT '记录人员',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_lift_records_deleted_at` (`deleted_at`)
+                                `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                `created_at` datetime DEFAULT NULL,
+                                `updated_at` datetime DEFAULT NULL,
+                                `deleted_at` datetime DEFAULT NULL,
+                                `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
+                                `category_id` int(10) unsigned NOT NULL COMMENT '记录类别',
+                                `images` text COMMENT '图片记录',
+                                `content` text COMMENT '文字记录',
+                                `start_time` timestamp NULL DEFAULT NULL COMMENT '开始时间',
+                                `end_time` timestamp NULL DEFAULT NULL COMMENT '结束时间',
+                                `worker_id` int(10) unsigned NOT NULL COMMENT '操作人员',
+                                `recorder_id` int(10) unsigned NOT NULL COMMENT '记录人员',
+                                PRIMARY KEY (`id`) USING BTREE,
+                                KEY `idx_lift_records_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯操作记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -696,29 +696,29 @@ DROP TABLE IF EXISTS `lift_troubles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lift_troubles` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
-  `from_category_id` int(10) unsigned NOT NULL COMMENT '故障来源类别',
-  `start_time` timestamp NULL DEFAULT NULL COMMENT '故障开始时间',
-  `start_user_id` int(10) DEFAULT NULL COMMENT '发起故障人员',
-  `response_time` timestamp NULL DEFAULT NULL COMMENT '故障响应时间',
-  `response_user_id` int(10) DEFAULT NULL COMMENT '故障响应人员',
-  `scene_time` timestamp NULL DEFAULT NULL COMMENT '达到现场时间',
-  `scene_user_id` int(10) DEFAULT NULL COMMENT '达到现场人员',
-  `fix_time` timestamp NULL DEFAULT NULL COMMENT '解除故障时间',
-  `fix_user_id` int(10) DEFAULT NULL COMMENT '解除故障人员',
-  `fix_category_id` int(10) unsigned DEFAULT NULL COMMENT '解除故障方式类别',
-  `reason_category_id` int(10) unsigned DEFAULT NULL COMMENT '故障原因类别',
-  `content` text COMMENT '故障详情',
-  `progress` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '故障进度',
-  `recorder_id` int(10) unsigned NOT NULL COMMENT '记录人员',
-  `feedback_content` varchar(255) DEFAULT NULL COMMENT '反馈内容',
-  `feedback_rate` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '反馈评分',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_lift_troubles_deleted_at` (`deleted_at`)
+                                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                 `created_at` datetime DEFAULT NULL,
+                                 `updated_at` datetime DEFAULT NULL,
+                                 `deleted_at` datetime DEFAULT NULL,
+                                 `lift_id` int(10) unsigned NOT NULL COMMENT '电梯id',
+                                 `from_category_id` int(10) unsigned NOT NULL COMMENT '故障来源类别',
+                                 `start_time` timestamp NULL DEFAULT NULL COMMENT '故障开始时间',
+                                 `start_user_id` int(10) DEFAULT NULL COMMENT '发起故障人员',
+                                 `response_time` timestamp NULL DEFAULT NULL COMMENT '故障响应时间',
+                                 `response_user_id` int(10) DEFAULT NULL COMMENT '故障响应人员',
+                                 `scene_time` timestamp NULL DEFAULT NULL COMMENT '达到现场时间',
+                                 `scene_user_id` int(10) DEFAULT NULL COMMENT '达到现场人员',
+                                 `fix_time` timestamp NULL DEFAULT NULL COMMENT '解除故障时间',
+                                 `fix_user_id` int(10) DEFAULT NULL COMMENT '解除故障人员',
+                                 `fix_category_id` int(10) unsigned DEFAULT NULL COMMENT '解除故障方式类别',
+                                 `reason_category_id` int(10) unsigned DEFAULT NULL COMMENT '故障原因类别',
+                                 `content` text COMMENT '故障详情',
+                                 `progress` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '故障进度',
+                                 `recorder_id` int(10) unsigned NOT NULL COMMENT '记录人员',
+                                 `feedback_content` varchar(255) DEFAULT NULL COMMENT '反馈内容',
+                                 `feedback_rate` int(10) unsigned NOT NULL DEFAULT '100' COMMENT '反馈评分',
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 KEY `idx_lift_troubles_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯故障记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -740,29 +740,29 @@ DROP TABLE IF EXISTS `lifts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lifts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `nick_name` varchar(255) DEFAULT NULL COMMENT '电梯别名',
-  `code` varchar(255) DEFAULT NULL COMMENT '电梯编号',
-  `installer_id` int(10) unsigned DEFAULT NULL COMMENT '电梯安装公司id',
-  `maintainer_id` int(10) unsigned DEFAULT NULL COMMENT '电梯维保公司id',
-  `checker_id` int(10) unsigned DEFAULT NULL COMMENT '电梯年检公司id',
-  `owner_id` int(10) unsigned DEFAULT NULL COMMENT '电梯使用公司id',
-  `factory_time` timestamp NULL DEFAULT NULL COMMENT '电梯出厂时间',
-  `install_time` timestamp NULL DEFAULT NULL COMMENT '电梯安装时间',
-  `check_time` timestamp NULL DEFAULT NULL COMMENT '电梯年检时间',
-  `lift_model_id` int(10) unsigned DEFAULT NULL COMMENT '电梯型号',
-  `category_id` int(10) NOT NULL COMMENT '电梯类别',
-  `floor_count` int(11) NOT NULL COMMENT '总楼层',
-  `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
-  `address_id` int(10) DEFAULT NULL COMMENT '地址id',
-  `building` varchar(50) DEFAULT NULL COMMENT '楼栋',
-  `cell` int(11) DEFAULT NULL COMMENT '单元',
-  `ad_device_id` int(10) unsigned DEFAULT NULL COMMENT '广告机设备id',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_lifts_deleted_at` (`deleted_at`)
+                         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                         `created_at` datetime DEFAULT NULL,
+                         `updated_at` datetime DEFAULT NULL,
+                         `deleted_at` datetime DEFAULT NULL,
+                         `nick_name` varchar(255) DEFAULT NULL COMMENT '电梯别名',
+                         `code` varchar(255) DEFAULT NULL COMMENT '电梯编号',
+                         `installer_id` int(10) unsigned DEFAULT NULL COMMENT '电梯安装公司id',
+                         `maintainer_id` int(10) unsigned DEFAULT NULL COMMENT '电梯维保公司id',
+                         `checker_id` int(10) unsigned DEFAULT NULL COMMENT '电梯年检公司id',
+                         `owner_id` int(10) unsigned DEFAULT NULL COMMENT '电梯使用公司id',
+                         `factory_time` timestamp NULL DEFAULT NULL COMMENT '电梯出厂时间',
+                         `install_time` timestamp NULL DEFAULT NULL COMMENT '电梯安装时间',
+                         `check_time` timestamp NULL DEFAULT NULL COMMENT '电梯年检时间',
+                         `lift_model_id` int(10) unsigned DEFAULT NULL COMMENT '电梯型号',
+                         `category_id` int(10) NOT NULL COMMENT '电梯类别',
+                         `floor_count` int(11) NOT NULL COMMENT '总楼层',
+                         `location` varchar(255) DEFAULT NULL COMMENT 'geo location',
+                         `address_id` int(10) DEFAULT NULL COMMENT '地址id',
+                         `building` varchar(50) DEFAULT NULL COMMENT '楼栋',
+                         `cell` int(11) DEFAULT NULL COMMENT '单元',
+                         `ad_device_id` int(10) unsigned DEFAULT NULL COMMENT '广告机设备id',
+                         PRIMARY KEY (`id`) USING BTREE,
+                         KEY `idx_lifts_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='电梯表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -784,15 +784,15 @@ DROP TABLE IF EXISTS `regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `regions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `province` varchar(50) DEFAULT NULL COMMENT '省份',
-  `city` varchar(50) DEFAULT NULL COMMENT '城市',
-  `district` varchar(50) DEFAULT NULL COMMENT '行政区',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_regions_deleted_at` (`deleted_at`)
+                           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                           `created_at` datetime DEFAULT NULL,
+                           `updated_at` datetime DEFAULT NULL,
+                           `deleted_at` datetime DEFAULT NULL,
+                           `province` varchar(50) DEFAULT NULL COMMENT '省份',
+                           `city` varchar(50) DEFAULT NULL COMMENT '城市',
+                           `district` varchar(50) DEFAULT NULL COMMENT '行政区',
+                           PRIMARY KEY (`id`) USING BTREE,
+                           KEY `idx_regions_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='区域表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -814,18 +814,18 @@ DROP TABLE IF EXISTS `sys_apis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_apis` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `authority_id` int(10) unsigned DEFAULT NULL COMMENT '角色id',
-  `path` varchar(255) DEFAULT NULL COMMENT '路由path',
-  `description` varchar(255) DEFAULT NULL COMMENT '路由描述',
-  `api_group` varchar(255) DEFAULT NULL COMMENT '路由分组',
-  `method` varchar(255) DEFAULT 'POST' COMMENT '请求方法',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_apis_deleted_at` (`deleted_at`) USING BTREE,
-  KEY `idx_sys_apis_deleted_at` (`deleted_at`) USING BTREE
+                            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                            `created_at` timestamp NULL DEFAULT NULL,
+                            `updated_at` timestamp NULL DEFAULT NULL,
+                            `deleted_at` timestamp NULL DEFAULT NULL,
+                            `authority_id` int(10) unsigned DEFAULT NULL COMMENT '角色id',
+                            `path` varchar(255) DEFAULT NULL COMMENT '路由path',
+                            `description` varchar(255) DEFAULT NULL COMMENT '路由描述',
+                            `api_group` varchar(255) DEFAULT NULL COMMENT '路由分组',
+                            `method` varchar(255) DEFAULT 'POST' COMMENT '请求方法',
+                            PRIMARY KEY (`id`) USING BTREE,
+                            KEY `idx_apis_deleted_at` (`deleted_at`) USING BTREE,
+                            KEY `idx_sys_apis_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -847,15 +847,15 @@ DROP TABLE IF EXISTS `sys_authorities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_authorities` (
-  `authority_id` varchar(255) NOT NULL COMMENT '角色id',
-  `authority_name` varchar(255) DEFAULT NULL COMMENT '角色名',
-  `parent_id` varchar(255) DEFAULT NULL COMMENT '父角色',
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`authority_id`) USING BTREE,
-  UNIQUE KEY `authority_id` (`authority_id`) USING BTREE,
-  KEY `idx_sys_authorities_deleted_at` (`deleted_at`) USING BTREE
+                                   `authority_id` varchar(255) NOT NULL COMMENT '角色id',
+                                   `authority_name` varchar(255) DEFAULT NULL COMMENT '角色名',
+                                   `parent_id` varchar(255) DEFAULT NULL COMMENT '父角色',
+                                   `created_at` datetime DEFAULT NULL,
+                                   `updated_at` datetime DEFAULT NULL,
+                                   `deleted_at` datetime DEFAULT NULL,
+                                   PRIMARY KEY (`authority_id`) USING BTREE,
+                                   UNIQUE KEY `authority_id` (`authority_id`) USING BTREE,
+                                   KEY `idx_sys_authorities_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -877,10 +877,10 @@ DROP TABLE IF EXISTS `sys_authority_menus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_authority_menus` (
-  `sys_authority_authority_id` varchar(255) NOT NULL COMMENT '角色id',
-  `sys_base_menu_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单id',
-  PRIMARY KEY (`sys_authority_authority_id`,`sys_base_menu_id`) USING BTREE,
-  KEY `sys_authority_authority_id` (`sys_authority_authority_id`) USING BTREE
+                                       `sys_authority_authority_id` varchar(255) NOT NULL COMMENT '角色id',
+                                       `sys_base_menu_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单id',
+                                       PRIMARY KEY (`sys_authority_authority_id`,`sys_base_menu_id`) USING BTREE,
+                                       KEY `sys_authority_authority_id` (`sys_authority_authority_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -902,25 +902,25 @@ DROP TABLE IF EXISTS `sys_base_menus`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_base_menus` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `menu_level` int(10) unsigned DEFAULT NULL COMMENT '菜单等级（暂未使用）',
-  `parent_id` int(10) unsigned DEFAULT NULL COMMENT '父菜单id',
-  `path` varchar(255) DEFAULT NULL COMMENT '菜单path（路由path）',
-  `name` varchar(255) DEFAULT NULL COMMENT '菜单name（路由name）',
-  `hidden` tinyint(1) DEFAULT NULL COMMENT '是否在列表隐藏',
-  `component` varchar(255) DEFAULT NULL COMMENT '组件位置',
-  `title` varchar(255) DEFAULT NULL COMMENT '显示名字',
-  `icon` varchar(255) DEFAULT NULL COMMENT '显示图标',
-  `nick_name` varchar(255) DEFAULT NULL COMMENT '菜单别名',
-  `sort` int(255) DEFAULT NULL COMMENT '排序',
-  `keep_alive` tinyint(1) DEFAULT NULL COMMENT '是否缓存菜单内容',
-  `default_menu` tinyint(1) DEFAULT NULL COMMENT '默认菜单（暂未使用）',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_base_menus_deleted_at` (`deleted_at`) USING BTREE,
-  KEY `idx_sys_base_menus_deleted_at` (`deleted_at`) USING BTREE
+                                  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                  `created_at` timestamp NULL DEFAULT NULL,
+                                  `updated_at` timestamp NULL DEFAULT NULL,
+                                  `deleted_at` timestamp NULL DEFAULT NULL,
+                                  `menu_level` int(10) unsigned DEFAULT NULL COMMENT '菜单等级（暂未使用）',
+                                  `parent_id` int(10) unsigned DEFAULT NULL COMMENT '父菜单id',
+                                  `path` varchar(255) DEFAULT NULL COMMENT '菜单path（路由path）',
+                                  `name` varchar(255) DEFAULT NULL COMMENT '菜单name（路由name）',
+                                  `hidden` tinyint(1) DEFAULT NULL COMMENT '是否在列表隐藏',
+                                  `component` varchar(255) DEFAULT NULL COMMENT '组件位置',
+                                  `title` varchar(255) DEFAULT NULL COMMENT '显示名字',
+                                  `icon` varchar(255) DEFAULT NULL COMMENT '显示图标',
+                                  `nick_name` varchar(255) DEFAULT NULL COMMENT '菜单别名',
+                                  `sort` int(255) DEFAULT NULL COMMENT '排序',
+                                  `keep_alive` tinyint(1) DEFAULT NULL COMMENT '是否缓存菜单内容',
+                                  `default_menu` tinyint(1) DEFAULT NULL COMMENT '默认菜单（暂未使用）',
+                                  PRIMARY KEY (`id`) USING BTREE,
+                                  KEY `idx_base_menus_deleted_at` (`deleted_at`) USING BTREE,
+                                  KEY `idx_sys_base_menus_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -942,11 +942,11 @@ DROP TABLE IF EXISTS `sys_data_authority_id`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_data_authority_id` (
-  `sys_authority_authority_id` varchar(255) NOT NULL COMMENT '角色id',
-  `data_authority_id` varchar(255) NOT NULL COMMENT '拥有的资源角色id',
-  PRIMARY KEY (`sys_authority_authority_id`,`data_authority_id`) USING BTREE,
-  KEY `sys_authority_authority_id` (`sys_authority_authority_id`) USING BTREE,
-  KEY `data_authority_id` (`data_authority_id`) USING BTREE
+                                         `sys_authority_authority_id` varchar(255) NOT NULL COMMENT '角色id',
+                                         `data_authority_id` varchar(255) NOT NULL COMMENT '拥有的资源角色id',
+                                         PRIMARY KEY (`sys_authority_authority_id`,`data_authority_id`) USING BTREE,
+                                         KEY `sys_authority_authority_id` (`sys_authority_authority_id`) USING BTREE,
+                                         KEY `data_authority_id` (`data_authority_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -968,16 +968,16 @@ DROP TABLE IF EXISTS `sys_dictionaries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_dictionaries` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL COMMENT '字典名（中）',
-  `type` varchar(255) DEFAULT NULL COMMENT '字典名（英）',
-  `status` tinyint(1) DEFAULT NULL COMMENT '状态',
-  `desc` varchar(255) DEFAULT NULL COMMENT '描述',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_dictionaries_deleted_at` (`deleted_at`) USING BTREE
+                                    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                    `created_at` datetime DEFAULT NULL,
+                                    `updated_at` datetime DEFAULT NULL,
+                                    `deleted_at` datetime DEFAULT NULL,
+                                    `name` varchar(255) DEFAULT NULL COMMENT '字典名（中）',
+                                    `type` varchar(255) DEFAULT NULL COMMENT '字典名（英）',
+                                    `status` tinyint(1) DEFAULT NULL COMMENT '状态',
+                                    `desc` varchar(255) DEFAULT NULL COMMENT '描述',
+                                    PRIMARY KEY (`id`) USING BTREE,
+                                    KEY `idx_sys_dictionaries_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -999,17 +999,17 @@ DROP TABLE IF EXISTS `sys_dictionary_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_dictionary_details` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `label` varchar(255) DEFAULT NULL COMMENT '展示值',
-  `value` int(11) DEFAULT NULL COMMENT '字典值',
-  `status` tinyint(1) DEFAULT NULL COMMENT '启用状态',
-  `sort` int(11) DEFAULT NULL COMMENT '排序标记',
-  `sys_dictionary_id` int(11) DEFAULT NULL COMMENT '关联标记',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_dictionary_details_deleted_at` (`deleted_at`) USING BTREE
+                                          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                          `created_at` datetime DEFAULT NULL,
+                                          `updated_at` datetime DEFAULT NULL,
+                                          `deleted_at` datetime DEFAULT NULL,
+                                          `label` varchar(255) DEFAULT NULL COMMENT '展示值',
+                                          `value` int(11) DEFAULT NULL COMMENT '字典值',
+                                          `status` tinyint(1) DEFAULT NULL COMMENT '启用状态',
+                                          `sort` int(11) DEFAULT NULL COMMENT '排序标记',
+                                          `sys_dictionary_id` int(11) DEFAULT NULL COMMENT '关联标记',
+                                          PRIMARY KEY (`id`) USING BTREE,
+                                          KEY `idx_sys_dictionary_details_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1031,22 +1031,22 @@ DROP TABLE IF EXISTS `sys_operation_records`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_operation_records` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `ip` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求ip',
-  `method` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求方法',
-  `path` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求路由',
-  `status` int(11) DEFAULT NULL COMMENT '状态',
-  `latency` bigint(20) DEFAULT NULL,
-  `agent` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `error_message` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `body` text COLLATE utf8mb4_bin COMMENT '请求Body',
-  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
-  `resp` text COLLATE utf8mb4_bin COMMENT '响应Body',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
+                                         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                         `created_at` datetime DEFAULT NULL,
+                                         `updated_at` datetime DEFAULT NULL,
+                                         `deleted_at` datetime DEFAULT NULL,
+                                         `ip` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求ip',
+                                         `method` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求方法',
+                                         `path` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '请求路由',
+                                         `status` int(11) DEFAULT NULL COMMENT '状态',
+                                         `latency` bigint(20) DEFAULT NULL,
+                                         `agent` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+                                         `error_message` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+                                         `body` text COLLATE utf8mb4_bin COMMENT '请求Body',
+                                         `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+                                         `resp` text COLLATE utf8mb4_bin COMMENT '响应Body',
+                                         PRIMARY KEY (`id`) USING BTREE,
+                                         KEY `idx_sys_operation_records_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=9219 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1068,21 +1068,21 @@ DROP TABLE IF EXISTS `sys_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `uuid` varbinary(255) DEFAULT NULL COMMENT 'uuid',
-  `phone_number` varchar(20) NOT NULL COMMENT '登陆手机号',
-  `password` varchar(255) DEFAULT NULL COMMENT '登陆密码',
-  `real_name` varchar(255) DEFAULT NULL COMMENT '用户真名',
-  `nick_name` varchar(255) DEFAULT NULL COMMENT '用户昵称',
-  `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
-  `company_id` int(10) unsigned NOT NULL COMMENT '用户所属公司id',
-  `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
-  `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_users_deleted_at` (`deleted_at`)
+                             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                             `created_at` datetime DEFAULT NULL,
+                             `updated_at` datetime DEFAULT NULL,
+                             `deleted_at` datetime DEFAULT NULL,
+                             `uuid` varbinary(255) DEFAULT NULL COMMENT 'uuid',
+                             `phone_number` varchar(20) NOT NULL COMMENT '登陆手机号',
+                             `password` varchar(255) DEFAULT NULL COMMENT '登陆密码',
+                             `real_name` varchar(255) DEFAULT NULL COMMENT '用户真名',
+                             `nick_name` varchar(255) DEFAULT NULL COMMENT '用户昵称',
+                             `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
+                             `company_id` int(10) unsigned NOT NULL COMMENT '用户所属公司id',
+                             `address` varchar(255) DEFAULT NULL COMMENT '用户住址',
+                             `authority_id` varchar(255) DEFAULT '888' COMMENT '用户角色ID',
+                             PRIMARY KEY (`id`) USING BTREE,
+                             KEY `idx_sys_users_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1104,20 +1104,20 @@ DROP TABLE IF EXISTS `sys_workflow_step_infos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_workflow_step_infos` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `workflow_id` int(10) unsigned DEFAULT NULL COMMENT '节点id',
-  `is_strat` tinyint(1) DEFAULT NULL COMMENT '是否是开始节点',
-  `step_name` varchar(255) DEFAULT NULL COMMENT '步骤name',
-  `step_no` double DEFAULT NULL COMMENT '第几步',
-  `step_authority_id` varchar(255) DEFAULT NULL COMMENT '可操作者角色',
-  `is_end` tinyint(1) DEFAULT NULL COMMENT '是否是结尾',
-  `sys_workflow_id` int(10) unsigned DEFAULT NULL COMMENT '关联工作流id',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_workflow_step_infos_deleted_at` (`deleted_at`) USING BTREE,
-  KEY `idx_sys_workflow_step_infos_deleted_at` (`deleted_at`) USING BTREE
+                                           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                           `created_at` timestamp NULL DEFAULT NULL,
+                                           `updated_at` timestamp NULL DEFAULT NULL,
+                                           `deleted_at` timestamp NULL DEFAULT NULL,
+                                           `workflow_id` int(10) unsigned DEFAULT NULL COMMENT '节点id',
+                                           `is_strat` tinyint(1) DEFAULT NULL COMMENT '是否是开始节点',
+                                           `step_name` varchar(255) DEFAULT NULL COMMENT '步骤name',
+                                           `step_no` double DEFAULT NULL COMMENT '第几步',
+                                           `step_authority_id` varchar(255) DEFAULT NULL COMMENT '可操作者角色',
+                                           `is_end` tinyint(1) DEFAULT NULL COMMENT '是否是结尾',
+                                           `sys_workflow_id` int(10) unsigned DEFAULT NULL COMMENT '关联工作流id',
+                                           PRIMARY KEY (`id`) USING BTREE,
+                                           KEY `idx_workflow_step_infos_deleted_at` (`deleted_at`) USING BTREE,
+                                           KEY `idx_sys_workflow_step_infos_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1138,15 +1138,15 @@ DROP TABLE IF EXISTS `sys_workflows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sys_workflows` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `workflow_nick_name` varchar(255) DEFAULT NULL COMMENT '工作流中文名称',
-  `workflow_name` varchar(255) DEFAULT NULL COMMENT '工作流英文名称',
-  `workflow_description` varchar(255) DEFAULT NULL COMMENT '工作流描述',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_sys_workflows_deleted_at` (`deleted_at`) USING BTREE
+                                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                                 `created_at` datetime DEFAULT NULL,
+                                 `updated_at` datetime DEFAULT NULL,
+                                 `deleted_at` datetime DEFAULT NULL,
+                                 `workflow_nick_name` varchar(255) DEFAULT NULL COMMENT '工作流中文名称',
+                                 `workflow_name` varchar(255) DEFAULT NULL COMMENT '工作流英文名称',
+                                 `workflow_description` varchar(255) DEFAULT NULL COMMENT '工作流描述',
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 KEY `idx_sys_workflows_deleted_at` (`deleted_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1167,15 +1167,15 @@ DROP TABLE IF EXISTS `user_lifts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_lifts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  `user_id` int(10) unsigned NOT NULL COMMENT '用户',
-  `lift_id` int(10) unsigned NOT NULL COMMENT '电梯',
-  `category_id` int(10) NOT NULL COMMENT '用户电梯关系类型',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_user_lifts_deleted_at` (`deleted_at`)
+                              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                              `created_at` datetime DEFAULT NULL,
+                              `updated_at` datetime DEFAULT NULL,
+                              `deleted_at` datetime DEFAULT NULL,
+                              `user_id` int(10) unsigned NOT NULL COMMENT '用户',
+                              `lift_id` int(10) unsigned NOT NULL COMMENT '电梯',
+                              `category_id` int(10) NOT NULL COMMENT '用户电梯关系类型',
+                              PRIMARY KEY (`id`) USING BTREE,
+                              KEY `idx_user_lifts_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户电梯关系表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1200,8 +1200,8 @@ UNLOCK TABLES;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `authority_menu` AS select `sys_base_menus`.`id` AS `id`,`sys_base_menus`.`created_at` AS `created_at`,`sys_base_menus`.`updated_at` AS `updated_at`,`sys_base_menus`.`deleted_at` AS `deleted_at`,`sys_base_menus`.`menu_level` AS `menu_level`,`sys_base_menus`.`parent_id` AS `parent_id`,`sys_base_menus`.`path` AS `path`,`sys_base_menus`.`name` AS `name`,`sys_base_menus`.`hidden` AS `hidden`,`sys_base_menus`.`component` AS `component`,`sys_base_menus`.`title` AS `title`,`sys_base_menus`.`icon` AS `icon`,`sys_base_menus`.`nick_name` AS `nick_name`,`sys_base_menus`.`sort` AS `sort`,`sys_authority_menus`.`sys_authority_authority_id` AS `authority_id`,`sys_authority_menus`.`sys_base_menu_id` AS `menu_id`,`sys_base_menus`.`keep_alive` AS `keep_alive`,`sys_base_menus`.`default_menu` AS `default_menu` from (`sys_authority_menus` join `sys_base_menus` on((`sys_authority_menus`.`sys_base_menu_id` = `sys_base_menus`.`id`))) */;
+    /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+    /*!50001 VIEW `authority_menu` AS select `sys_base_menus`.`id` AS `id`,`sys_base_menus`.`created_at` AS `created_at`,`sys_base_menus`.`updated_at` AS `updated_at`,`sys_base_menus`.`deleted_at` AS `deleted_at`,`sys_base_menus`.`menu_level` AS `menu_level`,`sys_base_menus`.`parent_id` AS `parent_id`,`sys_base_menus`.`path` AS `path`,`sys_base_menus`.`name` AS `name`,`sys_base_menus`.`hidden` AS `hidden`,`sys_base_menus`.`component` AS `component`,`sys_base_menus`.`title` AS `title`,`sys_base_menus`.`icon` AS `icon`,`sys_base_menus`.`nick_name` AS `nick_name`,`sys_base_menus`.`sort` AS `sort`,`sys_authority_menus`.`sys_authority_authority_id` AS `authority_id`,`sys_authority_menus`.`sys_base_menu_id` AS `menu_id`,`sys_base_menus`.`keep_alive` AS `keep_alive`,`sys_base_menus`.`default_menu` AS `default_menu` from (`sys_authority_menus` join `sys_base_menus` on((`sys_authority_menus`.`sys_base_menu_id` = `sys_base_menus`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;

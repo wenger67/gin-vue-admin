@@ -19,4 +19,5 @@ type LiftRecord struct {
 	Worker     SysUser `json:"worker" form:"worker" gorm:"ForiegnKey:WorkerId;AssociationForiegnKey:ID"`
 	RecorderId int `json:"recorderId" form:"recorderId"`
 	Recorder   SysUser `json:"recorder" form:"recorder" gorm:"ForiegnKey:RecorderId;AssociationForiegnKey:ID"`
+	Progress int `json:"progress" form:"progress"`
 }

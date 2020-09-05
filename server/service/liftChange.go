@@ -58,7 +58,7 @@ func UpdateLiftChange(liftChange *model.LiftChange) (err error) {
 // @return    LiftChange        LiftChange
 
 func GetLiftChange(id uint) (err error, liftChange model.LiftChange) {
-	err = global.GVA_DB.Where("id = ?", id).First(&liftChange).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").First(&liftChange).Error
 	return
 }
 
@@ -76,6 +76,6 @@ func GetLiftChangeInfoList(info request.LiftChangeSearch) (err error, list inter
     var liftChanges []model.LiftChange
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&liftChanges).Error
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Find(&liftChanges).Error
 	return err, liftChanges, total
 }
