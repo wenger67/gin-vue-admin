@@ -14,7 +14,7 @@ type SysUser struct {
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
 	CompanyId   int `json:"companyId" form:"companyId"`
-	Company     Company `json:"company" form:"company" gorm:"ForiegnKey:CompanyId;AssociationForiegnKey:ID"`
+	Company     Company `json:"company" form:"company" gorm:"ForeignKey:CompanyId;AssociationForeignKey:ID"`
 	Address     string `json:"address" form:"address"`
 	Authority   SysAuthority `json:"authority" gorm:"ForeignKey:AuthorityId;AssociationForeignKey:AuthorityId;comment:'用户角色'"`
 	AuthorityId string       `json:"authorityId" gorm:"default:888;comment:'用户角色ID'"`

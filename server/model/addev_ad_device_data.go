@@ -5,9 +5,9 @@ import "github.com/jinzhu/gorm"
 type AdDeviceData struct {
 	gorm.Model
 	DeviceId int `json:"deviceId" form:"deviceId"`
-	Device AdDevice `json:"device" form:"device" gorm:"ForiegnKey:DeviceId;AssociationForiegnKey:ID;"`
+	Device AdDevice `json:"device" form:"device" gorm:"ForeignKey:DeviceId;AssociationForeignKey:ID;"`
 	TroubleId int `json:"troubleId" form:"troubleId"`
-	Trouble Category `json:"trouble" form:"trouble" gorm:"ForiegnKey:TroubleId;AssociationForiegnKey:ID;comment:'电梯状态/故障类型'"`
+	Trouble Category `json:"trouble" form:"trouble" gorm:"ForeignKey:TroubleId;AssociationForeignKey:ID;comment:'电梯状态/故障类型'"`
 	Accx float32 `json:"accx" form:"accx"`
 	Accy float32 `json:"accy" form:"accy"`
 	Accz float32 `json:"accz" form:"accz"`
@@ -17,7 +17,7 @@ type AdDeviceData struct {
 	Speedz float32 `json:"speedz" form:"speedz"`
 	Floor float32 `json:"floor" form:"floor"`
 	DoorStateId int `json:"doorStateId" form:"doorStateId" gorm:"comment:'开门状态'"`
-	DoorState Category `json:"doorState" form:"doorState" gorm:"ForiegnKey:DoorStateId;AssociationForiegnKey:ID"`
+	DoorState Category `json:"doorState" form:"doorState" gorm:"ForeignKey:DoorStateId;AssociationForeignKey:ID"`
 	PeopleInside bool `json:"peopleInside" form:"peopleInside"`
 }
 
