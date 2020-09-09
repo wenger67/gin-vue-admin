@@ -54,6 +54,9 @@ func Routers() *gin.Engine {
 	router.InitAdDeviceDataRouter(ApiGroup)
 	router.InitAdDeviceEventRouter(ApiGroup)
 	router.InitAdDeviceRouter(ApiGroup)
+	router.InitMessageRouter(ApiGroup)
+	router.InitHealthChangeRouter(ApiGroup)
+	router.InitHealthSystemRouter(ApiGroup)
 
 	DevGroup := Router.Group("dev")
 	dev.InitDeviceRouter(DevGroup)
