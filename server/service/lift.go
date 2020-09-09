@@ -12,8 +12,8 @@ import (
 // @auth                     （2020/04/05  20:22）
 // @return    err             error
 
-func CreateLift(lift model.Lift) (err error) {
-	err = global.GVA_DB.Create(&lift).Error
+func CreateLift(lift *model.Lift) (err error) {
+	err = global.GVA_DB.Create(lift).Error
 	return err
 }
 

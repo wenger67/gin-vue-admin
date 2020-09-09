@@ -8,6 +8,7 @@ import (
 	"gin-vue-admin/model/request"
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
+	"gin-vue-admin/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -23,11 +24,21 @@ import (
 func CreateLift(c *gin.Context) {
 	var lift model.Lift
 	_ = c.ShouldBindJSON(&lift)
-	err := service.CreateLift(lift)
+	err := service.CreateLift(&lift)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
-		response.OkWithMessage("创建成功", c)
+		// TODO health system initial
+		// TODO send message
+		health := model.HealthSystem{LiftId: int(lift.ID), TimeDimension: utils.HealthDimensionInitialValue,
+			HumanDimension: utils.HealthDimensionInitialValue, InnerDimension: utils.HealthDimensionInitialValue,
+			MaintainDimension: utils.HealthDimensionInitialValue, SensorDimension: utils.HealthDimensionInitialValue }
+		err = service.CreateHealthSystem(health);
+		if err != nil {
+			response.FailWithMessage("init health system for " + strconv.Itoa(int(lift.ID)), c)
+		} else {
+			response.OkWithMessage("创建成功", c)
+		}
 	}
 }
 
