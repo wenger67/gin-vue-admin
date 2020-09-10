@@ -9,6 +9,7 @@ import (
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
 	"gin-vue-admin/utils"
+	"gin-vue-admin/utils/enum"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
@@ -28,14 +29,26 @@ func CreateLift(c *gin.Context) {
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
-		// TODO health system initial
-		// TODO send message
-		health := model.HealthSystem{LiftId: int(lift.ID), TimeDimension: utils.HealthDimensionInitialValue,
+		// health system initial
+		timeDim := utils.CalTimeDimensionInitVal(lift.InstallTime)
+		health := model.HealthSystem{LiftId: int(lift.ID), TimeDimension: timeDim,
 			HumanDimension: utils.HealthDimensionInitialValue, InnerDimension: utils.HealthDimensionInitialValue,
-			MaintainDimension: utils.HealthDimensionInitialValue, SensorDimension: utils.HealthDimensionInitialValue }
-		err = service.CreateHealthSystem(health);
+			MaintainDimension: utils.HealthDimensionInitialValue, SensorDimension: utils.HealthDimensionInitialValue}
+		err = service.CreateHealthSystem(health)
+		// health change initial
+		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthTimeDimension),
+			Content: "Initial", Score: timeDim})
+		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthHumanDimension),
+			Content: "Initial", Score: utils.HealthDimensionInitialValue})
+		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthInnerDimension),
+			Content: "Initial", Score: utils.HealthDimensionInitialValue})
+		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthMaintainDimension),
+			Content: "Initial", Score: utils.HealthDimensionInitialValue})
+		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthSensorDimension),
+			Content: "Initial", Score: utils.HealthDimensionInitialValue})
+		// TODO send message
 		if err != nil {
-			response.FailWithMessage("init health system for " + strconv.Itoa(int(lift.ID)), c)
+			response.FailWithMessage("init health system failed for "+strconv.Itoa(int(lift.ID)), c)
 		} else {
 			response.OkWithMessage("创建成功", c)
 		}
@@ -57,7 +70,15 @@ func DeleteLift(c *gin.Context) {
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
 	} else {
-		response.OkWithMessage("删除成功", c)
+		// delete relative health system
+		ids := []int{int(lift.ID)}
+		err = service.DeleteHealthSystemByLiftIds(request.IdsReq{Ids: ids})
+		err = service.DeleteHealthChangeByLiftIds(request.IdsReq{Ids: ids})
+		if err != nil {
+			response.FailWithMessage("delete relative health system failed "+err.Error(), c)
+		} else {
+			response.OkWithMessage("删除成功", c)
+		}
 	}
 }
 
@@ -71,7 +92,7 @@ func DeleteLift(c *gin.Context) {
 // @Router /lift/deleteLiftByIds [delete]
 func DeleteLiftByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    _ = c.ShouldBindJSON(&IDS)
+	_ = c.ShouldBindJSON(&IDS)
 	err := service.DeleteLiftByIds(IDS)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("删除失败，%v", err), c)
@@ -92,14 +113,14 @@ func UpdateLift(c *gin.Context) {
 	var lift model.Lift
 	_ = c.ShouldBindJSON(&lift)
 
-	changes := ""  // change columns
-	_ , origin := service.GetLift(lift.ID) // save origin data
-	err := service.UpdateLift(&lift)  // update data
+	changes := ""                         // change columns
+	_, origin := service.GetLift(lift.ID) // save origin data
+	err := service.UpdateLift(&lift)      // update data
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("更新失败，%v", err), c)
 	} else {
-		_ , lift = service.GetLift(origin.ID)	// get updated data to compare
-			// TODO lift info changes
+		_, lift = service.GetLift(origin.ID) // get updated data to compare
+		// TODO lift info changes
 		if origin.NickName != lift.NickName {
 			changes += "nick name changes from [" + origin.NickName + "] to [" + lift.NickName + "], "
 		}
@@ -143,8 +164,8 @@ func UpdateLift(c *gin.Context) {
 		if changes != "" {
 			var liftChange model.LiftChange
 			liftChange.LiftId = int(lift.ID)
-			liftChange.Content = changes;
-			err := service.CreateLiftChange(liftChange)  // save changes
+			liftChange.Content = changes
+			err := service.CreateLiftChange(liftChange) // save changes
 			if err != nil {
 				global.GVA_LOG.Warning("create lift change failed.", err.Error())
 			}

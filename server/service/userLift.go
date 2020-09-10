@@ -75,6 +75,12 @@ func GetUserLiftInfoList(info request.UserLiftSearch) (err error, list interface
 	db := global.GVA_DB.Model(&model.UserLift{})
     var userLift []model.UserLift
     // 如果有条件搜索 下方会自动创建搜索语句
+	if info.LiftId != 0 {
+		db = db.Where("lift_id = ?", info.LiftId)
+	}
+	if info.CategoryId != 0 {
+		db = db.Where("category_id = ?", info.CategoryId)
+	}
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&userLift).Error
 	return err, userLift, total

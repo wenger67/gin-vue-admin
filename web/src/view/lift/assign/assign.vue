@@ -43,8 +43,8 @@
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" width="200">
         <template slot-scope="scope">
-          <el-button @click="updateUserLifts(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>
+          <el-button @click="updateUserLift(scope.row)" size="small" type="primary">变更</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUserLift(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,22 +72,22 @@
 
 <script>
 import {
-    createUserLifts,
-    deleteUserLifts,
-    deleteUserLiftsByIds,
-    updateUserLifts,
-    findUserLifts,
-    getUserLiftsList
+    createUserLift,
+    deleteUserLift,
+    deleteUserLiftByIds,
+    updateUserLift,
+    findUserLift,
+    getUserLiftList
 } from "@/api/userLift";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 
 export default {
-  name: "UserLifts",
+  name: "Assign",
   mixins: [infoList],
   data() {
     return {
-      listApi: getUserLiftsList,
+      listApi: getUserLiftList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
@@ -129,7 +129,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteUserLiftsByIds({ ids })
+        const res = await deleteUserLiftByIds({ ids })
         if (res.code === 0) {
           this.$message({
             type: 'success',
@@ -139,8 +139,8 @@ export default {
           await this.getTableData()
         }
       },
-    async updateUserLifts(row) {
-      const res = await findUserLifts({ ID: row.ID });
+    async updateUserLift(row) {
+      const res = await findUserLift({ ID: row.ID });
       this.type = "update";
       if (res.code === 0) {
         this.formData = res.data.reuserLift;
@@ -156,14 +156,14 @@ export default {
           categoryId:null,
       };
     },
-    async deleteUserLifts(row) {
+    async deleteUserLift(row) {
       this.$confirm('this operation is dangerous, continue ?', 'Hint', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
       .then(async () => {
-        const res = await deleteUserLifts({ ID: row.ID });
+        const res = await deleteUserLift({ ID: row.ID });
         if (res.code === 0) {
           this.$message({
             type: "success",
@@ -183,10 +183,10 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createUserLifts(this.formData);
+          res = await createUserLift(this.formData);
           break;
         case "update":
-          res = await updateUserLifts(this.formData);
+          res = await updateUserLift(this.formData);
           break;
       }
       if (res.code === 0) {

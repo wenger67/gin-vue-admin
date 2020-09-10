@@ -72,8 +72,9 @@
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" min-width="200">
         <template slot-scope="scope">
-          <el-button @click="updateLift(scope.row)" size="small" type="primary">变更</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLift(scope.row)">删除</el-button>
+          <el-button type="primary" @click="assign(scope.row)" size="small" icon="el-icon-setting">Assign</el-button>
+          <el-button @click="updateLift(scope.row)" icon="el-icon-edit" size="small" type="primary">变更</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteLift(scope.row)">删除</el-button>
           <el-button type="success" icon="el-icon-info" size="small" @click="toDetail(scope.row)">详情</el-button>
           <!--  TODO more operations  -->
         </template>
@@ -277,6 +278,101 @@
         <el-button @click="enterDialog" type="primary">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :before-close="closeAssignDialog" :visible.sync="assignDialogVisible" :title="assignDialogTitle">
+      <el-row :gutter="15">
+        <el-form ref="elAssignForm" :model="assignFormData" :rules="assignRules" size="medium" label-width="100px"
+          label-position="left">
+          <el-col :span="8">
+            <el-form-item label="安装单位">
+              {{assignFormData.installer != null ? assignFormData.installer.fullName:"null"}}              
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="安装人员" prop="installUser">
+              <el-select v-model="assignFormData.installUser" placeholder="请选择下拉选择安装人员" multiple clearable
+                :style="{width: '100%'}" value-key="ID">
+                <el-option v-for="item in installUserOptions"
+                  :key="item.ID"
+                  :label="item.realName"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="primary" size="small" @click="assignBase(installCateogry)">Setting</el-button>
+          </el-col>
+                    
+          <el-col :span="8">
+            <el-form-item label="维保单位">
+              {{assignFormData.maintainer != null ? assignFormData.maintainer.fullName:"null"}}              
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="维保人员" prop="maintainUser">
+              <el-select v-model="assignFormData.maintainUser" placeholder="请选择下拉选择维保人员" multiple clearable
+                :style="{width: '100%'}" value-key="ID">
+                <el-option v-for="item in maintainUserOptions"
+                  :key="item.ID"
+                  :label="item.realName"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="primary" size="small" @click="assignBase(maintainCategory)">Setting</el-button>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item label="年检单位">
+              {{assignFormData.checker != null ? assignFormData.checker.fullName:"null"}}              
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="年检人员" prop="checkUser">
+              <el-select v-model="assignFormData.checkUser" placeholder="请选择下拉选择年检人员" multiple clearable
+                :style="{width: '100%'}" value-key="ID">
+                <el-option v-for="item in checkUserOptions"
+                  :key="item.ID"
+                  :label="item.realName"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="primary" size="small" @click="assignBase(checkCategory)">Setting</el-button>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item label="使用单位">
+              {{assignFormData.owner != null ? assignFormData.owner.fullName:"null"}}              
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="管理人员" prop="ownerUser">
+              <el-select v-model="assignFormData.ownerUser" placeholder="请选择下拉选择管理人员" multiple clearable
+                :style="{width: '100%'}" value-key="ID">
+                <el-option v-for="item in ownUserOptions"
+                  :key="item.ID"
+                  :label="item.realName"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="primary" size="small" @click="assignBase(ownerCategory)">Setting</el-button>
+          </el-col>
+
+        </el-form>
+      </el-row>
+      <div slot="footer">
+        <el-button type="primary" @click="closeAssignDialog">确定</el-button>
+      </div>
+    </el-dialog>    
   </div>
 </template>
 
@@ -297,6 +393,8 @@ import {getCategoriesList} from "@/api/categories";
 import {getAddressList} from "@/api/address";
 import {getAdDeviceList} from "@/api/adDevice";
 import VueAMap from "vue-amap";
+import { getUserList } from '@/api/user';
+import {getUserLiftList, deleteUserLiftByIds, createUserLift} from '@/api/userLift'
 
 let aMapManager = new VueAMap.AMapManager();
 
@@ -332,6 +430,8 @@ export default {
       listApi: getLiftList,
       dialogFormVisible: false,
       dialogTitle: "",
+      assignDialogVisible: false,
+      assignDialogTitle: "",
       videoCallTitle: "",
       visible: false,
       type: "",
@@ -434,6 +534,50 @@ export default {
         cell: [{
           required: true,
           message: '请输入单元号',
+          trigger: 'blur'
+        }],
+      },
+      assignFormData: {
+        installer: undefined,
+        installUser: [],
+        maintainer: undefined,
+        maintainUser: [],
+        checker: undefined,
+        checkUser: [],
+        user: undefined,
+        ownerUser: [],
+      },
+      installUserOptions:[],
+      maintainUserOptions:[],
+      checkUserOptions:[],
+      ownUserOptions:[],
+      installCateogry:100,
+      maintainCategory: 101,
+      checkCategory: 102,
+      ownerCategory:103,
+      assignRules: {
+        installUser: [{
+          required: true,
+          type: 'array',
+          message: '请至少选择一个安装人员',
+          trigger: 'blur'
+        }],
+        maintainUser: [{
+          required: true,
+          type: 'array',
+          message: '请至少选择一个维保人员',
+          trigger: 'blur'
+        }],
+        checkUser: [{
+          required: true,
+          type: 'array',
+          message: '请至少选择一个年检人员',
+          trigger: 'blur'
+        }],
+        ownerUser: [{
+          required: true,
+          type: 'array',
+          message: '请至少选择一个管理人员',
           trigger: 'blur'
         }],
       },
@@ -540,6 +684,91 @@ export default {
         this.dialogFormVisible = true;
       }
     },
+    async assign(row) {
+      console.log(row)
+      this.assignFormData = row
+      let res = await getUserList({
+        page: 1,
+        pageSize: 9999,
+        companyId: row.installerId
+      })
+      this.installUserOptions = res.data.list
+      res = await getUserList({
+        page: 1,
+        pageSize: 9999,
+        companyId: row.maintainerId
+      })
+      this.maintainUserOptions = res.data.list      
+      res = await getUserList({
+        page: 1,
+        pageSize: 9999,
+        companyId: row.checkerId
+      })
+      this.checkUserOptions = res.data.list
+      res = await getUserList({
+        page: 1,
+        pageSize: 9999,
+        companyId: row.ownerId
+      })
+      this.ownUserOptions = res.data.list
+      this.assignDialogVisible = true;
+      this.assignDialogTitle = "Assign User"
+    },
+    async assignBase(categoryId) {
+      console.log(categoryId)
+      let users
+      if (categoryId == this.installCateogry) {
+        users = this.assignFormData.installUser
+      } else if (categoryId == this.maintainCategory) {
+        users = this.assignFormData.maintainUser
+      } else if (categoryId == this.checkCategory) {
+        users = this.assignFormData.checkUser
+      } else if (categoryId == this.ownerCategory) {
+        users = this.assignFormData.ownerUser
+      }
+      let res = await getUserLiftList({
+        page: 1,
+        pageSize: 9999,
+        liftId: this.assignFormData.ID,
+        categoryId: categoryId
+      })
+      let targetUserIds = _.map(users, "ID")
+      let preUserIds = _.map(res.data.list, "userId")
+      console.log(preUserIds)
+      // nothing changed
+      if (_.isEqual(targetUserIds, preUserIds)) {
+        this.$message({
+          type: "warning",
+          message: "nothing changed"
+        });
+        return
+      }
+      
+      // exec del and add 
+      let delUserIds = _.difference(preUserIds, targetUserIds)
+      let addUserIds = _.difference(targetUserIds, preUserIds)
+      console.log(delUserIds)
+      console.log(addUserIds)
+      if (delUserIds.length > 0) {
+        let delIds = _.map(_.filter(res.data.list, function(o) {return _.includes(delUserIds, o.userId)}), "ID")
+        res = await deleteUserLiftByIds({
+          ids: delIds
+        })
+      }
+      for(const userId of addUserIds) {
+        res = await createUserLift({
+          userId: userId,
+          liftId: this.assignFormData.ID,
+          categoryId: categoryId
+        })        
+      }
+      if (res.code === 0) {
+          this.$message({
+            type: "success",
+            message: "setting成功"
+          });
+        }
+    },
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
@@ -563,6 +792,9 @@ export default {
           cell:null,
           adDeviceId:null,
       };
+    },
+    closeAssignDialog() {
+      this.assignDialogVisible = false;
     },
     async deleteLift(row) {
       this.$confirm('this operation is dangerous, continue ?', 'Hint', {

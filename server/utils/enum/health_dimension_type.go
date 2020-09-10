@@ -1,6 +1,6 @@
 package enum
 
-type HealthDimensionType int32
+type HealthDimensionType int
 
 const (
 	_ HealthDimensionType = iota

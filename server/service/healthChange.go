@@ -39,6 +39,11 @@ func DeleteHealthChangeByIds(ids request.IdsReq) (err error) {
 	return err
 }
 
+func DeleteHealthChangeByLiftIds(ids request.IdsReq) (err error) {
+	err = global.GVA_DB.Delete(&[]model.HealthChange{},"lift_id in (?)",ids.Ids).Error
+	return err
+}
+
 // @title    UpdateHealthChange
 // @description   update a HealthChange
 // @param     healthChange          *model.HealthChange

@@ -8,9 +8,9 @@ import service from '@/utils/request'
 // @Param data body model.UserLifts true "创建UserLifts"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /userLift/createUserLifts [post]
-export const createUserLifts = (data) => {
+export const createUserLift = (data) => {
      return service({
-         url: "/userLift/createUserLifts",
+         url: "/userLift/createUserLift",
          method: 'post',
          data
      })
@@ -25,9 +25,9 @@ export const createUserLifts = (data) => {
 // @Param data body model.UserLifts true "删除UserLifts"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /userLift/deleteUserLifts [delete]
- export const deleteUserLifts = (data) => {
+ export const deleteUserLift = (data) => {
      return service({
-         url: "/userLift/deleteUserLifts",
+         url: "/userLift/deleteUserLift",
          method: 'delete',
          data
      })
@@ -41,9 +41,9 @@ export const createUserLifts = (data) => {
 // @Param data body request.IdsReq true "批量删除UserLifts"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"删除成功"}"
 // @Router /userLift/deleteUserLifts [delete]
- export const deleteUserLiftsByIds = (data) => {
+ export const deleteUserLiftByIds = (data) => {
      return service({
-         url: "/userLift/deleteUserLiftsByIds",
+         url: "/userLift/deleteUserLiftByIds",
          method: 'delete',
          data
      })
@@ -57,9 +57,9 @@ export const createUserLifts = (data) => {
 // @Param data body model.UserLifts true "更新UserLifts"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /userLift/updateUserLifts [put]
- export const updateUserLifts = (data) => {
+ export const updateUserLift = (data) => {
      return service({
-         url: "/userLift/updateUserLifts",
+         url: "/userLift/updateUserLift",
          method: 'put',
          data
      })
@@ -74,9 +74,9 @@ export const createUserLifts = (data) => {
 // @Param data body model.UserLifts true "用id查询UserLifts"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
 // @Router /userLift/findUserLifts [get]
- export const findUserLifts = (params) => {
+ export const findUserLift = (params) => {
      return service({
-         url: "/userLift/findUserLifts",
+         url: "/userLift/findUserLift",
          method: 'get',
          params
      })
@@ -91,9 +91,9 @@ export const createUserLifts = (data) => {
 // @Param data body request.PageInfo true "分页获取UserLifts列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /userLift/getUserLiftsList [get]
- export const getUserLiftsList = (params) => {
+ export const getUserLiftList = (params) => {
      return service({
-         url: "/userLift/getUserLiftsList",
+         url: "/userLift/getUserLiftList",
          method: 'get',
          params
      })
