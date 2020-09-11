@@ -29,7 +29,7 @@ func UpdateDeviceStatus(serial string, status string) {
 	}
 
 	db := global.GVA_DB.Model(&lift.AdDevice);
-	var eventTypeId int
+	var eventTypeId uint
 	var str string
 	// update state
 	if status == DeviceOnline {
@@ -44,7 +44,8 @@ func UpdateDeviceStatus(serial string, status string) {
 
 	// create event
 	// 164:off 165:on
-	deviceEvent := model.AdDeviceEvent{DeviceId: lift.AdDeviceId, TypeId: eventTypeId, Content: "设备于 " + time.Now().Format("2006-01-02 15:04:05") + str}
+	deviceEvent := model.AdDeviceEvent{DeviceID: lift.AdDevice.ID, TypeId: eventTypeId,
+		Content: "设备于 " + time.Now().Format("2006-01-02 15:04:05") + str}
 	service.CreateAdDeviceEvent(deviceEvent)
 }
 

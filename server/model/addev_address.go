@@ -1,11 +1,11 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Address struct {
 	gorm.Model
 	RegionId int `json:"regionId" form:"regionId"`
-	Region Region `json:"region" form:"region" gorm:"ForeignKey:RegionId;AssociationForeignKey:ID"`
+	Region Region `json:"region" form:"region" gorm:"foreignKey:RegionId;"`
 	AddressName string `json:"addressName" form:"addressName"`
 	Location string `json:"location" form:"location"`
 	UserAmount int `json:"userAmount" form:"userAmount"`

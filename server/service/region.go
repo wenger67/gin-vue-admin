@@ -68,7 +68,7 @@ func GetRegion(id uint) (err error, region model.Region) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, total int) {
+func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

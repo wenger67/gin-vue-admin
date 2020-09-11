@@ -157,7 +157,7 @@ func UpdateLift(c *gin.Context) {
 		if origin.Building != lift.Building {
 			changes += "lift building changes from [" + origin.Building + "] to [" + lift.Building + "], "
 		}
-		if origin.AdDeviceId != lift.AdDeviceId {
+		if origin.AdDevice.ID != lift.AdDevice.ID {
 			changes += "lift smart device changes from [" + strconv.Itoa(int(origin.AdDevice.ID)) + "] to [" + strconv.Itoa(int(origin.AdDevice.ID)) + "], "
 		}
 

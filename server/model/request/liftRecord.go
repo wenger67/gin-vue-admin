@@ -11,14 +11,14 @@ type LiftRecordSearch struct {
 
 // step 1 create
 type LiftRecordCreate struct {
-	LiftId     int       `json:"liftId" form:"liftId"`
-	CategoryId int       `json:"categoryId" form:"categoryId"`
-	WorkerId   int       `json:"workerId" form:"workerId"`
+	LiftId     uint       `json:"liftId" form:"liftId"`
+	CategoryId uint       `json:"categoryId" form:"categoryId"`
+	WorkerId   uint       `json:"workerId" form:"workerId"`
 }
 
 // step 2 fill
 type LiftRecordFill struct {
-	RecordId int       `json:"recordId" form:"recordId"`
+	RecordId uint       `json:"recordId" form:"recordId"`
 	Images   string    `json:"images" form:"images"`
 	Content  string    `json:"content" form:"content"`
 }
@@ -26,6 +26,6 @@ type LiftRecordFill struct {
 // step3 review
 
 type LiftRecordReview struct {
-	RecordId   int `json:"recordId" form:"recordId"`
-	RecorderId int `json:"recorderId" form:"recorderId"`
+	RecordId   uint `json:"recordId" form:"recordId"`
+	RecorderId uint `json:"recorderId" form:"recorderId"`
 }

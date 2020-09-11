@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // file struct, 文件结构体
@@ -10,7 +10,8 @@ type ExaFile struct {
 	FileName     string
 	FileMd5      string
 	FilePath     string
-	ExaFileChunk []ExaFileChunk
+	// has many
+	ExaFileChunk []ExaFileChunk `gorm:"foreignKey:ExaFileId"`
 	ChunkTotal   int
 	IsFinish     bool
 }

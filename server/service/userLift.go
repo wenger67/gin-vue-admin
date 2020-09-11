@@ -58,17 +58,17 @@ func UpdateUserLift(userLift *model.UserLift) (err error) {
 // @return    UserLift        UserLift
 
 func GetUserLift(id uint) (err error, userLift model.UserLift) {
-	err = global.GVA_DB.Where("id = ?", id).First(&userLift).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("User").Preload("Category").First(&userLift).Error
 	return
 }
 
-// @title    GetUserLiftInfoList
+// @title    GetUserLiftList
 // @description   get UserLift list by pagination, 分页获取UserLift
 // @auth                     （2020/04/05  20:22）
 // @param     info            PageInfo
 // @return                    error
 
-func GetUserLiftInfoList(info request.UserLiftSearch) (err error, list interface{}, total int) {
+func GetUserLiftList(info request.UserLiftSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
@@ -82,6 +82,6 @@ func GetUserLiftInfoList(info request.UserLiftSearch) (err error, list interface
 		db = db.Where("category_id = ?", info.CategoryId)
 	}
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&userLift).Error
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("User").Preload("Category").Find(&userLift).Error
 	return err, userLift, total
 }

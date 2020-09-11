@@ -6,9 +6,6 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增healthChange表</el-button>
-        </el-form-item>
-        <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
               <div style="text-align: right; margin: 0">
@@ -29,21 +26,16 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-
-    
-    <el-table-column label="lift id" prop="liftId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="dimension id" prop="dimensionId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="score字段" prop="score" sortable min-width="60"></el-table-column> 
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column label="ID" prop="ID" sortable min-width="30"></el-table-column> 
+      <el-table-column label="lift" prop="lift.nickName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="dimension" prop="dimension.categoryName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
+      <el-table-column label="score字段" prop="score" sortable min-width="60"></el-table-column> 
+      <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100">
         <template slot-scope="scope">
           <el-button @click="updateHealthChange(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteHealthChange(scope.row)">删除</el-button>

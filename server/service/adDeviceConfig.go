@@ -68,7 +68,7 @@ func GetAdDeviceConfig(id uint) (err error, adDeviceConfig model.AdDeviceConfig)
 // @param     info            PageInfo
 // @return                    error
 
-func GetAdDeviceConfigInfoList(info request.AdDeviceConfigSearch) (err error, list interface{}, total int) {
+func GetAdDeviceConfigInfoList(info request.AdDeviceConfigSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

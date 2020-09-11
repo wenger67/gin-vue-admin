@@ -68,7 +68,7 @@ func GetLiftChange(id uint) (err error, liftChange model.LiftChange) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetLiftChangeInfoList(info request.LiftChangeSearch) (err error, list interface{}, total int) {
+func GetLiftChangeInfoList(info request.LiftChangeSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

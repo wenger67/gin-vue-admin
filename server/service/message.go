@@ -68,7 +68,7 @@ func GetMessage(id uint) (err error, message model.Message) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetMessageInfoList(info request.MessageSearch) (err error, list interface{}, total int) {
+func GetMessageInfoList(info request.MessageSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

@@ -5,6 +5,6 @@ import (
 )
 
 type AdDeviceSearch struct{
-    model.AdDevice
+    model.Device
     PageInfo
 }

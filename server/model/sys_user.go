@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type SysUser struct {
@@ -13,9 +13,11 @@ type SysUser struct {
 	RealName    string `json:"realName" form:"realName"`
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
+	// belong to
 	CompanyId   int `json:"companyId" form:"companyId"`
-	Company     Company `json:"company" form:"company" gorm:"ForeignKey:CompanyId;AssociationForeignKey:ID"`
+	Company     Company `json:"company" form:"company" gorm:"ForeignKey:CompanyId"`
 	Address     string `json:"address" form:"address"`
-	Authority   SysAuthority `json:"authority" gorm:"ForeignKey:AuthorityId;AssociationForeignKey:AuthorityId;comment:'用户角色'"`
+	// belong to
+	Authority   SysAuthority `json:"authority" gorm:"ForeignKey:AuthorityId;comment:'用户角色'"`
 	AuthorityId string       `json:"authorityId" gorm:"default:888;comment:'用户角色ID'"`
 }

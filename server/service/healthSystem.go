@@ -64,7 +64,7 @@ func UpdateHealthSystem(healthSystem *model.HealthSystem) (err error) {
 // @return    HealthSystem        HealthSystem
 
 func GetHealthSystem(id uint) (err error, healthSystem model.HealthSystem) {
-	err = global.GVA_DB.Where("id = ?", id).First(&healthSystem).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").First(&healthSystem).Error
 	return
 }
 
@@ -74,7 +74,7 @@ func GetHealthSystem(id uint) (err error, healthSystem model.HealthSystem) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetHealthSystemInfoList(info request.HealthSystemSearch) (err error, list interface{}, total int) {
+func GetHealthSystemInfoList(info request.HealthSystemSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
@@ -82,6 +82,6 @@ func GetHealthSystemInfoList(info request.HealthSystemSearch) (err error, list i
     var healthSystems []model.HealthSystem
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&healthSystems).Error
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Find(&healthSystems).Error
 	return err, healthSystems, total
 }

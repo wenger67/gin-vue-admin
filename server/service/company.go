@@ -68,7 +68,7 @@ func GetCompany(id uint) (err error, company model.Company) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetCompanyInfoList(info request.CompanySearch) (err error, list interface{}, total int) {
+func GetCompanyInfoList(info request.CompanySearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	categoryId := info.ID

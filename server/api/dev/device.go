@@ -44,7 +44,7 @@ func CreateEvent(c *gin.Context) {
 	tId, _ := strconv.Atoi(typeId)
 
 	// create event then updated with content
-	event := model.AdDeviceEvent{DeviceId: dId, TypeId: tId}
+	event := model.AdDeviceEvent{DeviceID: uint(dId), TypeId: uint(tId)}
 	err := dev.CreateEvent(&event)
 	if err != nil {
 		response.FailWithMessage("create device event failed", c)
@@ -84,8 +84,8 @@ func handleFiles(c *gin.Context, files []*multipart.FileHeader, noSave string, s
 			date := time.Now().Format("2006_01_02")
 			dateTime := time.Now().Format("2006_01_02_15_04_05")
 			prefix := dir + "/resource"
-			additionPath := "/upload/" + date + "/" + strconv.Itoa(event.DeviceId) + "/" +
-				strconv.Itoa(event.TypeId) + "/" + strconv.Itoa(int(event.ID)) + "/"
+			additionPath := "/upload/" + date + "/" + strconv.Itoa(int(event.DeviceID)) + "/" +
+				strconv.Itoa(int(event.TypeId)) + "/" + strconv.Itoa(int(event.ID)) + "/"
 			newFileName := utils.MD5V([]byte(dateTime)) + "_" + fileName
 			err = os.MkdirAll(prefix + additionPath, os.ModePerm)
 			if err != nil {

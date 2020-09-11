@@ -1,6 +1,6 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type Company struct {
 	gorm.Model
@@ -14,6 +14,8 @@ type Company struct {
 	CreditCode  string   `json:"creditCode"`
 	TaxCode     string   `json:"taxCode"`
 	Address     string   `json:"address"`
-	CategoryId  int      `json:"categoryId"`
-	Category    Category `json:"category" grom:"ForeignKey:CategoryId;AssociationForeignKey:ID"`
+	// belong to
+	CategoryID  int      `json:"categoryId"`
+	Category    Category `json:"category"`
+	AdminId     int      `json:"adminId"`
 }

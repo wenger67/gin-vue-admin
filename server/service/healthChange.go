@@ -63,17 +63,17 @@ func UpdateHealthChange(healthChange *model.HealthChange) (err error) {
 // @return    HealthChange        HealthChange
 
 func GetHealthChange(id uint) (err error, healthChange model.HealthChange) {
-	err = global.GVA_DB.Where("id = ?", id).First(&healthChange).Error
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Dimension").First(&healthChange).Error
 	return
 }
 
-// @title    GetHealthChangeInfoList
+// @title    GetHealthChangeList
 // @description   get HealthChange list by pagination, 分页获取HealthChange
 // @auth                     （2020/04/05  20:22）
 // @param     info            PageInfo
 // @return                    error
 
-func GetHealthChangeInfoList(info request.HealthChangeSearch) (err error, list interface{}, total int) {
+func GetHealthChangeList(info request.HealthChangeSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
@@ -81,6 +81,6 @@ func GetHealthChangeInfoList(info request.HealthChangeSearch) (err error, list i
     var healthChanges []model.HealthChange
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&healthChanges).Error
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Dimension").Find(&healthChanges).Error
 	return err, healthChanges, total
 }

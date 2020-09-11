@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type SysBaseMenu struct {
@@ -15,7 +15,8 @@ type SysBaseMenu struct {
 	Sort          int    `json:"sort" gorm:"comment:'排序标记'"`
 	Meta          `json:"meta" gorm:"comment:'附加属性'"`
 	SysAuthoritys []SysAuthority `json:"authoritys" gorm:"many2many:sys_authority_menus;"`
-	Children      []SysBaseMenu  `json:"children"`
+	// self-referential has many
+	Children      []SysBaseMenu  `json:"children" gorm:"foreignKey:ParentId"`
 }
 
 type Meta struct {

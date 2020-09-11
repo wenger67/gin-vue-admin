@@ -116,7 +116,7 @@ func FindHealthChange(c *gin.Context) {
 func GetHealthChangeList(c *gin.Context) {
 	var pageInfo request.HealthChangeSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	err, list, total := service.GetHealthChangeInfoList(pageInfo)
+	err, list, total := service.GetHealthChangeList(pageInfo)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
 	} else {

@@ -7,6 +7,7 @@ import (
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/utils"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 // @title    Register
@@ -19,7 +20,7 @@ import (
 func Register(u model.SysUser) (err error, userInter model.SysUser) {
 	var user model.SysUser
 	// 判断用户名是否注册
-	notRegister := global.GVA_DB.Where("phone_number = ?", u.PhoneNumber).First(&user).RecordNotFound()
+	notRegister := errors.Is(global.GVA_DB.Where("phone_number = ?", u.PhoneNumber).First(&user).Error, gorm.ErrRecordNotFound)
 	// notRegister为false表明读取到了 不能注册
 	if !notRegister {
 		return errors.New("用户名已注册"), userInter
@@ -79,7 +80,7 @@ func ChangePassword(u *model.SysUser, newPassword string) (err error, userInter 
 // @return    list             interface{}
 // @return    total            int
 
-func GetUserInfoList(params request.SearchUserParams) (err error, list interface{}, total int) {
+func GetUserInfoList(params request.SearchUserParams) (err error, list interface{}, total int64) {
 	limit := params.PageInfo.PageSize
 	offset := params.PageInfo.PageSize * (params.PageInfo.Page - 1)
 	db := global.GVA_DB.Model(&model.SysUser{})

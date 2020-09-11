@@ -105,7 +105,7 @@ func GetLiftTrouble(id uint) (err error, liftTrouble model.LiftTrouble) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetLiftTroubleInfoList(info request.LiftTroubleSearch) (err error, list interface{}, total int) {
+func GetLiftTroubleInfoList(info request.LiftTroubleSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

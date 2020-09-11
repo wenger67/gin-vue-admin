@@ -9,23 +9,22 @@ const (
 	SubjectLiftTroubleSourceType
 	SubjectLiftTroubleSolvedType
 	SubjectLiftTroubleReasonType
-	SubjectLiftTroubleType
 	SubjectLiftDoorStatusType
 
-	SubjectDeviceModalType
-	SubjectDeviceStatusType
-	SubjectDeviceEventType
+	SubjectDeviceModalType = 100
+	SubjectDeviceStatusType = 101
+	SubjectDeviceEventType = 102
 
-	SubjectCompanyStatusType
-	SubjectCompanyType
+	SubjectCompanyStatusType = 200
+	SubjectCompanyType = 201
 
-	SubjectUserLiftShipType
-	SubjectUserType
+	SubjectUserLiftShipType = 300
+	SubjectUserType = 301
 
-	SubjectAddressTagType
+	SubjectAddressTagType = 400
 
-	SubjectMessageType
-	SubjectMessageFromTargetType
+	SubjectMessageType = 500
+	SubjectMessageFromTargetType = 501
 
-	SubjectHealthDimensionType
+	SubjectHealthDimensionType = 600
 )

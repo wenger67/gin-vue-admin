@@ -5,9 +5,9 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
-	"github.com/casbin/casbin"
 	"github.com/casbin/casbin/util"
-	gormadapter "github.com/casbin/gorm-adapter"
+	"github.com/casbin/casbin/v2"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"strings"
 )
 
@@ -44,7 +44,8 @@ func UpdateCasbin(authorityId string, casbinInfos []request.CasbinInfo) error {
 
 func AddCasbin(cm model.CasbinModel) bool {
 	e := Casbin()
-	return e.AddPolicy(cm.AuthorityId, cm.Path, cm.Method)
+	success, _ := e.AddPolicy(cm.AuthorityId, cm.Path, cm.Method)
+	return success
 }
 
 // @title    UpdateCasbinApi
@@ -92,8 +93,8 @@ func GetPolicyPathByAuthorityId(authorityId string) (pathMaps []request.CasbinIn
 
 func ClearCasbin(v int, p ...string) bool {
 	e := Casbin()
-	return e.RemoveFilteredPolicy(v, p...)
-
+	success,_ := e.RemoveFilteredPolicy(v, p...)
+	return success
 }
 
 // @title    Casbin
@@ -101,8 +102,9 @@ func ClearCasbin(v int, p ...string) bool {
 // @auth                     （2020/04/05  20:22）
 
 func Casbin() *casbin.Enforcer {
-	a := gormadapter.NewAdapterByDB(global.GVA_DB)
-	e := casbin.NewEnforcer(global.GVA_CONFIG.Casbin.ModelPath, a)
+	admin := global.GVA_CONFIG.Mysql
+	a, _ := gormadapter.NewAdapter(global.GVA_CONFIG.System.DbType, admin.Username+":"+admin.Password+"@("+admin.Path+")/"+admin.Dbname, true)
+	e, _ := casbin.NewEnforcer(global.GVA_CONFIG.Casbin.ModelPath, a)
 	e.AddFunction("ParamsMatch", ParamsMatchFunc)
 	_ = e.LoadPolicy()
 	return e

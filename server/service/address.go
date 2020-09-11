@@ -68,7 +68,7 @@ func GetAddress(id uint) (err error, address model.Address) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetAddressInfoList(info request.AddressSearch) (err error, list interface{}, total int) {
+func GetAddressInfoList(info request.AddressSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

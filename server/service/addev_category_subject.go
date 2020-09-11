@@ -5,6 +5,7 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
+	"gorm.io/gorm"
 )
 
 func CreateSubject(subject model.CategorySubject) (err error) {
@@ -23,7 +24,7 @@ func DeleteSubject(subject model.CategorySubject) (err error) {
 	return err
 }
 
-func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order string, desc bool) (err error, list interface{}, total int) {
+func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order string, desc bool) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	db := global.GVA_DB.Model(&model.CategorySubject{})
@@ -46,9 +47,9 @@ func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order 
 			} else {
 				OrderStr = order
 			}
-			err = db.Order(OrderStr, true).Find(&subjectList).Error
+			err = db.Order(OrderStr + " DESC").Find(&subjectList).Error
 		} else {
-			err = db.Order("id", true).Find(&subjectList).Error
+			err = db.Order("id" + " DESC").Find(&subjectList).Error
 		}
 	}
 	return err, subjectList, total
@@ -67,7 +68,8 @@ func UpdateSubject(subject model.CategorySubject) (err error) {
 		return err
 	} else {
 		if origin.SubjectName != subject.SubjectName {
-			flag := global.GVA_DB.Where("subject_name = ?", subject.SubjectName).Find(&model.CategorySubject{}).RecordNotFound()
+			flag := errors.Is(global.GVA_DB.Where("subject_name = ?",
+				subject.SubjectName).Find(&model.CategorySubject{}).Error, gorm.ErrRecordNotFound)
 			if !flag {
 				return errors.New("same subject name exist!")
 			}

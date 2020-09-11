@@ -37,7 +37,7 @@ func DeleteSubject(c *gin.Context) {
 	SubjectVerify := utils.Rules{
 		"ID": {utils.NotEmpty()},
 	}
-	SubjectVerifyErr := utils.Verify(subject.Model, SubjectVerify)
+	SubjectVerifyErr := utils.Verify(subject.ID, SubjectVerify)
 	if SubjectVerifyErr != nil {
 		response.FailWithMessage(SubjectVerifyErr.Error(), c)
 		return

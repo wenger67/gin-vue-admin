@@ -63,7 +63,7 @@ func getChildrenList(menu *model.SysMenu, treeMap map[string][]model.SysMenu) (e
 // @return    list            interface{}
 // @return    total           int
 
-func GetInfoList() (err error, list interface{}, total int) {
+func GetInfoList() (err error, list interface{}, total int64) {
 	var menuList []model.SysBaseMenu
 	err, treeMap := getBaseMenuTreeMap()
 	menuList = treeMap["0"]
@@ -113,7 +113,7 @@ func AddBaseMenu(menu model.SysBaseMenu) (err error) {
 func getBaseMenuTreeMap() (err error, treeMap map[string][]model.SysBaseMenu) {
 	var allMenus []model.SysBaseMenu
 	treeMap = make(map[string][]model.SysBaseMenu)
-	err = global.GVA_DB.Order("sort", true).Find(&allMenus).Error
+	err = global.GVA_DB.Order("sort" + " DESC").Find(&allMenus).Error
 	for _, v := range allMenus {
 		treeMap[v.ParentId] = append(treeMap[v.ParentId], v)
 	}

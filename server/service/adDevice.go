@@ -7,12 +7,12 @@ import (
 )
 
 // @title    CreateAdDevice
-// @description   create a AdDevice
-// @param     adDevice               model.AdDevice
+// @description   create a Device
+// @param     adDevice               model.Device
 // @auth                     （2020/04/05  20:22）
 // @return    err             error
 
-func CreateAdDevice(adDevice model.AdDevice) (err error) {
+func CreateAdDevice(adDevice model.Device) (err error) {
 	adDevice.LastOnlineTime = adDevice.InstallTime
 	adDevice.LastOfflineTime = adDevice.InstallTime
 	err = global.GVA_DB.Create(&adDevice).Error
@@ -20,12 +20,12 @@ func CreateAdDevice(adDevice model.AdDevice) (err error) {
 }
 
 // @title    DeleteAdDevice
-// @description   delete a AdDevice
+// @description   delete a Device
 // @auth                     （2020/04/05  20:22）
-// @param     adDevice               model.AdDevice
+// @param     adDevice               model.Device
 // @return                    error
 
-func DeleteAdDevice(adDevice model.AdDevice) (err error) {
+func DeleteAdDevice(adDevice model.Device) (err error) {
 	err = global.GVA_DB.Delete(adDevice).Error
 	return err
 }
@@ -33,49 +33,49 @@ func DeleteAdDevice(adDevice model.AdDevice) (err error) {
 // @title    DeleteAdDeviceByIds
 // @description   delete AdDevices
 // @auth                     （2020/04/05  20:22）
-// @param     adDevice               model.AdDevice
+// @param     adDevice               model.Device
 // @return                    error
 
 func DeleteAdDeviceByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.AdDevice{},"id in (?)",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.Device{},"id in (?)",ids.Ids).Error
 	return err
 }
 
 // @title    UpdateAdDevice
-// @description   update a AdDevice
-// @param     adDevice          *model.AdDevice
+// @description   update a Device
+// @param     adDevice          *model.Device
 // @auth                     （2020/04/05  20:22）
 // @return                    error
 
-func UpdateAdDevice(adDevice *model.AdDevice) (err error) {
+func UpdateAdDevice(adDevice *model.Device) (err error) {
 	err = global.GVA_DB.Save(adDevice).Error
 	return err
 }
 
 // @title    GetAdDevice
-// @description   get the info of a AdDevice
+// @description   get the info of a Device
 // @auth                     （2020/04/05  20:22）
 // @param     id              uint
 // @return                    error
-// @return    AdDevice        AdDevice
+// @return    Device        Device
 
-func GetAdDevice(id uint) (err error, adDevice model.AdDevice) {
+func GetAdDevice(id uint) (err error, adDevice model.Device) {
 	err = global.GVA_DB.Where("id = ?", id).First(&adDevice).Error
 	return
 }
 
 // @title    GetAdDeviceInfoList
-// @description   get AdDevice list by pagination, 分页获取AdDevice
+// @description   get Device list by pagination, 分页获取AdDevice
 // @auth                     （2020/04/05  20:22）
 // @param     info            PageInfo
 // @return                    error
 
-func GetAdDeviceInfoList(info request.AdDeviceSearch) (err error, list interface{}, total int) {
+func GetAdDeviceInfoList(info request.AdDeviceSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.AdDevice{})
-    var adDevices []model.AdDevice
+	db := global.GVA_DB.Model(&model.Device{})
+    var adDevices []model.Device
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Preload("Type").Preload("Factory").

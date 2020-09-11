@@ -1,36 +1,45 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"time"
 )
 
 type LiftTrouble struct {
 	gorm.Model
-	LiftId           int `json:"liftId" form:"liftId"`
-	Lift             Lift `json:"lift" form:"lift" gorm:"ForeignKey:LiftId;AssociationForeignKey:ID"`
-	FromCategoryId   int `json:"fromCategoryId" form:"fromCategoryId"`  // subject:104
-	FromCategory     Category `json:"fromCategory" form:"fromCategory" gorm:"ForeignKey:FromCategoryId;AssociationForeignKey:ID"`
+	// belong to
+	LiftId           uint `json:"liftId" form:"liftId"`
+	Lift             Lift `json:"lift" form:"lift" gorm:"ForeignKey:LiftId;"`
+	// belong to
+	FromCategoryId   uint `json:"fromCategoryId" form:"fromCategoryId"`  // subject:104
+	FromCategory     Category `json:"fromCategory" form:"fromCategory" gorm:"ForeignKey:FromCategoryId"`
 	StartTime        time.Time `json:"startTime" form:"startTime"`
-	StartUserId      int `json:"startUserId" from:"startUserId"`
-	StartUser        SysUser `json:"startUser" form:"startUser" gorm:"ForeignKey:StartUserId;AssociationForeignKey:ID"`
+	// belong to
+	StartUserId      uint `json:"startUserId" from:"startUserId"`
+	StartUser        SysUser `json:"startUser" form:"startUser" gorm:"ForeignKey:StartUserId"`
 	ResponseTime     time.Time `json:"responseTime" form:"responseTime"`
-	ResponseUserId   int  `json:"responseUserId" from:"responseUserId"`
-	ResponseUser     SysUser `json:"responseUser" form:"responseUser" gorm:"ForeignKey:ResponseUserId;AssociationForeignKey:ID"`
+	// belong to
+	ResponseUserId   uint  `json:"responseUserId" from:"responseUserId"`
+	ResponseUser     SysUser `json:"responseUser" form:"responseUser" gorm:"ForeignKey:ResponseUserId"`
 	SceneTime        time.Time `json:"sceneTime" form:"sceneTime"`
-	SceneUserId      int `json:"sceneUserId" from:"sceneUserId"`
-	SceneUser        SysUser `json:"sceneUser" form:"sceneUser" gorm:"ForeignKey:SceneUserId;AssociationForeignKey:ID"`
+	// belong to
+	SceneUserId      uint `json:"sceneUserId" from:"sceneUserId"`
+	SceneUser        SysUser `json:"sceneUser" form:"sceneUser" gorm:"ForeignKey:SceneUserId"`
 	FixTime          time.Time `json:"fixTime" form:"fixTime"`
-	FixUserId        int `json:"fixUserId" from:"fixUserId"`
-	FixUser          SysUser `json:"fixUser" form:"fixUser" gorm:"ForeignKey:FixUserId;AssociationForeignKey:ID"`
-	FixCategoryId    int `json:"fixCategoryId" form:"fixCategoryId"` // subject:105
-	FixCategory      Category `json:"fixCategory" form:"fixCategory" gorm:"ForeignKey:FixCategoryId;AssociationForeignKey:ID"`
+	// belong to
+	FixUserId        uint `json:"fixUserId" from:"fixUserId"`
+	FixUser          SysUser `json:"fixUser" form:"fixUser" gorm:"ForeignKey:FixUserId"`
+	// belong to
+	FixCategoryId    uint `json:"fixCategoryId" form:"fixCategoryId"` // subject:105
+	FixCategory      Category `json:"fixCategory" form:"fixCategory" gorm:"ForeignKey:FixCategoryId"`
+	// belong to
 	ReasonCategoryId int `json:"reasonCategoryId" form:"reasonCategoryId"` // subject:106
-	ReasonCategory   Category `json:"reasonCategory" form:"reasonCategory" gorm:"ForeignKey:ReasonCategoryId;AssociationForeignKey:ID"`
+	ReasonCategory   Category `json:"reasonCategory" form:"reasonCategory" gorm:"ForeignKey:ReasonCategoryId"`
 	Content          string `json:"content" form:"content"`
 	Progress         int `json:"progress" form:"progress"`
-	RecorderId       int  `json:"recorderId" from:"recorderId"`
-	Recorder         SysUser `json:"recorder" form:"recorder" gorm:"ForeignKey:RecorderId;AssociationForeignKey:ID"`
+	// belong to
+	RecorderId       uint  `json:"recorderId" from:"recorderId"`
+	Recorder         SysUser `json:"recorder" form:"recorder" gorm:"ForeignKey:RecorderId"`
 	FeedbackContent  string `json:"feedbackContent" form:"feedbackContent"`
 	FeedbackRate     int `json:"feedbackRate" form:"feedbackRate"`
 }

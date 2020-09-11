@@ -85,7 +85,7 @@ func GetLiftRecord(id uint) (err error, liftRecord model.LiftRecord) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list interface{}, total int) {
+func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db

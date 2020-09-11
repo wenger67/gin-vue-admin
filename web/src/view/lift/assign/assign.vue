@@ -6,9 +6,6 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增userLift表</el-button>
-        </el-form-item>
-        <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
               <div style="text-align: right; margin: 0">
@@ -29,21 +26,16 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-
-    
-    <el-table-column label="用户" prop="userId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="电梯" prop="liftId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="用户电梯关系类型" prop="categoryId" sortable min-width="60"></el-table-column> 
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="ID" label="ID" min-width="30"></el-table-column>
+      <el-table-column label="用户" prop="user.realName" filterable sortable min-width="60"></el-table-column> 
+      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="关系类型" prop="category.categoryName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100">
         <template slot-scope="scope">
-          <el-button @click="updateUserLift(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUserLift(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -139,14 +131,6 @@ export default {
           await this.getTableData()
         }
       },
-    async updateUserLift(row) {
-      const res = await findUserLift({ ID: row.ID });
-      this.type = "update";
-      if (res.code === 0) {
-        this.formData = res.data.reuserLift;
-        this.dialogFormVisible = true;
-      }
-    },
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
@@ -198,10 +182,6 @@ export default {
         await this.getTableData();
       }
     },
-    openDialog() {
-      this.type = "create";
-      this.dialogFormVisible = true;
-    }
   },
   async created() {
     await this.getTableData();}

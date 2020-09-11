@@ -116,7 +116,7 @@ func FindUserLift(c *gin.Context) {
 func GetUserLiftList(c *gin.Context) {
 	var pageInfo request.UserLiftSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	err, list, total := service.GetUserLiftInfoList(pageInfo)
+	err, list, total := service.GetUserLiftList(pageInfo)
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("获取数据失败，%v", err), c)
 	} else {

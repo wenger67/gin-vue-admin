@@ -68,7 +68,7 @@ func GetCategories(id uint) (err error, category model.Category) {
 // @param     info            PageInfo
 // @return                    error
 
-func GetCategoriesInfoList(info request.CategorySearch) (err error, list interface{}, total int) {
+func GetCategoriesInfoList(info request.CategorySearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	subjectId := info.ID

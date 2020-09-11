@@ -68,7 +68,7 @@ func GetSysOperationRecord(id uint) (err error, sysOperationRecord model.SysOper
 // @param     info            PageInfo
 // @return                    error
 
-func GetSysOperationRecordInfoList(info request.SysOperationRecordSearch) (err error, list interface{}, total int) {
+func GetSysOperationRecordInfoList(info request.SysOperationRecordSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
