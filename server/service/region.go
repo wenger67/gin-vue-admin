@@ -98,6 +98,7 @@ func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, 
 			db = db.Select("id, district").Where("city = ? AND district LIKE ?", info.City, "%" + info.District + "%")
 		}
 	}
+	err = db.Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Find(&regions).Error
 	return err, regions, total
 }

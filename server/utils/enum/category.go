@@ -5,20 +5,33 @@ type Category int
 const (
 	_ Category = iota
 	// SubjectLiftType
+	// 住宅客梯
 	HousePassengerLift
+	// 住宅货梯
 	HouseFreightLift
+	// 商场客梯
 	MarketPassengerLift
+	// 商场货梯
 	MarketFreightLift
+	// 医院客梯
 	HospitalPassengerLift
+	// 医院货梯
 	HospitalFreightLift
+	// 写字楼客梯
 	OfficePassengerLift
+	// 写字楼货梯
 	OfficeFreightLift
+	// 政府客梯
 	GovPassengerLift
+	// 政府货梯
 	GovFreightLift
 
 	// SubjectLiftRecordType
+	// 维保记录
 	LiftMaintainRecord = 100
+	// 年检记录
 	LiftUniCheckRecord = 101
+	// 投诉建议
 	LiftComplainRecord = 102
 
 	// SubjectLiftTroubleSourceType

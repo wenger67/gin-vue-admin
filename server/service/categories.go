@@ -75,9 +75,8 @@ func GetCategoriesInfoList(info request.CategorySearch) (err error, list interfa
 	db := global.GVA_DB.Model(&model.Category{})
     var categories []model.Category
 	if subjectId != 0 {
-		db = db.Debug().Where("category_subject_id = ?", subjectId)
+		db = db.Where("category_subject_id = ?", subjectId)
 	}
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Subject").Find(&categories).Error
+	err = db.Count(&total).Limit(limit).Offset(offset).Preload("Subject").Find(&categories).Error
 	return err, categories, total
 }

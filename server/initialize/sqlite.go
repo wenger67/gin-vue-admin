@@ -7,8 +7,6 @@ package initialize
 // import (
 // 	"fmt"
 // 	"gin-vue-admin/global"
-// 	"github.com/jinzhu/gorm"
-// 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 // )
 //
 // // 初始化数据库并产生数据库全局变量

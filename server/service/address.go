@@ -73,13 +73,12 @@ func GetAddressInfoList(info request.AddressSearch) (err error, list interface{}
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
 	db := global.GVA_DB.Model(&model.Address{})
-    var addresss []model.Address
+    var addresses []model.Address
 
 	if info.AddressName != "" {
 		db = db.Where("address_name LIKE ?", "%" + info.AddressName + "%")
 	}
 
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Region").Preload("Tags").Find(&addresss).Error
-	return err, addresss, total
+	err = db.Count(&total).Limit(limit).Offset(offset).Preload("Region").Preload("Tags").Find(&addresses).Error
+	return err, addresses, total
 }

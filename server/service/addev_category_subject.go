@@ -47,9 +47,9 @@ func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order 
 			} else {
 				OrderStr = order
 			}
-			err = db.Order(OrderStr + " DESC").Find(&subjectList).Error
+			err = db.Order(OrderStr).Find(&subjectList).Error
 		} else {
-			err = db.Order("id" + " DESC").Find(&subjectList).Error
+			err = db.Order("id").Find(&subjectList).Error
 		}
 	}
 	return err, subjectList, total

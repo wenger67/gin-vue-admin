@@ -13,6 +13,8 @@ type SysUser struct {
 	RealName    string `json:"realName" form:"realName"`
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
+	// has one
+	CompId int `json:"compId" form:"compId"`
 	// belong to
 	CompanyId   int `json:"companyId" form:"companyId"`
 	Company     Company `json:"company" form:"company" gorm:"ForeignKey:CompanyId"`

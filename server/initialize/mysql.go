@@ -2,7 +2,6 @@ package initialize
 
 import (
 	"gin-vue-admin/global"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
