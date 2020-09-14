@@ -42,7 +42,6 @@ func CreateUser(u model.SysUser) (err error, user model.SysUser) {
 	return err, u
 }
 
-
 // @title    Login
 // @description   login, 用户登录
 // @auth                     （2020/04/05  20:22）
@@ -86,15 +85,14 @@ func GetUserInfoList(params request.SearchUserParams) (err error, list interface
 	db := global.GVA_DB.Model(&model.SysUser{})
 	var userList []model.SysUser
 	if params.CompanyId != 0 {
-		db = db.Where("company_id = ?", params.CompanyId);
+		db = db.Where("company_id = ?", params.CompanyId)
 	}
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Company").Preload("Authority").Find(&userList).Error
+	err = db.Count(&total).Limit(limit).Offset(offset).Preload("Authority").Find(&userList).Error
 	return err, userList, total
 }
 
 func GetUser(id request.GetById) (err error, user model.SysUser) {
-	err = global.GVA_DB.Where("id = ?", id.Id).Preload("Company").Preload("Authority").First(&user).Error
+	err = global.GVA_DB.Where("id = ?", id.Id).Preload("Authority").First(&user).Error
 	return
 }
 
@@ -122,7 +120,6 @@ func DeleteUser(id float64) (err error) {
 	err = global.GVA_DB.Where("id = ?", id).Delete(&user).Error
 	return err
 }
-
 
 func DeleteUserList(ids []int) (err error) {
 	err = global.GVA_DB.Delete(&[]model.SysUser{}, "id in (?)", ids).Error

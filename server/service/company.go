@@ -35,7 +35,7 @@ func DeleteCompany(company model.Company) (err error) {
 // @return                    error
 
 func DeleteCompanyByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Company{},"id in (?)",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.Company{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -72,15 +72,16 @@ func GetCompanyInfoList(info request.CompanySearch) (err error, list interface{}
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	categoryId := info.ID
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.Company{})
-    var companys []model.Company
+	var companies []model.Company
 
 	if categoryId != 0 {
-		db = db.Where("category_id = ?", categoryId);
+		db = db.Where("category_id = ?", categoryId)
 	}
 
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Category").Preload("Category.Subject").Find(&companys).Error
-	return err, companys, total
+	err = db.Limit(limit).Offset(offset).Preload("Category").Preload("Category.Subject").
+		Preload("Admin").Preload("Employee").Find(&companies).Error
+	return err, companies, total
 }

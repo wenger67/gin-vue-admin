@@ -18,5 +18,7 @@ type Company struct {
 	CategoryID int      `json:"categoryId"`
 	Category   Category `json:"category"`
 	// has one
-	Admin *SysUser `json:"admin" gorm:"foreignKey:CompId"`
+	Admin SysUser `json:"admin" gorm:"foreignKey:HasCompId"`
+	// has many
+	Employee []SysUser `json:"employee" gorm:"foreignKey:CompanyId"`
 }

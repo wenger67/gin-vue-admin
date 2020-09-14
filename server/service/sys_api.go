@@ -84,7 +84,7 @@ func GetAPIInfoList(api model.SysApi, info request.PageInfo, order string, desc 
 			}
 			err = db.Order(OrderStr).Find(&apiList).Error
 		} else {
-			err = db.Order("api_group").Find(&apiList).Error
+			err = db.Order("id").Find(&apiList).Error
 		}
 	}
 	return err, apiList, total

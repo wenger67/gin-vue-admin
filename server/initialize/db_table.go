@@ -9,7 +9,8 @@ import (
 // 注册数据库表专用
 func DBTables() {
 	db := global.GVA_DB
-	err := db.AutoMigrate(model.SysUser{},
+	err := db.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8").
+		AutoMigrate(model.SysUser{},
 		model.SysAuthority{},
 		model.SysApi{},
 		model.SysBaseMenu{},

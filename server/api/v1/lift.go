@@ -149,10 +149,10 @@ func UpdateLift(c *gin.Context) {
 			changes += "lift address changes from [" + origin.Address.AddressName + "] to [" + lift.Address.AddressName + "], "
 		}
 		if origin.FloorCount != lift.FloorCount {
-			changes += "lift floor count changes from [" + strconv.Itoa(origin.FloorCount) + "] to [" + strconv.Itoa(lift.FloorCount) + "], "
+			changes += "lift floor count changes from [" + strconv.Itoa(int(origin.FloorCount)) + "] to [" + strconv.Itoa(int(lift.FloorCount)) + "], "
 		}
 		if origin.Cell != lift.Cell {
-			changes += "lift cell changes from [" + strconv.Itoa(origin.Cell) + "] to [" + strconv.Itoa(lift.Cell) + "], "
+			changes += "lift cell changes from [" + strconv.Itoa(int(origin.Cell)) + "] to [" + strconv.Itoa(int(lift.Cell)) + "], "
 		}
 		if origin.Building != lift.Building {
 			changes += "lift building changes from [" + origin.Building + "] to [" + lift.Building + "], "
