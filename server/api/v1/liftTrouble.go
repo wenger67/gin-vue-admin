@@ -27,6 +27,7 @@ func CreateLiftTrouble(c *gin.Context) {
 	}
 	liftTrouble.StartTime = time.Now()
 	err := service.CreateLiftTrouble(liftTrouble)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
@@ -84,6 +85,7 @@ func UpdateLiftTrouble(c *gin.Context) {
 	var liftTrouble model.LiftTrouble
 	_ = c.ShouldBindJSON(&liftTrouble)
 	err := service.UpdateLiftTrouble(&liftTrouble)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("更新失败，%v", err), c)
 	} else {

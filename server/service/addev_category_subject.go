@@ -20,7 +20,7 @@ func CreateSubject(subject model.CategorySubject) (err error) {
 
 func DeleteSubject(subject model.CategorySubject) (err error) {
 	err = global.GVA_DB.Delete(subject).Error
-	// todo delete relative logic
+	// TODO delete relative logic
 	return err
 }
 

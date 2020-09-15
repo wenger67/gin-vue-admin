@@ -7,6 +7,7 @@ import (
 	"gin-vue-admin/model/request"
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
+	"gin-vue-admin/utils/enum"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,22 @@ func CreateUserLift(c *gin.Context) {
 	var userLift model.UserLift
 	_ = c.ShouldBindJSON(&userLift)
 	err := service.CreateUserLift(userLift)
+	// TODO send message
+	categoryId := userLift.CategoryId
+	_, lift := service.GetLift(userLift.LiftId)
+	if categoryId == uint(enum.UserLiftMaintain){
+		// lift add maintain worker
+		_ = service.CreateMessage(model.Message{TargetId: lift.Maintainer.Admin.ID,
+			Content: "lift add maintain worker", TypeId: uint(enum.MessageNewMaintainWorker)})
+		_ = service.CreateMessage(model.Message{TargetId: lift.Owner.Admin.ID,
+			Content: "lift add maintain worker", TypeId: uint(enum.MessageNewMaintainWorker)})
+	} else if categoryId == uint(enum.UserLiftCheck){
+		_ = service.CreateMessage(model.Message{TargetId: lift.Checker.Admin.ID,
+			Content: "lift add check worker", TypeId: uint(enum.MessageNewCheckWorker)})
+		_ = service.CreateMessage(model.Message{TargetId: lift.Owner.Admin.ID,
+			Content: "lift add check worker", TypeId: uint(enum.MessageNewMaintainWorker)})
+	}
+
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {

@@ -95,6 +95,7 @@ const (
 	UserLiftManage = 1102
 	UserLiftCheck = 1103
 	UserLiftInstall = 1104
+	UserLiftSupervise = 1105
 
 	// SubjectUserType
 	UserCommon = 1200
@@ -129,6 +130,8 @@ const (
 	MessageNewRecord = 1406
 	MessageRecordDone = 1407
 	MessageTroubleFixed = 1408
+	MessageNewMaintainWorker = 1409
+	MessageNewCheckWorker = 1410
 
 
 	// SubjectMessageFromTargetType

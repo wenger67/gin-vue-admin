@@ -22,6 +22,7 @@ func CreateCompany(c *gin.Context) {
 	var company model.Company
 	_ = c.ShouldBindJSON(&company)
 	err := service.CreateCompany(company)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {

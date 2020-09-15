@@ -832,6 +832,9 @@ func InitCompany() (err error) {
 }
 
 func InitSysDictionaryDetail() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysDictionaryDetail{})
+
 	status := new(bool)
 	*status = true
 	tx := global.GVA_DB.Begin() // 开始事务
@@ -866,43 +869,99 @@ func InitSysDictionaryDetail() (err error) {
 	return tx.Commit().Error
 }
 
+func InitSysDictionary() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysDictionary{})
+
+	status := new(bool)
+	*status = true
+	tx := global.GVA_DB.Begin() // 开始事务
+	insert := []model.SysDictionary{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "性别", Type: "sex", Status: status, Desc: "性别字典"},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库int类型", Type: "int", Status: status, Desc: "int类型对应的数据库类型"},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库时间日期类型", Type: "time.Time", Status: status, Desc: "数据库时间日期类型"},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库浮点型", Type: "float64", Status: status, Desc: "数据库浮点型"},
+		{Model: gorm.Model{ID: 5, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库字符串", Type: "string", Status: status, Desc: "数据库字符串"},
+		{Model: gorm.Model{ID: 6, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库bool类型", Type: "bool", Status: status, Desc: "数据库bool类型"},
+	}
+	if tx.Create(&insert).Error != nil { // 遇到错误时回滚事务
+		tx.Rollback()
+	}
+	return tx.Commit().Error
+}
+
 func InitExaFileUploadAndDownload() (err error) {
 	// first clear, hard mode
 	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.ExaFileUploadAndDownload{})
 
 	tx := global.GVA_DB.Begin() // 开始事务
 	insert := []model.ExaFileUploadAndDownload{
-		{gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "10.png", "http://qmplusimg.henrongyi.top/gvalogo.png", "png", "158787308910.png"},
-		{gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "logo.png", "http://qmplusimg.henrongyi.top/1576554439myAvatar.png", "png", "1587973709logo.png"},
-		{gorm.Model{ID: 3, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)},
-			"IMG_20200901_152619_306.jpg", "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_306.jpg", "jpg", ""},
-		{gorm.Model{ID: 4, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, "VID_20200901_152433.mp4",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4", "mp4", ""},
-		{gorm.Model{ID: 5, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, "IMG_20200901_152619_428.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_428.jpg", "jpg", ""},
+		// record 1
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 428, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 428, time.Local)}, Name: "IMG_20200901_152619_428.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_428.jpg",
+			Tag: "jpg", RecordId: 1},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local)}, Name: "IMG_20200901_152619_306.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_306.jpg",
+			Tag: "jpg", RecordId: 1},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local)}, Name: "IMG_20200901_152619_551.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_551.jpg",
+			Tag: "jpg", RecordId: 1},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, Name: "VID_20200901_152433.mp4",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4",
+			Tag: "mp4", RecordId: 1},
+		{Model: gorm.Model{ID: 5, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local)}, Name: "IMG_20200901_152619_672.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/702/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152619_672.jpg",
+			Tag: "jpg", RecordId: 1},
 
-		{gorm.Model{ID: 6, CreatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local)}, "VID_20200901_152333.mp4",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/700/97feb824ba269ee4a51591f5914dc0fe_VID_20200901_152333.mp4", "mp4", ""},
-		{gorm.Model{ID: 7, CreatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local)}, "IMG_20200901_152436_606.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/700/97feb824ba269ee4a51591f5914dc0fe_IMG_20200901_152436_606.jpg", "jpg", ""},
-		{gorm.Model{ID: 8, CreatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 26, 0, time.Local)}, "IMG_20200901_152436_727.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/700/97feb824ba269ee4a51591f5914dc0fe_IMG_20200901_152436_727.jpg", "jpg", ""},
+		// record 4
+		{Model: gorm.Model{ID: 6, CreatedAt: time.Date(2020, 9, 1, 7, 26, 4, 183, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 30, 9, 428, time.Local)}, Name: "IMG_20200901_152604_183.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_183.jpg",
+			Tag: "jpg", RecordId: 4},
+		{Model: gorm.Model{ID: 7, CreatedAt: time.Date(2020, 9, 1, 7, 26, 4, 305, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local)}, Name: "IMG_20200901_152604_305.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_305.jpg",
+			Tag: "jpg", RecordId: 4},
+		{Model: gorm.Model{ID: 8, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local)}, Name: "IMG_20200901_152604_432.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_432.jpg",
+			Tag: "jpg", RecordId: 4},
+		{Model: gorm.Model{ID: 9, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, Name: "VID_20200901_152433.mp4",
+			Url: "http://127.0.0." +
+				"1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4",
+			Tag: "mp4", RecordId: 4},
+		{Model: gorm.Model{ID: 10, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local)}, Name: "IMG_20200901_152604_555.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_555.jpg",
+			Tag: "jpg", RecordId: 4},
 
-		{gorm.Model{ID: 9, CreatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local)}, "IMG_20200901_152424_742.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/699/ccb0ae9f15c43d6fb5710baf9d965fb7_IMG_20200901_152424_742.jpg", "jpg", ""},
-		{gorm.Model{ID: 10, CreatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local)}, "IMG_20200901_152424_609.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/699/ccb0ae9f15c43d6fb5710baf9d965fb7_IMG_20200901_152424_609.jpg", "jpg", ""},
-		{gorm.Model{ID: 11, CreatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local),
-			UpdatedAt: time.Date(2020, 9, 1, 7, 23, 13, 0, time.Local)}, "IMG_20200901_152424_472.jpg",
-			"http://127.0.0.1:8888/upload/2020_09_01/1/181/699/ccb0ae9f15c43d6fb5710baf9d965fb7_IMG_20200901_152424_472.jpg", "jpg", ""},
+		// lift trouble1
+		{Model: gorm.Model{ID: 11, CreatedAt: time.Date(2020, 9, 1, 7, 15, 9, 428, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 428, time.Local)}, Name: "IMG_20200901_151623_221.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_221",
+			Tag: "jpg", TroubleId: 1},
+		{Model: gorm.Model{ID: 12, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local)}, Name: "IMG_20200901_151623_632.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_632",
+			Tag: "jpg", TroubleId: 1},
+		{Model: gorm.Model{ID: 13, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local)}, Name: "IMG_20200901_151623_976.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_976.jpg",
+			Tag: "jpg", TroubleId: 1},
+		{Model: gorm.Model{ID: 14, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, Name: "VID_20200901_152433.mp4",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4",
+			Tag: "mp4", TroubleId: 1},
+		{Model: gorm.Model{ID: 15, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local),
+			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local)}, Name: "IMG_20200901_151624_113.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151624_113.jpg",
+			Tag: "jpg", TroubleId: 1},
 	}
 	if tx.Create(&insert).Error != nil { // 遇到错误时回滚事务
 		tx.Rollback()
@@ -1524,12 +1583,12 @@ func InitLift() (err error) {
 	// then add new
 	tx := global.GVA_DB.Begin()
 	insert := []model.Lift{
-		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, NickName: "", Code: "", InstallerId: 7,
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, NickName: "天成美景001", Code: "WU0001TCMJ001", InstallerId: 7,
 			MaintainerId: 1, OwnerId: 10, CheckerId: 4, FactoryTime: time.Date(2020, 7, 15, 12, 0, 0, 0, time.Local),
 			InstallTime: time.Date(2020, 7, 25, 12, 0, 0, 0, time.Local),
 			CheckTime:   time.Date(2021, 5, 15, 12, 0, 0, 0, time.Local), LiftModelId: 1,
 			CategoryId: uint(enum.HousePassengerLift), AddressId: 1, FloorCount: 32, Building: "1", Cell: 1},
-		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, NickName: "", Code: "", InstallerId: 7,
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, NickName: "天成美雅001", Code: "WU0001TCMY001", InstallerId: 7,
 			MaintainerId: 1, OwnerId: 10, CheckerId: 4, FactoryTime: time.Date(2020, 6, 12, 12, 0, 0, 0, time.Local),
 			InstallTime: time.Date(2020, 6, 28, 12, 0, 0, 0, time.Local),
 			CheckTime:   time.Date(2021, 5, 15, 12, 0, 0, 0, time.Local), LiftModelId: 2,
@@ -1602,6 +1661,632 @@ func InitDeviceOwner() (err error) {
 	return tx.Commit().Error
 }
 
+func InitLiftRecord() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.LiftRecord{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.LiftRecord{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
+			CategoryId: uint(enum.LiftMaintainRecord), Content: "更换电梯们\n更换电梯灯\n更换电梯开关\n更管电梯牵引系统",
+			StartTime: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			EndTime:   time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local),
+			WorkerId:  18, RecorderId: 2, Progress: 4},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
+			CategoryId: uint(enum.LiftMaintainRecord), Progress: 1},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 2,
+			CategoryId: uint(enum.LiftMaintainRecord), StartTime: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			WorkerId: 18, Progress: 2},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 2,
+			CategoryId: uint(enum.LiftMaintainRecord), Content: "更换电梯们\n更换电梯灯\n更换电梯开关\n更管电梯牵引系统",
+			StartTime: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			EndTime:   time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local),
+			WorkerId:  18, Progress: 3},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
+func InitLiftTrouble() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.LiftTrouble{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.LiftTrouble{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), Content: "更换电梯们\n更换电梯灯\n更换电梯开关\n更管电梯牵引系统",
+			StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local), StartUserId: 26,
+			ResponseTime: time.Date(2020, 8, 20, 12, 35, 0, 0, time.Local), ResponseUserId: 6,
+			SceneTime: time.Date(2020, 8, 20, 12, 38, 0, 0, time.Local), SceneUserId: 18,
+			FixTime: time.Date(2020, 8, 20, 13, 35, 0, 0, time.Local), FixUserId: 18,
+			FixCategoryId: uint(enum.TroubleSolvedByReplaceCell), ReasonCategoryId: uint(enum.TroubleReasonAsAge),
+			RecorderId: 2, FeedbackContent: "good", FeedbackRate: 95, Progress: 7},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local),
+			StartUserId: 26, Progress: 1},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local), StartUserId: 26,
+			ResponseTime: time.Date(2020, 8, 20, 12, 35, 0, 0, time.Local), ResponseUserId: 6,
+			Progress: 2},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 2,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local), StartUserId: 26,
+			ResponseTime: time.Date(2020, 8, 20, 12, 35, 0, 0, time.Local), ResponseUserId: 6,
+			SceneTime: time.Date(2020, 8, 20, 12, 38, 0, 0, time.Local), SceneUserId: 18,
+			Progress: 3},
+		{Model: gorm.Model{ID: 5, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 2,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local), StartUserId: 26,
+			ResponseTime: time.Date(2020, 8, 20, 12, 35, 0, 0, time.Local), ResponseUserId: 6,
+			SceneTime: time.Date(2020, 8, 20, 12, 38, 0, 0, time.Local), SceneUserId: 18,
+			FixTime: time.Date(2020, 8, 20, 13, 35, 0, 0, time.Local), FixUserId: 18,
+			FixCategoryId: uint(enum.TroubleSolvedByReplaceCell), ReasonCategoryId: uint(enum.TroubleReasonAsAge),
+			Progress: 4},
+		{Model: gorm.Model{ID: 6, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
+			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 2,
+			FromCategoryId: uint(enum.LiftMaintainTrouble), Content: "更换电梯们\n更换电梯灯\n更换电梯开关\n更管电梯牵引系统",
+			StartTime: time.Date(2020, 8, 20, 12, 30, 0, 0, time.Local), StartUserId: 26,
+			ResponseTime: time.Date(2020, 8, 20, 12, 35, 0, 0, time.Local), ResponseUserId: 6,
+			SceneTime: time.Date(2020, 8, 20, 12, 38, 0, 0, time.Local), SceneUserId: 18,
+			FixTime: time.Date(2020, 8, 20, 13, 35, 0, 0, time.Local), FixUserId: 18,
+			FixCategoryId: uint(enum.TroubleSolvedByReplaceCell), ReasonCategoryId: uint(enum.TroubleReasonAsAge),
+			FeedbackContent: "good", FeedbackRate: 95, Progress: 6},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+func InitHealthSystem() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.HealthSystem{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.HealthSystem{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1, TimeDimension: 200,
+			MaintainDimension: 200, HumanDimension: 200, InnerDimension: 200, SensorDimension: 200},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2, TimeDimension: 200,
+			MaintainDimension: 200, HumanDimension: 200, InnerDimension: 200, SensorDimension: 200},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+func InitHealthChange() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.HealthChange{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.HealthChange{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
+			DimensionId: uint(enum.HealthTimeDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
+			DimensionId: uint(enum.HealthHumanDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
+			DimensionId: uint(enum.HealthInnerDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
+			DimensionId: uint(enum.HealthMaintainDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 5, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
+			DimensionId: uint(enum.HealthSensorDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 6, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2,
+			DimensionId: uint(enum.HealthTimeDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 7, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2,
+			DimensionId: uint(enum.HealthHumanDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 8, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2,
+			DimensionId: uint(enum.HealthInnerDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 9, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2,
+			DimensionId: uint(enum.HealthMaintainDimension), Content: "Initial", Score: 200},
+		{Model: gorm.Model{ID: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 2,
+			DimensionId: uint(enum.HealthSensorDimension), Content: "Initial", Score: 200},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+func InitMessage() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Message{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.Message{}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
+func InitSysApi() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysApi{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.SysApi{
+		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/base/login",
+			Description: "用户登录", ApiGroup: "base", Method: "POST"},
+		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/base/register",
+			Description: "用户注册", ApiGroup: "base", Method: "POST"},
+		{Model: gorm.Model{ID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/createApi",
+			Description: "创建api", ApiGroup: "api", Method: "POST"},
+		{Model: gorm.Model{ID: 4, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/getApiList",
+			Description: "获取api列表", ApiGroup: "api", Method: "POST"},
+		{Model: gorm.Model{ID: 5, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/getApiById",
+			Description: "获取api详细信息", ApiGroup: "api", Method: "POST"},
+		{Model: gorm.Model{ID: 7, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/deleteApi",
+			Description: "删除Api", ApiGroup: "api", Method: "POST"},
+		{Model: gorm.Model{ID: 8, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/updateApi",
+			Description: "更新Api", ApiGroup: "api", Method: "POST"},
+		{Model: gorm.Model{ID: 11, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/createAuthority", Description: "创建角色", ApiGroup: "authority", Method: "POST"},
+		{Model: gorm.Model{ID: 12, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/deleteAuthority", Description: "删除角色", ApiGroup: "authority", Method: "POST"},
+		{Model: gorm.Model{ID: 13, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/getAuthorityList", Description: "获取角色列表", ApiGroup: "authority", Method: "POST"},
+		{Model: gorm.Model{ID: 14, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/getMenu", Description: "获取菜单树",
+			ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 15, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/getMenuList",
+			Description: "分页获取基础menu列表",
+			ApiGroup:    "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 16, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/addBaseMenu", Description: "新增菜单",
+			ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 17, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/getBaseMenuTree",
+			Description: "获取用户动态路由",
+			ApiGroup:    "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 18, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/addMenuAuthority",
+			Description: "增加menu和角色关联关系", ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 19, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/getMenuAuthority",
+			Description: "获取指定角色menu", ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 20, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/deleteBaseMenu", Description: "删除菜单",
+			ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 21, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/updateBaseMenu", Description: "更新菜单",
+			ApiGroup: "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 22, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/menu/getBaseMenuById",
+			Description: "根据id获取菜单",
+			ApiGroup:    "menu", Method: "POST"},
+		{Model: gorm.Model{ID: 23, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/changePassword", Description: "修改密码",
+			ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 24, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/uploadHeaderImg", Description: "上传头像",
+			ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 25, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/getInfoList", Description: "分页获取用户列表",
+			ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 28, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/getUserList", Description: "获取用户列表",
+			ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 29, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/setUserAuthority",
+			Description: "修改用户角色", ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 30, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/fileUploadAndDownload/upload",
+			Description: "文件上传示例", ApiGroup: "fileUploadAndDownload", Method: "POST"},
+		{Model: gorm.Model{ID: 31, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/fileUploadAndDownload/getFileList",
+			Description: "获取上传文件列表", ApiGroup: "fileUploadAndDownload", Method: "POST"},
+		{Model: gorm.Model{ID: 32, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/casbin/updateCasbin",
+			Description: "更改角色api权限",
+			ApiGroup:    "casbin", Method: "POST"},
+		{Model: gorm.Model{ID: 33, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/casbin/getPolicyPathByAuthorityId",
+			Description: "获取权限列表", ApiGroup: "casbin", Method: "POST"},
+		{Model: gorm.Model{ID: 34, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/fileUploadAndDownload/deleteFile", Description: "删除文件", ApiGroup: "fileUploadAndDownload", Method: "POST"},
+		{Model: gorm.Model{ID: 35, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/jwt/jsonInBlacklist",
+			Description: "jwt加入黑名单", ApiGroup: "jwt", Method: "POST"},
+		{Model: gorm.Model{ID: 36, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/setDataAuthority",
+			Description: "设置角色资源权限", ApiGroup: "authority", Method: "POST"},
+		{Model: gorm.Model{ID: 37, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/system/getSystemConfig",
+			Description: "获取配置文件内容", ApiGroup: "system", Method: "POST"},
+		{Model: gorm.Model{ID: 38, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/system/setSystemConfig",
+			Description: "设置配置文件内容", ApiGroup: "system", Method: "POST"},
+		{Model: gorm.Model{ID: 39, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/customer/customer", Description: "创建客户",
+			ApiGroup: "customer", Method: "POST"},
+		{Model: gorm.Model{ID: 40, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/customer/customer", Description: "更新客户",
+			ApiGroup: "customer", Method: "PUT"},
+		{Model: gorm.Model{ID: 41, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/customer/customer", Description: "删除客户",
+			ApiGroup: "customer", Method: "DELETE"},
+		{Model: gorm.Model{ID: 42, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/customer/customer", Description: "获取单一客户",
+			ApiGroup: "customer", Method: "GET"},
+		{Model: gorm.Model{ID: 43, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/customer/customerList",
+			Description: "获取客户列表", ApiGroup: "customer", Method: "GET"},
+		{Model: gorm.Model{ID: 44, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/casbin/casbinTest/:pathParam",
+			Description: "RESTFUL模式测试", ApiGroup: "casbin", Method: "GET"},
+		{Model: gorm.Model{ID: 45, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/autoCode/createTemp",
+			Description: "自动化代码", ApiGroup: "autoCode", Method: "POST"},
+		{Model: gorm.Model{ID: 46, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/updateAuthority",
+			Description: "更新角色信息", ApiGroup: "authority", Method: "PUT"},
+		{Model: gorm.Model{ID: 47, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/authority/copyAuthority",
+			Description: "拷贝角色", ApiGroup: "authority", Method: "POST"},
+		{Model: gorm.Model{ID: 64, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/deleteUser", Description: "删除用户",
+			ApiGroup: "user", Method: "DELETE"},
+		{Model: gorm.Model{ID: 81, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionaryDetail/createSysDictionaryDetail", Description: "新增字典内容", ApiGroup: "sysDictionaryDetail", Method: "POST"},
+		{Model: gorm.Model{ID: 82, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionaryDetail/deleteSysDictionaryDetail", Description: "删除字典内容", ApiGroup: "sysDictionaryDetail", Method: "DELETE"},
+		{Model: gorm.Model{ID: 83, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionaryDetail/updateSysDictionaryDetail", Description: "更新字典内容", ApiGroup: "sysDictionaryDetail", Method: "PUT"},
+		{Model: gorm.Model{ID: 84, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionaryDetail/findSysDictionaryDetail", Description: "根据ID获取字典内容", ApiGroup: "sysDictionaryDetail", Method: "GET"},
+		{Model: gorm.Model{ID: 85, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionaryDetail/getSysDictionaryDetailList", Description: "获取字典内容列表", ApiGroup: "sysDictionaryDetail", Method: "GET"},
+		{Model: gorm.Model{ID: 86, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/sysDictionary/createSysDictionary",
+			Description: "新增字典", ApiGroup: "sysDictionary", Method: "POST"},
+		{Model: gorm.Model{ID: 87, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/sysDictionary/deleteSysDictionary",
+			Description: "删除字典", ApiGroup: "sysDictionary", Method: "DELETE"},
+		{Model: gorm.Model{ID: 88, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/sysDictionary/updateSysDictionary",
+			Description: "更新字典", ApiGroup: "sysDictionary", Method: "PUT"},
+		{Model: gorm.Model{ID: 89, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionary/findSysDictionary", Description: "根据ID获取字典", ApiGroup: "sysDictionary", Method: "GET"},
+		{Model: gorm.Model{ID: 90, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysDictionary/getSysDictionaryList", Description: "获取字典列表", ApiGroup: "sysDictionary", Method: "GET"},
+		{Model: gorm.Model{ID: 91, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/createSysOperationRecord", Description: "新增操作记录", ApiGroup: "sysOperationRecord", Method: "POST"},
+		{Model: gorm.Model{ID: 92, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/deleteSysOperationRecord", Description: "删除操作记录", ApiGroup: "sysOperationRecord", Method: "DELETE"},
+		{Model: gorm.Model{ID: 93, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/updateSysOperationRecord", Description: "更新操作记录", ApiGroup: "sysOperationRecord", Method: "PUT"},
+		{Model: gorm.Model{ID: 94, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/findSysOperationRecord", Description: "根据ID获取操作记录", ApiGroup: "sysOperationRecord", Method: "GET"},
+		{Model: gorm.Model{ID: 95, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/getSysOperationRecordList", Description: "获取操作记录列表", ApiGroup: "sysOperationRecord", Method: "GET"},
+		{Model: gorm.Model{ID: 96, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/autoCode/getTables", Description: "获取数据库表",
+			ApiGroup: "autoCode", Method: "GET"},
+		{Model: gorm.Model{ID: 97, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/autoCode/getDB", Description: "获取所有数据库",
+			ApiGroup: "autoCode", Method: "GET"},
+		{Model: gorm.Model{ID: 98, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/autoCode/getColume",
+			Description: "获取所选table的所有字段", ApiGroup: "autoCode", Method: "GET"},
+		{Model: gorm.Model{ID: 99, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/sysOperationRecord/deleteSysOperationRecordByIds", Description: "批量删除操作历史", ApiGroup: "sysOperationRecord", Method: "DELETE"},
+		{Model: gorm.Model{ID: 106, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/getSubjectById",
+			Description: "getSubjectById", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 107, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/getSubjectList",
+			Description: "getSubjectList", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 108, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/createSubject",
+			Description: "createSubject", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 109, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/updateSubject",
+			Description: "updateSubject", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 110, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/deleteSubject",
+			Description: "deleteSubject", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 111, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/subject/getAllSubjects",
+			Description: "getAllSubjects", ApiGroup: "subject", Method: "POST"},
+		{Model: gorm.Model{ID: 112, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/categories/createCategories",
+			Description: "新增categories表", ApiGroup: "categories", Method: "POST"},
+		{Model: gorm.Model{ID: 113, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/categories/deleteCategories",
+			Description: "删除categories表", ApiGroup: "categories", Method: "DELETE"},
+		{Model: gorm.Model{ID: 114, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/categories/deleteCategoriesByIds", Description: "批量删除categories表", ApiGroup: "categories", Method: "DELETE"},
+		{Model: gorm.Model{ID: 115, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/categories/updateCategories",
+			Description: "更新categories表", ApiGroup: "categories", Method: "PUT"},
+		{Model: gorm.Model{ID: 116, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/categories/findCategories",
+			Description: "根据ID获取categories表", ApiGroup: "categories", Method: "GET"},
+		{Model: gorm.Model{ID: 117, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/categories/getCategoriesList",
+			Description: "获取categories表列表", ApiGroup: "categories", Method: "GET"},
+		{Model: gorm.Model{ID: 118, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/createCompany",
+			Description: "新增company表", ApiGroup: "company", Method: "POST"},
+		{Model: gorm.Model{ID: 119, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/deleteCompany",
+			Description: "删除company表", ApiGroup: "company", Method: "DELETE"},
+		{Model: gorm.Model{ID: 120, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/deleteCompanyByIds",
+			Description: "批量删除company表", ApiGroup: "company", Method: "DELETE"},
+		{Model: gorm.Model{ID: 121, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/updateCompany",
+			Description: "更新company表", ApiGroup: "company", Method: "PUT"},
+		{Model: gorm.Model{ID: 122, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/findCompany",
+			Description: "根据ID获取company表", ApiGroup: "company", Method: "GET"},
+		{Model: gorm.Model{ID: 123, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/company/getCompanyList",
+			Description: "获取company表列表", ApiGroup: "company", Method: "GET"},
+		{Model: gorm.Model{ID: 124, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/createRegion",
+			Description: "新增region表", ApiGroup: "region", Method: "POST"},
+		{Model: gorm.Model{ID: 125, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/deleteRegion",
+			Description: "删除region表", ApiGroup: "region", Method: "DELETE"},
+		{Model: gorm.Model{ID: 126, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/deleteRegionByIds",
+			Description: "批量删除region表", ApiGroup: "region", Method: "DELETE"},
+		{Model: gorm.Model{ID: 127, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/updateRegion",
+			Description: "更新region表", ApiGroup: "region", Method: "PUT"},
+		{Model: gorm.Model{ID: 128, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/findRegion",
+			Description: "根据ID获取region表", ApiGroup: "region", Method: "GET"},
+		{Model: gorm.Model{ID: 129, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/region/getRegionList",
+			Description: "获取region表列表", ApiGroup: "region", Method: "GET"},
+		{Model: gorm.Model{ID: 130, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/createAddress",
+			Description: "新增address表", ApiGroup: "address", Method: "POST"},
+		{Model: gorm.Model{ID: 131, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/deleteAddress",
+			Description: "删除address表", ApiGroup: "address", Method: "DELETE"},
+		{Model: gorm.Model{ID: 132, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/deleteAddressByIds",
+			Description: "批量删除address表", ApiGroup: "address", Method: "DELETE"},
+		{Model: gorm.Model{ID: 133, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/updateAddress",
+			Description: "更新address表", ApiGroup: "address", Method: "PUT"},
+		{Model: gorm.Model{ID: 134, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/findAddress",
+			Description: "根据ID获取address表", ApiGroup: "address", Method: "GET"},
+		{Model: gorm.Model{ID: 135, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/address/getAddressList",
+			Description: "获取address表列表", ApiGroup: "address", Method: "GET"},
+		{Model: gorm.Model{ID: 136, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/createLift", Description: "新增lift表",
+			ApiGroup: "lift", Method: "POST"},
+		{Model: gorm.Model{ID: 137, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/deleteLift", Description: "删除lift表",
+			ApiGroup: "lift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 138, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/deleteLiftByIds",
+			Description: "批量删除lift表", ApiGroup: "lift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 139, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/updateLift", Description: "更新lift表",
+			ApiGroup: "lift", Method: "PUT"},
+		{Model: gorm.Model{ID: 140, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/findLift",
+			Description: "根据ID获取lift表", ApiGroup: "lift", Method: "GET"},
+		{Model: gorm.Model{ID: 141, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/lift/getLiftList",
+			Description: "获取lift表列表", ApiGroup: "lift", Method: "GET"},
+		{Model: gorm.Model{ID: 142, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftModel/createLiftModel",
+			Description: "新增liftModel表", ApiGroup: "liftModel", Method: "POST"},
+		{Model: gorm.Model{ID: 143, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftModel/deleteLiftModel",
+			Description: "删除liftModel表", ApiGroup: "liftModel", Method: "DELETE"},
+		{Model: gorm.Model{ID: 144, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftModel/deleteLiftModelByIds", Description: "批量删除liftModel表",
+			ApiGroup: "liftModel", Method: "DELETE"},
+		{Model: gorm.Model{ID: 145, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftModel/updateLiftModel",
+			Description: "更新liftModel表", ApiGroup: "liftModel", Method: "PUT"},
+		{Model: gorm.Model{ID: 146, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftModel/findLiftModel",
+			Description: "根据ID获取liftModel表", ApiGroup: "liftModel", Method: "GET"},
+		{Model: gorm.Model{ID: 147, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftModel/getLiftModelList",
+			Description: "获取liftModel表列表", ApiGroup: "liftModel", Method: "GET"},
+		{Model: gorm.Model{ID: 148, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userAdmin/createUserAdmin", Description: "新增userAdmin表", ApiGroup: "userAdmin", Method: "POST"},
+		{Model: gorm.Model{ID: 149, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userAdmin/deleteUserAdmin", Description: "删除userAdmin表", ApiGroup: "userAdmin", Method: "DELETE"},
+		{Model: gorm.Model{ID: 150, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path:        "/userAdmin/deleteUserAdminByIds",
+			Description: "批量删除userAdmin表", ApiGroup: "userAdmin", Method: "DELETE"},
+		{Model: gorm.Model{ID: 151, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userAdmin/updateUserAdmin", Description: "更新userAdmin表", ApiGroup: "userAdmin", Method: "PUT"},
+		{Model: gorm.Model{ID: 152, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userAdmin/findUserAdmin", Description: "根据ID获取userAdmin表", ApiGroup: "userAdmin", Method: "GET"},
+		{Model: gorm.Model{ID: 153, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userAdmin/getUserAdminList", Description: "获取userAdmin表列表", ApiGroup: "userAdmin", Method: "GET"},
+		{Model: gorm.Model{ID: 154, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/createUserAdmin",
+			Description: "新增userAdmin表", ApiGroup: "userAdmin", Method: "POST"},
+		{Model: gorm.Model{ID: 155, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/deleteUserAdmin",
+			Description: "删除userAdmin表", ApiGroup: "userAdmin", Method: "DELETE"},
+		{Model: gorm.Model{ID: 156, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/deleteUserAdminByIds", Description: "批量删除userAdmin表",
+			ApiGroup: "userAdmin", Method: "DELETE"},
+		{Model: gorm.Model{ID: 157, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/updateUserAdmin",
+			Description: "更新userAdmin表", ApiGroup: "userAdmin", Method: "PUT"},
+		{Model: gorm.Model{ID: 158, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/findUserAdmin",
+			Description: "根据ID获取userAdmin表", ApiGroup: "userAdmin", Method: "GET"},
+		{Model: gorm.Model{ID: 159, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userAdmin/getUserAdminList",
+			Description: "获取userAdmin表列表", ApiGroup: "userAdmin", Method: "GET"},
+		{Model: gorm.Model{ID: 160, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/createAdDeviceData", Description: "新增adDeviceData表", ApiGroup: "adDeviceData", Method: "POST"},
+		{Model: gorm.Model{ID: 161, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/deleteAdDeviceData", Description: "删除adDeviceData表", ApiGroup: "adDeviceData", Method: "DELETE"},
+		{Model: gorm.Model{ID: 162, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/deleteAdDeviceDataByIds", Description: "批量删除adDeviceData表", ApiGroup: "adDeviceData",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 163, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/updateAdDeviceData", Description: "更新adDeviceData表", ApiGroup: "adDeviceData", Method: "PUT"},
+		{Model: gorm.Model{ID: 164, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/findAdDeviceData", Description: "根据ID获取adDeviceData表", ApiGroup: "adDeviceData", Method: "GET"},
+		{Model: gorm.Model{ID: 165, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceData/getAdDeviceDataList", Description: "获取adDeviceData表列表", ApiGroup: "adDeviceData",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 166, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/createAdDeviceConfig", Description: "新增adDeviceConfig表",
+			ApiGroup: "adDeviceConfig", Method: "POST"},
+		{Model: gorm.Model{ID: 167, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/deleteAdDeviceConfig", Description: "删除adDeviceConfig表", ApiGroup: "adDeviceConfig",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 168, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/deleteAdDeviceConfigByIds", Description: "批量删除adDeviceConfig表",
+			ApiGroup: "adDeviceConfig", Method: "DELETE"},
+		{Model: gorm.Model{ID: 169, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/updateAdDeviceConfig", Description: "更新adDeviceConfig表",
+			ApiGroup: "adDeviceConfig", Method: "PUT"},
+		{Model: gorm.Model{ID: 170, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/findAdDeviceConfig", Description: "根据ID获取adDeviceConfig表",
+			ApiGroup: "adDeviceConfig", Method: "GET"},
+		{Model: gorm.Model{ID: 171, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceConfig/getAdDeviceConfigList", Description: "获取adDeviceConfig表列表",
+			ApiGroup: "adDeviceConfig", Method: "GET"},
+		{Model: gorm.Model{ID: 172, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/createAdDeviceEvent", Description: "新增adDeviceEvent表", ApiGroup: "adDeviceEvent",
+			Method: "POST"},
+		{Model: gorm.Model{ID: 173, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/deleteAdDeviceEvent", Description: "删除adDeviceEvent表", ApiGroup: "adDeviceEvent",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 174, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/deleteAdDeviceEventByIds", Description: "批量删除adDeviceEvent表",
+			ApiGroup: "adDeviceEvent", Method: "DELETE"},
+		{Model: gorm.Model{ID: 175, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/updateAdDeviceEvent", Description: "更新adDeviceEvent表", ApiGroup: "adDeviceEvent",
+			Method: "PUT"},
+		{Model: gorm.Model{ID: 176, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/findAdDeviceEvent", Description: "根据ID获取adDeviceEvent表", ApiGroup: "adDeviceEvent",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 177, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDeviceEvent/getAdDeviceEventList", Description: "获取adDeviceEvent表列表", ApiGroup: "adDeviceEvent",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 178, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/adDevice/createAdDevice",
+			Description: "新增adDevice表", ApiGroup: "adDevice", Method: "POST"},
+		{Model: gorm.Model{ID: 179, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/adDevice/deleteAdDevice",
+			Description: "删除adDevice表", ApiGroup: "adDevice", Method: "DELETE"},
+		{Model: gorm.Model{ID: 180, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/adDevice/deleteAdDeviceByIds", Description: "批量删除adDevice表", ApiGroup: "adDevice", Method: "DELETE"},
+		{Model: gorm.Model{ID: 181, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/adDevice/updateAdDevice",
+			Description: "更新adDevice表", ApiGroup: "adDevice", Method: "PUT"},
+		{Model: gorm.Model{ID: 182, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/adDevice/findAdDevice",
+			Description: "根据ID获取adDevice表", ApiGroup: "adDevice", Method: "GET"},
+		{Model: gorm.Model{ID: 183, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/adDevice/getAdDeviceList",
+			Description: "获取adDevice表列表", ApiGroup: "adDevice", Method: "GET"},
+		{Model: gorm.Model{ID: 184, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftChange/createLiftChange", Description: "新增liftChange表", ApiGroup: "liftChange", Method: "POST"},
+		{Model: gorm.Model{ID: 185, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftChange/deleteLiftChange", Description: "删除liftChange表", ApiGroup: "liftChange", Method: "DELETE"},
+		{Model: gorm.Model{ID: 186, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftChange/deleteLiftChangeByIds", Description: "批量删除liftChange表", ApiGroup: "liftChange", Method: "DELETE"},
+		{Model: gorm.Model{ID: 187, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftChange/updateLiftChange", Description: "更新liftChange表", ApiGroup: "liftChange", Method: "PUT"},
+		{Model: gorm.Model{ID: 188, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftChange/findLiftChange",
+			Description: "根据ID获取liftChange表", ApiGroup: "liftChange", Method: "GET"},
+		{Model: gorm.Model{ID: 189, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftChange/getLiftChangeList", Description: "获取liftChange表列表", ApiGroup: "liftChange", Method: "GET"},
+		{Model: gorm.Model{ID: 190, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/createLiftRecord", Description: "新增liftRecord表", ApiGroup: "liftRecord", Method: "POST"},
+		{Model: gorm.Model{ID: 191, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/deleteLiftRecord", Description: "删除liftRecord表", ApiGroup: "liftRecord", Method: "DELETE"},
+		{Model: gorm.Model{ID: 192, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/deleteLiftRecordByIds", Description: "批量删除liftRecord表", ApiGroup: "liftRecord", Method: "DELETE"},
+		{Model: gorm.Model{ID: 193, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/updateLiftRecord", Description: "更新liftRecord表", ApiGroup: "liftRecord", Method: "PUT"},
+		{Model: gorm.Model{ID: 194, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftRecord/findLiftRecord",
+			Description: "根据ID获取liftRecord表", ApiGroup: "liftRecord", Method: "GET"},
+		{Model: gorm.Model{ID: 195, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/getLiftRecordList", Description: "获取liftRecord表列表", ApiGroup: "liftRecord", Method: "GET"},
+		{Model: gorm.Model{ID: 196, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/createLiftTrouble", Description: "新增liftTrouble表", ApiGroup: "liftTrouble", Method: "POST"},
+		{Model: gorm.Model{ID: 197, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/deleteLiftTrouble", Description: "删除liftTrouble表", ApiGroup: "liftTrouble", Method: "DELETE"},
+		{Model: gorm.Model{ID: 198, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/deleteLiftTroubleByIds", Description: "批量删除liftTrouble表", ApiGroup: "liftTrouble", Method: "DELETE"},
+		{Model: gorm.Model{ID: 199, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/updateLiftTrouble", Description: "更新liftTrouble表", ApiGroup: "liftTrouble", Method: "PUT"},
+		{Model: gorm.Model{ID: 200, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/findLiftTrouble", Description: "根据ID获取liftTrouble表", ApiGroup: "liftTrouble", Method: "GET"},
+		{Model: gorm.Model{ID: 201, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftTrouble/getLiftTroubleList", Description: "获取liftTrouble表列表", ApiGroup: "liftTrouble", Method: "GET"},
+		{Model: gorm.Model{ID: 202, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/findUser",
+			Description: "find a user by id", ApiGroup: "user", Method: "GET"},
+		{Model: gorm.Model{ID: 203, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/deleteUserList",
+			Description: "del user list", ApiGroup: "user", Method: "DELETE"},
+		{Model: gorm.Model{ID: 204, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/user/createUser",
+			Description: "create user by admin", ApiGroup: "user", Method: "POST"},
+		{Model: gorm.Model{ID: 205, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/createUserLift",
+			Description: "新增userLift表", ApiGroup: "userLift", Method: "POST"},
+		{Model: gorm.Model{ID: 206, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/deleteUserLift",
+			Description: "删除userLift表", ApiGroup: "userLift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 207, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/userLift/deleteUserLiftByIds", Description: "批量删除userLift表", ApiGroup: "userLift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 208, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/updateUserLift",
+			Description: "更新userLift表", ApiGroup: "userLift", Method: "PUT"},
+		{Model: gorm.Model{ID: 209, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/findUserLift",
+			Description: "根据ID获取userLift表", ApiGroup: "userLift", Method: "GET"},
+		{Model: gorm.Model{ID: 210, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/getUserLiftList",
+			Description: "获取userLift表列表", ApiGroup: "userLift", Method: "GET"},
+		{Model: gorm.Model{ID: 211, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/liftRecord/fillLiftRecord",
+			Description: "lift record step2", ApiGroup: "liftRecord", Method: "POST"},
+		{Model: gorm.Model{ID: 212, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/liftRecord/reviewLiftRecord", Description: "lift record step3", ApiGroup: "liftRecord", Method: "POST"},
+		{Model: gorm.Model{ID: 213, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/createMessage",
+			Description: "新增message表", ApiGroup: "message", Method: "POST"},
+		{Model: gorm.Model{ID: 214, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/deleteMessage",
+			Description: "删除message表", ApiGroup: "message", Method: "DELETE"},
+		{Model: gorm.Model{ID: 215, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/deleteMessageByIds",
+			Description: "批量删除message表", ApiGroup: "message", Method: "DELETE"},
+		{Model: gorm.Model{ID: 216, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/updateMessage",
+			Description: "更新message表", ApiGroup: "message", Method: "PUT"},
+		{Model: gorm.Model{ID: 217, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/findMessage",
+			Description: "根据ID获取message表", ApiGroup: "message", Method: "GET"},
+		{Model: gorm.Model{ID: 218, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/message/getMessageList",
+			Description: "获取message表列表", ApiGroup: "message", Method: "GET"},
+		{Model: gorm.Model{ID: 219, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/createHealthSystem", Description: "新增healthSystem表", ApiGroup: "healthSystem",
+			Method: "POST"},
+		{Model: gorm.Model{ID: 220, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/deleteHealthSystem", Description: "删除healthSystem表", ApiGroup: "healthSystem",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 221, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/deleteHealthSystemByIds", Description: "批量删除healthSystem表", ApiGroup: "healthSystem",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 222, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/updateHealthSystem", Description: "更新healthSystem表", ApiGroup: "healthSystem", Method: "PUT"},
+		{Model: gorm.Model{ID: 223, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/findHealthSystem", Description: "根据ID获取healthSystem表", ApiGroup: "healthSystem",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 224, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthSystem/getHealthSystemList", Description: "获取healthSystem表列表", ApiGroup: "healthSystem",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 225, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/createHealthChange", Description: "新增healthChange表", ApiGroup: "healthChange",
+			Method: "POST"},
+		{Model: gorm.Model{ID: 226, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/deleteHealthChange", Description: "删除healthChange表", ApiGroup: "healthChange",
+			Method: "DELETE"},
+		{Model: gorm.Model{ID: 227, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/deleteHealthChangeByIds", Description: "批量删除healthChange表", ApiGroup: "healthChange", Method: "DELETE"},
+		{Model: gorm.Model{ID: 228, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/updateHealthChange", Description: "更新healthChange表", ApiGroup: "healthChange", Method: "PUT"},
+		{Model: gorm.Model{ID: 229, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/findHealthChange", Description: "根据ID获取healthChange表", ApiGroup: "healthChange",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 230, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			Path: "/healthChange/getHealthChangeList", Description: "获取healthChange表列表", ApiGroup: "healthChange",
+			Method: "GET"},
+		{Model: gorm.Model{ID: 231, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/createUserLift",
+			Description: "新增userLift表", ApiGroup: "userLift", Method: "POST"},
+		{Model: gorm.Model{ID: 232, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/deleteUserLift",
+			Description: "删除userLift表", ApiGroup: "userLift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 233, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/deleteUserLiftByIds",
+			Description: "批量删除userLift表", ApiGroup: "userLift", Method: "DELETE"},
+		{Model: gorm.Model{ID: 234, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/updateUserLift",
+			Description: "更新userLift表", ApiGroup: "userLift", Method: "PUT"},
+		{Model: gorm.Model{ID: 235, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/findUserLift",
+			Description: "根据ID获取userLift表", ApiGroup: "userLift", Method: "GET"},
+		{Model: gorm.Model{ID: 236, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/userLift/getUserLiftList",
+			Description: "获取userLift表列表", ApiGroup: "userLift", Method: "GET"},
+		{Model: gorm.Model{ID: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/api/getAllApis", Description: "获取所有api", ApiGroup: "api", Method: "POST"},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
+func InitUserLift() (err error) {
+	// first clear, hard mode
+	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.UserLift{})
+	// then add new
+	tx := global.GVA_DB.Begin()
+	insert := []model.UserLift{
+		{Model:gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 18 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftMaintain)},
+		{Model:gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 19 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftMaintain)},
+		{Model:gorm.Model{ID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 20 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftMaintain)},
+		{Model:gorm.Model{ID: 4, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 21 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftMaintain)},
+
+		{Model:gorm.Model{ID: 5, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 14 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftInstall)},
+		{Model:gorm.Model{ID: 6, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 15 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftInstall)},
+		{Model:gorm.Model{ID: 7, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 16 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftInstall)},
+		{Model:gorm.Model{ID: 8, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 17 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftInstall)},
+
+		{Model:gorm.Model{ID: 9, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 10 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftCheck)},
+		{Model:gorm.Model{ID: 10, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 11 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftCheck)},
+		{Model:gorm.Model{ID: 11, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 12 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftCheck)},
+		{Model:gorm.Model{ID: 12, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 13 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftCheck)},
+
+		{Model:gorm.Model{ID: 13, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 6 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftManage)},
+		{Model:gorm.Model{ID: 14, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 7 , LiftId: 1,
+			CategoryId: uint(enum.UserLiftManage)},
+		{Model:gorm.Model{ID: 15, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 8 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftManage)},
+		{Model:gorm.Model{ID: 16, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 9 , LiftId: 2,
+			CategoryId: uint(enum.UserLiftManage)},
+	}
+	if err := tx.Create(&insert).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit().Error
+}
+
 func InitData() {
 	var err error
 	err = InitSubject()
@@ -1612,19 +2297,25 @@ func InitData() {
 	err = InitSysAuthority()
 	err = InitCompany()
 	err = InitUser()
-
+	err = InitSysApi()
 	err = InitDevice()
 	err = InitDeviceOwner()
 	err = InitDeviceConfig()
 	err = InitDeviceConfigRelation()
 	err = InitLift()
 	err = InitLiftModel()
+	err = InitHealthSystem()
+	err = InitHealthChange()
 	err = InitSysAuthorityMenus()
 	err = InitCasbinModel()
 	err = InitExaCustomer()
 	err = InitSysBaseMenus()
+	err = InitSysDictionary()
 	err = InitSysDictionaryDetail()
 	err = InitExaFileUploadAndDownload()
+	err = InitLiftRecord()
+	err = InitLiftTrouble()
+	err = InitUserLift()
 	if err != nil {
 		global.GVA_LOG.Error("initialize data failed", err)
 	} else {

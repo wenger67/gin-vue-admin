@@ -36,15 +36,20 @@ func CreateLift(c *gin.Context) {
 			MaintainDimension: utils.HealthDimensionInitialValue, SensorDimension: utils.HealthDimensionInitialValue}
 		err = service.CreateHealthSystem(health)
 		// health change initial
-		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthTimeDimension),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+			DimensionId: uint(enum.HealthTimeDimension),
 			Content: "Initial", Score: timeDim})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthHumanDimension),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+			DimensionId: uint(enum.HealthHumanDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthInnerDimension),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+			DimensionId: uint(enum.HealthInnerDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthMaintainDimension),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+			DimensionId: uint(enum.HealthMaintainDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: int(lift.ID), DimensionId: int(enum.HealthSensorDimension),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+			DimensionId: uint(enum.HealthSensorDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
 		// TODO send message
 		if err != nil {
@@ -166,6 +171,8 @@ func UpdateLift(c *gin.Context) {
 			liftChange.LiftId = int(lift.ID)
 			liftChange.Content = changes
 			err := service.CreateLiftChange(liftChange) // save changes
+			// TODO send message
+
 			if err != nil {
 				global.GVA_LOG.Warning("create lift change failed.", err.Error())
 			}

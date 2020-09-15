@@ -290,8 +290,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="安装人员" prop="installIds">
-              <el-select v-model="assignFormData.installIds" placeholder="请选择下拉选择安装人员" multiple clearable
-                :style="{width: '100%'}" value-key="ID">
+              <el-select v-model="assignFormData.installIds" @change="$forceUpdate()" placeholder="请选择下拉选择安装人员" multiple clearable
+                :style="{width: '100%'}">
                 <el-option v-for="item in installUserOptions"
                   :key="item.ID"
                   :label="item.realName"
@@ -311,8 +311,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="维保人员" prop="maintainIds">
-              <el-select v-model="assignFormData.maintainIds" placeholder="请选择下拉选择维保人员" multiple clearable
-                :style="{width: '100%'}" value-key="ID">
+              <el-select v-model="assignFormData.maintainIds" @change="$forceUpdate()" placeholder="请选择下拉选择维保人员" multiple clearable
+                :style="{width: '100%'}">
                 <el-option v-for="item in maintainUserOptions"
                   :key="item.ID"
                   :label="item.realName"
@@ -332,8 +332,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="年检人员" prop="checkIds">
-              <el-select v-model="assignFormData.checkIds" placeholder="请选择下拉选择年检人员" multiple clearable
-                :style="{width: '100%'}" value-key="ID">
+              <el-select v-model="assignFormData.checkIds" @change="$forceUpdate()" placeholder="请选择下拉选择年检人员" multiple clearable
+                :style="{width: '100%'}">
                 <el-option v-for="item in checkUserOptions"
                   :key="item.ID"
                   :label="item.realName"
@@ -353,8 +353,8 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="管理人员" prop="ownIds">
-              <el-select v-model="assignFormData.ownIds" placeholder="请选择下拉选择管理人员" multiple clearable
-                :style="{width: '100%'}" value-key="ID">
+              <el-select v-model="assignFormData.ownIds" @change="$forceUpdate()" placeholder="请选择下拉选择管理人员" multiple clearable
+                :style="{width: '100%'}">
                 <el-option v-for="item in ownUserOptions"
                   :key="item.ID"
                   :label="item.realName"
@@ -551,10 +551,10 @@ export default {
       maintainUserOptions:[],
       checkUserOptions:[],
       ownUserOptions:[],
-      installCateogry:100,
-      maintainCategory: 101,
-      checkCategory: 102,
-      ownerCategory:103,
+      installCateogry:1104,
+      maintainCategory: 1101,
+      checkCategory: 1103,
+      ownerCategory:1102,
       assignRules: {
         installIds: [{
           required: true,

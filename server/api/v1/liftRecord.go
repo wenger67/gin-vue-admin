@@ -27,6 +27,7 @@ func CreateLiftRecord(c *gin.Context) {
 		StartTime: time.Now(), WorkerId: create.WorkerId}
 
 	err := service.CreateLiftRecord(liftRecord)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
@@ -39,6 +40,7 @@ func FillLiftRecord(c *gin.Context) {
 	_ = c.ShouldBindJSON(&fill)
 
 	err := service.FillLiftRecord(fill)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {
@@ -51,6 +53,7 @@ func ReviewLiftRecord(c *gin.Context) {
 	_ = c.ShouldBindJSON(&review)
 
 	err := service.ReviewLiftRecord(review)
+	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {

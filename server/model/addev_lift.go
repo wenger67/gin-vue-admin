@@ -29,7 +29,7 @@ type Lift struct {
 	Category   Category `json:"category" form:"category" gorm:"ForeignKey:CategoryId;comment:'电梯用途类别'"`
 	// belong to
 	AddressId  uint     `json:"addressId" form:"addressId"`
-	Address    Address `json:"address" form:"address" gorm:"ForeignKey:AddressId;comment:'电梯地址'"`
+	Address    Address `json:"address" form:"address" gorm:"foreignKey:AddressId;comment:'电梯地址'"`
 	FloorCount uint     `json:"floorCount" form:"floorCount" gorm:"comment:'总楼层'"`
 	Building   string  `json:"building" form:"building" gorm:"comment:'楼栋号'"`
 	Cell       uint     `json:"cell" form:"cell" gorm:"comment:'单元号'"`
