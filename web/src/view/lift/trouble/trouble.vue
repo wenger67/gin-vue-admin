@@ -18,6 +18,9 @@
             <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
+        <el-form-item label="export">
+          <el-button type="primary" @click="exportXlsx">Export</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <el-table
@@ -318,6 +321,8 @@ import { getUserList } from '@/api/user';
 import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
 import Subject from "@/utils/subject";
+import XLSX from "xlsx";
+import FileSaver from "file-saver"
 
 export default {
   name: "LiftTrouble",
@@ -418,6 +423,20 @@ export default {
       if (row.recorderId == 0) {
         return "warning"
       } else return "success"
+    },
+    exportXlsx() {
+      var table = [["ID", "Lift", "ResponseUser"]] // xlsx header
+      // xlsx data
+      this.tableData.map((item, index) => {
+        table[index + 1] = [item.ID, item.lift.nickName, item.responseUser.realName]
+      })
+
+      // format convert
+      const ws = XLSX.utils.aoa_to_sheet(table)
+      const wb = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+      // save files
+      XLSX.writeFile(wb, "lift_trouble_sheet.xlsx")
     },
     async onDelete() {
       const ids = []
