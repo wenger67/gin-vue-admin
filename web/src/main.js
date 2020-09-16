@@ -33,6 +33,10 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 Vue.use(VueQuillEditor)
 
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
+Vue.use(Viewer)
+
 // markdown插件
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'

@@ -29,24 +29,32 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    
-      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="记录类别" prop="category.categoryName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="开始时间" sortable min-width="80">
+      <el-table-column type="selection" min-width="20"></el-table-column>
+      <el-table-column label="ID" prop="ID" sortable min-width="30" align="center"></el-table-column> 
+      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="50" align="center"></el-table-column> 
+      <el-table-column label="记录类别" prop="category.categoryName" sortable min-width="60" align="center"></el-table-column> 
+      <el-table-column label="开始时间" sortable min-width="80" align="center">
         <template slot-scope="scope">{{scope.row.startTime|formatDate}}</template>
       </el-table-column> 
-      <el-table-column label="结束时间" prop="endTime" sortable min-width="60">
+
+      <el-table-column label="图片记录" prop="medias" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <viewer v-if="scope.row.medias" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
+            <el-carousel height="150px" indicator-position="none">
+              <el-carousel-item v-for="item in scope.row.medias" :key="item.url">
+                <el-image :src="item.url" fit="cover" @click="handlePreview(scope.row.medias)" style="width:200px;height:150px"/>
+              </el-carousel-item>
+            </el-carousel>            
+          </viewer>          
+          <span v-else>---</span>
+        </template>     
+      </el-table-column> 
+      <el-table-column label="文字记录" prop="content" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60" align="center"></el-table-column> 
+      <el-table-column label="结束时间" prop="endTime" sortable min-width="80" align="center">
         <template slot-scope="scope">{{scope.row.endTime|formatDate}}</template>        
       </el-table-column> 
-      <el-table-column label="图片记录" prop="images" sortable min-width="60"></el-table-column> 
-      <el-table-column label="文字记录" prop="content" sortable min-width="60"></el-table-column> 
-      <el-table-column label="操作人员" prop="worker.realName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="日期" min-width="80">
-        <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
-      </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100" >
         <template slot-scope="scope">
           <el-button @click="updateLiftRecord(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftRecord(scope.row)">删除</el-button>
@@ -121,7 +129,7 @@
           <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
         </el-form-item>
 
-        <el-form-item v-if="stepActive == 1" label="images" prop="images">
+        <el-form-item v-if="stepActive == 1" label="medias" prop="medias">
           <el-upload
             :action="`${path}/fileUploadAndDownload/upload?storage=local`"
             :on-remove="handleRemove"
@@ -134,7 +142,7 @@
           </el-upload>
         </el-form-item>
         
-        <el-form-item v-if="stepActive == 2" label="images">
+        <el-form-item v-if="stepActive == 2" label="medias">
           <el-carousel height="150px">
             <el-carousel-item v-for="item in uploadFileList" :key="item.uid">
               <img :src="item.url" />
@@ -185,6 +193,8 @@ export default {
     return {
       listApi: getLiftRecordList,
       dialogFormVisible: false,
+      previewDialogVisible: false,
+      previewImages:[],
       type: "",
       deleteVisible: false,
       path: path,
@@ -200,7 +210,7 @@ export default {
       multipleSelection: [],
       formData: {
         liftId:null,lift:{}, categoryId:null, category:{},
-        images:"",content:"",startTime:"0001-01-01T00:00:00Z",endTime:"0001-01-01T00:00:00Z",
+        medias:"",content:"",startTime:"0001-01-01T00:00:00Z",endTime:"0001-01-01T00:00:00Z",
         workerId:null,worker:{}, recorderId:0, recorder:{}
       }
     };
@@ -208,7 +218,7 @@ export default {
   computed: {
     ...mapGetters("user", ["userInfo", "token"]),
     stepActive: function() {
-      if (this.formData.content == "" && this.formData.images == "" && this.formData.startTime == "0001-01-01T00:00:00Z") {
+      if (this.formData.content == "" && this.formData.medias == "" && this.formData.startTime == "0001-01-01T00:00:00Z") {
         return 0
       }
       if (this.formData.recorderId == 0 && this.formData.endTime == "0001-01-01T00:00:00Z") {
@@ -221,7 +231,7 @@ export default {
   filters: {
     formatDate: function(time) {
       if (time == "0001-01-01T00:00:00Z") {
-        return "NULL"
+        return "---"
       }
       if (time != null && time != "") {
         var date = new Date(time);
@@ -251,6 +261,9 @@ export default {
         this.pageSize = 10            
         this.getTableData()
       },
+      inited(viewer) {
+        this.$viewer = viewer
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -260,13 +273,19 @@ export default {
         } else return "success"
       },
       handleRemove(file, fileList){
+        console.log(fileList)        
         this._.remove(this.uploadFileList, function(item) {
           return item.uid == file.uid  
         })
-        console.log(this.uploadFileList)
+      },
+      handlePreview(medias) {
+        this.previewImages = []
+        this.previewImages = _.map(_.filter(medias, function(o){return o.tag == "jpg"}), "url")
+        this.$viewer.show()
       },
       handleUploadSuccess(response, file, fileList) {
         this.uploadFileList.push({name: file.name, url: response.data.file.url})
+        console.log(fileList)
       },
       async onDelete() {
         const ids = []
@@ -288,7 +307,7 @@ export default {
       const res = await findLiftRecord({ ID: row.ID });
       if (res.code === 0) {
         this.formData = res.data.reliftRecord;
-        this.uploadFileList = JSON.parse(this.formData.images)
+        this.uploadFileList = JSON.parse(this.formData.medias)
         this.dialogFormVisible = true;
       }
     },
@@ -296,7 +315,7 @@ export default {
       this.dialogFormVisible = false;
       this.formData = {
         liftId:null,lift:{}, categoryId:null, category:{},
-        images:"",content:"",startTime:"0001-01-01T00:00:00Z",endTime:"0001-01-01T00:00:00Z",
+        medias:"",content:"",startTime:"0001-01-01T00:00:00Z",endTime:"0001-01-01T00:00:00Z",
         workerId:null,worker:{}, recorderId:0, recorder:{}
       };
     },
@@ -342,7 +361,7 @@ export default {
         case "fill":
           param.recordId = this.formData.ID
           param.content = this.formData.content
-          param.images = JSON.stringify(this.uploadFileList)
+          param.medias = JSON.stringify(this.uploadFileList)
           res = await fillLiftRecord(param);
           break;
         case "review":
@@ -403,6 +422,11 @@ export default {
 </script>
 
 <style>
+.previewImage {
+    cursor: pointer;
+    margin: 5px;
+    display: inline-block;
+}
 
 .el-form-item{
   text-align: center;

@@ -7,6 +7,7 @@ import (
 	"gin-vue-admin/model/request"
 	resp "gin-vue-admin/model/response"
 	"gin-vue-admin/service"
+	"gin-vue-admin/utils/enum"
 	"github.com/gin-gonic/gin"
 	"time"
 )
@@ -28,6 +29,24 @@ func CreateLiftTrouble(c *gin.Context) {
 	liftTrouble.StartTime = time.Now()
 	err := service.CreateLiftTrouble(liftTrouble)
 	// TODO send message
+	_, lift := service.GetLift(liftTrouble.LiftId)
+	if liftTrouble.FromCategoryId == uint(enum.LiftUrgentButtonTrouble) {
+		// urgent button
+		err = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Maintainer.Admin.ID,
+			Content: "触发电梯救援按钮", TypeId: uint(enum.MessageUrgent)})
+		err = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "触发电梯救援按钮", TypeId: uint(enum.MessageUrgent)})
+		_, list, _ := service.GetUserInfoList(request.SearchUserParams{PageInfo:request.PageInfo{Page: 1,
+			PageSize: 9999}, CompanyId: 15})
+		users := list.([]model.SysUser)
+		for _, val := range users {
+			if val.ID == uint(enum.SystemNotifyUserId) {
+				continue
+			}
+			err = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: val.ID,
+				Content: "触发电梯救援按钮", TypeId: uint(enum.MessageUrgent)})
+		}
+	}
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("创建失败，%v", err), c)
 	} else {

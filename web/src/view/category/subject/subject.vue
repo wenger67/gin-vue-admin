@@ -16,10 +16,10 @@
     <el-table :data="tableData" @sort-change="sortChange" border stripe>
       <el-table-column label="ID" min-width="60" prop="ID" sortable="custom"></el-table-column>
       <el-table-column label="主体" min-width="60" prop="subjectName" sortable="custom"></el-table-column>
-      <el-table-column label="日期" width="180">
+      <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column fixed="right" label="按钮组" width="200">
+      <el-table-column fixed="right" label="按钮组" min-width="100">
         <template slot-scope="scope">
           <el-button type="primary" @click="editSubject(scope.row)" size="small" icon="el-icon-edit">Edit</el-button>
           <el-button type="danger" @click="deleteSubject(scope.row)" size="small" icon="el-icon-delete">Delete</el-button>

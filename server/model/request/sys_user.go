@@ -41,7 +41,7 @@ type CreateStruct struct {
 	RealName    string `json:"realName" form:"realName"`
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
-	CompanyId   int `json:"companyId" form:"companyId"`
+	CompanyId   uint `json:"companyId" form:"companyId"`
 	Address     string `json:"address" form:"address"`
 	AuthorityId string       `json:"authorityId" form:"authorityId" gorm:"default:888;comment:'用户角色ID'"`
 }
@@ -49,5 +49,5 @@ type CreateStruct struct {
 type SearchUserParams struct {
 	model.SysUser
 	PageInfo
-	CompanyId int `json:"companyId" form:"companyId"`
+	CompanyId uint `json:"companyId" form:"companyId"`
 }

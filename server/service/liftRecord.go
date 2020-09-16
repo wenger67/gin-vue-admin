@@ -74,7 +74,7 @@ func UpdateLiftRecord(liftRecord *model.LiftRecord) (err error) {
 // @return    LiftRecord        LiftRecord
 
 func GetLiftRecord(id uint) (err error, liftRecord model.LiftRecord) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Category").
+	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Category").Preload("Medias").
 		Preload("Worker").Preload("Recorder").First(&liftRecord).Error
 	return
 }
@@ -93,7 +93,7 @@ func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list inter
     var liftRecords []model.LiftRecord
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Category").
+	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Category").Preload("Medias").
 		Preload("Worker").Preload("Recorder").Find(&liftRecords).Error
 	return err, liftRecords, total
 }

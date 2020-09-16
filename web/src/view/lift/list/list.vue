@@ -395,6 +395,7 @@ import {getAdDeviceList} from "@/api/adDevice";
 import VueAMap from "vue-amap";
 import { getUserList } from '@/api/user';
 import {getUserLiftList, deleteUserLiftByIds, createUserLift} from '@/api/userLift'
+import _ from "lodash"
 
 let aMapManager = new VueAMap.AMapManager();
 

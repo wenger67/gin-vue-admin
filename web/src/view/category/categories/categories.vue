@@ -38,14 +38,14 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="ID" prop="ID" width="120"></el-table-column> 
+      <el-table-column type="selection" min-width="30"></el-table-column>
+      <el-table-column label="ID" prop="ID" min-width="40"></el-table-column> 
       <el-table-column label="主体" prop="categorySubject.subjectName" min-width="60"></el-table-column> 
       <el-table-column label="类别" prop="categoryName" min-width="60"></el-table-column> 
-      <el-table-column label="日期" width="180">
+      <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" width="200" fixed="right">
+      <el-table-column label="按钮组" min-width="100" fixed="right">
         <template slot-scope="scope">
           <el-button @click="updateCategories(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" size="mini" @click="deleteCategories(scope.row)">删除</el-button>

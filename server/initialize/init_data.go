@@ -115,6 +115,8 @@ func InitCategory() (err error) {
 			CategorySubjectId: uint(enum.SubjectLiftTroubleSourceType), CategoryName: "年检单位"},
 		{Model: gorm.Model{ID: uint(enum.LiftOwnerTrouble), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			CategorySubjectId: uint(enum.SubjectLiftTroubleSourceType), CategoryName: "使用单位"},
+		{Model: gorm.Model{ID: uint(enum.LiftUrgentButtonTrouble), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectLiftTroubleSourceType), CategoryName: "救援按钮"},
 
 		{Model: gorm.Model{ID: uint(enum.TroubleSolvedByAuto), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			CategorySubjectId: uint(enum.SubjectLiftTroubleSolvedType), CategoryName: "自动修复"},
@@ -257,6 +259,17 @@ func InitCategory() (err error) {
 			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "完成记录"},
 		{Model: gorm.Model{ID: uint(enum.MessageTroubleFixed), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "故障修复"},
+		{Model: gorm.Model{ID: uint(enum.MessageNewMaintainWorker), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "指派维保人员"},
+		{Model: gorm.Model{ID: uint(enum.MessageNewCheckWorker), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "指派年检人员"},
+		{Model: gorm.Model{ID: uint(enum.MessageNewInstallWorker), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "指派安装人员"},
+		{Model: gorm.Model{ID: uint(enum.MessageNewManageWorker), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "指派管理人员"},
+		{Model: gorm.Model{ID: uint(enum.MessageNewSuperviseWorker), CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			CategorySubjectId: uint(enum.SubjectMessageType), CategoryName: "指派监督人员"},
+
 
 		{Model: gorm.Model{ID: uint(enum.MessageSubjectLift), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			CategorySubjectId: uint(enum.SubjectMessageFromTargetType), CategoryName: "电梯"},
@@ -742,6 +755,11 @@ func InitUser() (err error) {
 			PhoneNumber: "17612732760",
 			Password:    "96e79218965eb72c92a549dd5a330112", RealName: "阮小五", NickName: "短命二郎", Avatar: faker.URL(),
 			HasCompId: 0, CompanyId: 0, Address: "湖北省武汉市东湖高新区软件园A1", AuthorityId: "101"},
+
+	{Model: gorm.Model{ID: 30, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UUID: uuid.NewV4(),
+			PhoneNumber: "17612732761",
+			Password:    "96e79218965eb72c92a549dd5a330112", RealName: "系统通知", NickName: "系统通知", Avatar: faker.URL(),
+			HasCompId: 0, CompanyId: 15, Address: "湖北省武汉市东湖高新区软件园A1", AuthorityId: "888"},
 	}
 
 	if err := tx.Create(&insert).Error; err != nil {
@@ -921,46 +939,46 @@ func InitExaFileUploadAndDownload() (err error) {
 		// record 4
 		{Model: gorm.Model{ID: 6, CreatedAt: time.Date(2020, 9, 1, 7, 26, 4, 183, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 30, 9, 428, time.Local)}, Name: "IMG_20200901_152604_183.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_183.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/e06434ecfa7e0bc9e4a09c98f2dca4a6_IMG_20200901_152604_183.jpg",
 			Tag: "jpg", RecordId: 4},
 		{Model: gorm.Model{ID: 7, CreatedAt: time.Date(2020, 9, 1, 7, 26, 4, 305, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local)}, Name: "IMG_20200901_152604_305.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_305.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/e06434ecfa7e0bc9e4a09c98f2dca4a6_IMG_20200901_152604_305.jpg",
 			Tag: "jpg", RecordId: 4},
 		{Model: gorm.Model{ID: 8, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local)}, Name: "IMG_20200901_152604_432.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_432.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/e06434ecfa7e0bc9e4a09c98f2dca4a6_IMG_20200901_152604_432.jpg",
 			Tag: "jpg", RecordId: 4},
 		{Model: gorm.Model{ID: 9, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, Name: "VID_20200901_152433.mp4",
 			Url: "http://127.0.0." +
-				"1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4",
+				"1:8888/upload/2020_09_01/1/181/701/e06434ecfa7e0bc9e4a09c98f2dca4a6_VID_20200901_152433.mp4",
 			Tag: "mp4", RecordId: 4},
 		{Model: gorm.Model{ID: 10, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local)}, Name: "IMG_20200901_152604_555.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_152604_555.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/701/e06434ecfa7e0bc9e4a09c98f2dca4a6_IMG_20200901_152604_555.jpg",
 			Tag: "jpg", RecordId: 4},
 
 		// lift trouble1
 		{Model: gorm.Model{ID: 11, CreatedAt: time.Date(2020, 9, 1, 7, 15, 9, 428, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 428, time.Local)}, Name: "IMG_20200901_151623_221.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_221",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/c5ca008b90897a675e953a10ea2f65ff_IMG_20200901_151623_221.jpg",
 			Tag: "jpg", TroubleId: 1},
 		{Model: gorm.Model{ID: 12, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 306, time.Local)}, Name: "IMG_20200901_151623_632.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_632",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/c5ca008b90897a675e953a10ea2f65ff_IMG_20200901_151623_632.jpg",
 			Tag: "jpg", TroubleId: 1},
 		{Model: gorm.Model{ID: 13, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 551, time.Local)}, Name: "IMG_20200901_151623_976.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151623_976.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/c5ca008b90897a675e953a10ea2f65ff_IMG_20200901_151623_976.jpg",
 			Tag: "jpg", TroubleId: 1},
 		{Model: gorm.Model{ID: 14, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 0, time.Local)}, Name: "VID_20200901_152433.mp4",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_VID_20200901_152433.mp4",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/c5ca008b90897a675e953a10ea2f65ff_VID_20200901_152433.mp4",
 			Tag: "mp4", TroubleId: 1},
 		{Model: gorm.Model{ID: 15, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local),
 			UpdatedAt: time.Date(2020, 9, 1, 7, 25, 9, 672, time.Local)}, Name: "IMG_20200901_151624_113.jpg",
-			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/83d67c105d7f3fb976ca1c182a05a28d_IMG_20200901_151624_113.jpg",
+			Url: "http://127.0.0.1:8888/upload/2020_09_01/1/181/694/c5ca008b90897a675e953a10ea2f65ff_IMG_20200901_151624_113.jpg",
 			Tag: "jpg", TroubleId: 1},
 	}
 	if tx.Create(&insert).Error != nil { // 遇到错误时回滚事务
@@ -2303,6 +2321,7 @@ func InitData() {
 	err = InitDeviceConfig()
 	err = InitDeviceConfigRelation()
 	err = InitLift()
+	err = InitMessage()
 	err = InitLiftModel()
 	err = InitHealthSystem()
 	err = InitHealthChange()

@@ -14,9 +14,9 @@ type SysUser struct {
 	NickName    string `json:"nickName" form:"nickName"`
 	Avatar      string `json:"avatar" form:"avatar"`
 	// belong
-	CompanyId   int `json:"companyId" form:"companyId"`
+	CompanyId   uint `json:"companyId" form:"companyId"`
 	// manage company
-	HasCompId int `json:"hasCompId"`
+	HasCompId uint `json:"hasCompId"`
 
 	Address     string `json:"address" form:"address"`
 	// belong to

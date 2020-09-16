@@ -26,17 +26,35 @@ func CreateUserLift(c *gin.Context) {
 	// TODO send message
 	categoryId := userLift.CategoryId
 	_, lift := service.GetLift(userLift.LiftId)
-	if categoryId == uint(enum.UserLiftMaintain){
+
+	switch categoryId {
+	case uint(enum.UserLiftMaintain):
 		// lift add maintain worker
-		_ = service.CreateMessage(model.Message{TargetId: lift.Maintainer.Admin.ID,
-			Content: "lift add maintain worker", TypeId: uint(enum.MessageNewMaintainWorker)})
-		_ = service.CreateMessage(model.Message{TargetId: lift.Owner.Admin.ID,
-			Content: "lift add maintain worker", TypeId: uint(enum.MessageNewMaintainWorker)})
-	} else if categoryId == uint(enum.UserLiftCheck){
-		_ = service.CreateMessage(model.Message{TargetId: lift.Checker.Admin.ID,
-			Content: "lift add check worker", TypeId: uint(enum.MessageNewCheckWorker)})
-		_ = service.CreateMessage(model.Message{TargetId: lift.Owner.Admin.ID,
-			Content: "lift add check worker", TypeId: uint(enum.MessageNewMaintainWorker)})
+		_ = service.CreateMessage(model.Message{FromId:enum.SystemNotifyUserId, TargetId: lift.Maintainer.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增维保人员", TypeId: uint(enum.MessageNewMaintainWorker)})
+		_ = service.CreateMessage(model.Message{FromId:enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增维保人员", TypeId: uint(enum.MessageNewMaintainWorker)})
+		break
+	case uint(enum.UserLiftCheck):
+		_ = service.CreateMessage(model.Message{FromId:enum.SystemNotifyUserId, TargetId: lift.Checker.Admin.ID,
+			Content:"电梯" + lift.NickName + "新增维保人员", TypeId: uint(enum.MessageNewCheckWorker)})
+		_ = service.CreateMessage(model.Message{FromId:enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增维保人员", TypeId: uint(enum.MessageNewCheckWorker)})
+		break
+	case uint(enum.UserLiftInstall):
+		_ = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Installer.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增安装人员", TypeId: uint(enum.MessageNewInstallWorker)})
+		_ = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增安装人员", TypeId: uint(enum.MessageNewInstallWorker)})
+		break
+	case uint(enum.UserLiftManage):
+		_ = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增管理人员", TypeId: uint(enum.MessageNewInstallWorker)})
+		break
+	case uint(enum.UserLiftSupervise):
+		_ = service.CreateMessage(model.Message{FromId: enum.SystemNotifyUserId, TargetId: lift.Owner.Admin.ID,
+			Content: "电梯" + lift.NickName + "新增监督人员", TypeId: uint(enum.MessageNewInstallWorker)})
+		break
 	}
 
 	if err != nil {

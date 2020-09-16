@@ -36,19 +36,19 @@ func CreateLift(c *gin.Context) {
 			MaintainDimension: utils.HealthDimensionInitialValue, SensorDimension: utils.HealthDimensionInitialValue}
 		err = service.CreateHealthSystem(health)
 		// health change initial
-		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: lift.ID,
 			DimensionId: uint(enum.HealthTimeDimension),
 			Content: "Initial", Score: timeDim})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: lift.ID,
 			DimensionId: uint(enum.HealthHumanDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: lift.ID,
 			DimensionId: uint(enum.HealthInnerDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: lift.ID,
 			DimensionId: uint(enum.HealthMaintainDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
-		err = service.CreateHealthChange(model.HealthChange{LiftId: uint(lift.ID),
+		err = service.CreateHealthChange(model.HealthChange{LiftId: lift.ID,
 			DimensionId: uint(enum.HealthSensorDimension),
 			Content: "Initial", Score: utils.HealthDimensionInitialValue})
 		// TODO send message

@@ -116,6 +116,6 @@ func GetLiftTroubleInfoList(info request.LiftTroubleSearch) (err error, list int
 	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("FromCategory").
 		Preload("StartUser").Preload("ResponseUser").Preload("SceneUser").
 		Preload("FixUser").Preload("FixCategory").Preload("ReasonCategory").
-		Preload("Recorder").Find(&liftTroubles).Error
+		Preload("Medias").Preload("Recorder").Find(&liftTroubles).Error
 	return err, liftTroubles, total
 }

@@ -29,29 +29,22 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-
-    
-    <el-table-column label="from id" prop="fromId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="target id" prop="targetId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="type id" prop="typeId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="send字段" prop="send" min-width="60">
-         <template slot-scope="scope">{{scope.row.send|formatBoolean}}</template>
-    </el-table-column>
-    
-    <el-table-column label="read字段" prop="read" min-width="60">
-         <template slot-scope="scope">{{scope.row.read|formatBoolean}}</template>
-    </el-table-column>
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" min-width="30"></el-table-column>
+      <el-table-column label="ID" prop="ID" sortable min-width="30"></el-table-column> 
+      <el-table-column label="from" prop="fromUser.realName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="target" prop="targetUser.realName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
+      <el-table-column label="type" prop="type.categoryName" sortable min-width="60"></el-table-column> 
+      <el-table-column label="send" prop="send" min-width="30">
+          <template slot-scope="scope">{{scope.row.send|formatBoolean}}</template>
+      </el-table-column>
+      <el-table-column label="read" prop="read" min-width="30">
+          <template slot-scope="scope">{{scope.row.read|formatBoolean}}</template>
+      </el-table-column>
+      <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100">
         <template slot-scope="scope">
           <el-button @click="updateMessage(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteMessage(scope.row)">删除</el-button>

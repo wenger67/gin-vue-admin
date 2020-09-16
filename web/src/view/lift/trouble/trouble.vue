@@ -26,49 +26,109 @@
       border
       ref="multipleTable"
       stripe
-      style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="selection" min-width="30"></el-table-column>
+      <el-table-column label="ID" prop="ID" sortable min-width="60"></el-table-column> 
+      <el-table-column label="故障进度" sortable min-width="120">
+        <template slot-scope="scope">{{ scope.row.progress|formatProgress }}</template>
+      </el-table-column>
+      <el-table-column label="创建" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top"
+            trigger="click">
+            <p>来源类别: {{ scope.row.fromCategory.categoryName }}</p>
+            <p>开始时间: {{ scope.row.startTime | formatDate }}</p>
+            <p>发起人员: {{ scope.row.startUser.realName }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.lift.nickName}}</el-tag>
+            </div>
+          </el-popover>
+        </template>
+      </el-table-column> 
+      <el-table-column label="响应" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <el-popover v-if="scope.row.responseUserId"
+            placement="top"
+            trigger="click">
+            <p>响应时间: {{ scope.row.responseTime | formatDate }}</p>
+            <p>响应人员: {{ scope.row.responseUser.realName }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.responseUser.realName }}</el-tag>
+            </div>
+          </el-popover>
+          <span v-else>---</span>
+        </template>
+      </el-table-column>   
+          
+      <el-table-column label="现场" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <el-popover v-if="scope.row.sceneUserId"
+            placement="top"
+            trigger="click">
+            <p>现场时间: {{ scope.row.sceneTime | formatDate }}</p>
+            <p>现场人员: {{ scope.row.sceneUser.realName }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.sceneUser.realName }}</el-tag>
+            </div>
+          </el-popover>
+          <span v-else>---</span>
+        </template>
+      </el-table-column> 
+     
+      <el-table-column label="解除" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <el-popover v-if="scope.row.fixUserId"
+            placement="top"
+            trigger="click">
+            <p>解除时间: {{ scope.row.fixTime | formatDate }}</p>
+            <p>解除故障人员: {{ scope.row.fixUser.realName }}</p>
+            <p>解除故障方式: {{ scope.row.fixCategory.categoryName }}</p>
+            <p>故障原因: {{ scope.row.reasonCategory.categoryName }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.fixCategory.categoryName }}</el-tag>
+            </div>
+          </el-popover>
+          <span v-else>---</span>
+        </template>
+      </el-table-column> 
 
-    <el-table-column label="故障进度" sortable min-width="100">
-      <template slot-scope="scope">{{ scope.row.progress|formatProgress }}</template>
-    </el-table-column>
-    <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60"></el-table-column> 
-    <el-table-column label="来源类别" prop="fromCategory.categoryName" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="开始时间" sortable min-width="80">
-      <template slot-scope="scope">{{ scope.row.startTime | formatDate }}</template>
-    </el-table-column> 
-    
-    <el-table-column label="发起人员" prop="startUser.realName" sortable min-width="60"></el-table-column> 
-    <!-- <el-table-column label="故障响应时间" sortable min-width="60">
-      <template slot-scope="scope">{{ scope.row.responseTime | formatDate }}</template>    
-    </el-table-column> 
-    <el-table-column label="故障响应人员" prop="responseUserId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="达到现场时间" sortable min-width="60">
-      <template slot-scope="scope">{{ scope.row.sceneTime | formatDate }}</template>
-    </el-table-column> 
-    <el-table-column label="达到现场人员" prop="sceneUserId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="解除故障时间" sortable min-width="60">
-      <template slot-scope="scope">{{ scope.row.fixTime | formatDate }}</template>
-    </el-table-column> 
-    <el-table-column label="解除故障人员" prop="fixUserId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="解除故障方式类别" prop="fixCategoryId" sortable min-width="60"></el-table-column> 
-    <el-table-column label="故障原因类别" prop="reasonCategoryId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="故障详情" prop="content" sortable min-width="60"></el-table-column>  -->
-
-    <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60"></el-table-column> 
-    <el-table-column label="反馈内容" prop="feedbackContent" sortable min-width="60"></el-table-column> 
-    <el-table-column label="反馈评分" prop="feedbackRate" sortable min-width="60"></el-table-column> 
-      <el-table-column label="日期" min-width="80">
+      <el-table-column label="故障详情" sortable min-width="200" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.content">{{ scope.row.content }}</span>
+          <span v-else>---</span>
+        </template>
+      </el-table-column>  -->
+      <el-table-column label="图片记录" prop="medias" sortable min-width="200" align="center">
+        <template slot-scope="scope">
+          <viewer v-if="scope.row.medias" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
+            <el-carousel height="150px" indicator-position="none">
+              <el-carousel-item v-for="item in scope.row.medias" :key="item.url">
+                <el-image :src="item.url" fit="cover" @click="handlePreview(scope.row.medias)" style="width:200px;height:150px"/>
+              </el-carousel-item>
+            </el-carousel>            
+          </viewer>          
+          <span v-else>---</span>
+        </template>     
+      </el-table-column>     
+      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="120"></el-table-column> 
+      <el-table-column label="反馈内容" sortable min-width="150" prop="feedbackContent" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.feedbackContent">{{ scope.row.feedbackContent }}</span>
+          <span v-else>---</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="评分" prop="feedbackRate" sortable min-width="80">
+        <template slot-scope="scope">
+          <span v-if="scope.row.feedbackRate">{{ scope.row.feedbackRate }}</span>
+          <span v-else>---</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="日期" min-width="160">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="150">
         <template slot-scope="scope">
           <el-button @click="updateLiftTrouble(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftTrouble(scope.row)">删除</el-button>
@@ -257,6 +317,7 @@ import infoList from "@/components/mixins/infoList";
 import { getUserList } from '@/api/user';
 import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
+import Subject from "@/utils/subject";
 
 export default {
   name: "LiftTrouble",
@@ -267,7 +328,8 @@ export default {
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-       stepItems: [
+      previewImages:[],
+      stepItems: [
         {key: 1, title: "步骤 1", description: "create trouble", icon:"el-icon-edit"},
         {key: 2, title: "步骤 2", description: "response", icon:"el-icon-alarm-clock"},
         {key: 3, title: "步骤 3", description: "scene", icon:"el-icon-location-information"},
@@ -341,6 +403,14 @@ export default {
       this.pageSize = 10                     
       this.getTableData()
     },
+    inited(viewer) {
+      this.$viewer = viewer
+    },
+    handlePreview(medias) {
+      this.previewImages = []
+      this.previewImages = _.map(_.filter(medias, function(o){return o.tag == "jpg"}), "url")
+      this.$viewer.show()
+    },    
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -451,7 +521,7 @@ export default {
     },
     async getFromOptions(){
       let res = await getCategoriesList({
-        ID: 104,
+        ID: Subject.SubjectLiftTroubleSourceType,
         page: 1,
         pageSize: 9999
       })

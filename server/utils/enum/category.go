@@ -35,11 +35,12 @@ const (
 	LiftComplainRecord = 102
 
 	// SubjectLiftTroubleSourceType
-	LiftUserReportTrouble = 200
-	LiftAIDetectTrouble = 201
-	LiftMaintainTrouble = 202
-	LiftCheckTrouble = 203
-	LiftOwnerTrouble = 204
+	LiftUserReportTrouble   = 200
+	LiftAIDetectTrouble     = 201
+	LiftMaintainTrouble     = 202
+	LiftCheckTrouble        = 203
+	LiftOwnerTrouble        = 204
+	LiftUrgentButtonTrouble = 205
 
 	// SubjectLiftTroubleSolvedType
 	TroubleSolvedByAuto = 300
@@ -132,7 +133,9 @@ const (
 	MessageTroubleFixed = 1408
 	MessageNewMaintainWorker = 1409
 	MessageNewCheckWorker = 1410
-
+	MessageNewInstallWorker = 1411
+	MessageNewManageWorker = 1412
+	MessageNewSuperviseWorker = 1413
 
 	// SubjectMessageFromTargetType
 	MessageSubjectLift = 1500

@@ -35,7 +35,7 @@ func DeleteMessage(message model.Message) (err error) {
 // @return                    error
 
 func DeleteMessageByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Message{},"id in (?)",ids.Ids).Error
+	err = global.GVA_DB.Delete(&[]model.Message{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -71,11 +71,11 @@ func GetMessage(id uint) (err error, message model.Message) {
 func GetMessageInfoList(info request.MessageSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.GVA_DB.Model(&model.Message{})
-    var messages []model.Message
-    // 如果有条件搜索 下方会自动创建搜索语句
+	var messages []model.Message
+	// 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&messages).Error
+	err = db.Limit(limit).Offset(offset).Preload("FromUser").Preload("TargetUser").Preload("Type").Find(&messages).Error
 	return err, messages, total
 }

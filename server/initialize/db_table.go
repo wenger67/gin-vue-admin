@@ -9,7 +9,7 @@ import (
 // 注册数据库表专用
 func DBTables() {
 	db := global.GVA_DB
-	err := db.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8").
+	err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").
 		AutoMigrate(model.SysUser{},
 		model.SysAuthority{},
 		model.SysApi{},
@@ -39,6 +39,9 @@ func DBTables() {
 		model.AdDeviceConfig{},
 		model.AdDeviceData{},
 		model.AdDeviceEvent{},
+		model.HealthSystem{},
+		model.HealthChange{},
+		model.Message{},
 	)
 	if err != nil {
 		global.GVA_LOG.Error("register table failed", err)
