@@ -14,7 +14,7 @@
         </el-form>
     </div>
     <el-table :data="tableData" @sort-change="sortChange" border stripe>
-      <el-table-column label="ID" min-width="60" prop="ID" sortable="custom"></el-table-column>
+      <el-table-column label="序号" min-width="60" prop="ID" sortable="custom"></el-table-column>
       <el-table-column label="主体" min-width="60" prop="subjectName" sortable="custom"></el-table-column>
       <el-table-column label="日期" min-width="70">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>

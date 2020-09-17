@@ -27,7 +27,7 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="ID" prop="ID" sortable min-width="30"></el-table-column> 
+      <el-table-column label="序号" prop="ID" sortable min-width="30"></el-table-column> 
       <el-table-column label="lift" prop="lift.nickName" sortable min-width="60"></el-table-column> 
       <el-table-column label="timeDimension" prop="timeDimension" sortable min-width="60"></el-table-column> 
       <el-table-column label="maintainDimension" prop="maintainDimension" sortable min-width="60"></el-table-column> 

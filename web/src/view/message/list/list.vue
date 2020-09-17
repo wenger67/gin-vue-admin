@@ -30,7 +30,7 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="ID" prop="ID" sortable min-width="30"></el-table-column> 
+      <el-table-column label="序号" prop="ID" sortable min-width="30"></el-table-column> 
       <el-table-column label="from" prop="fromUser.realName" sortable min-width="60"></el-table-column> 
       <el-table-column label="target" prop="targetUser.realName" sortable min-width="60"></el-table-column> 
       <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 

@@ -6,7 +6,7 @@
 
     <!-- 由于此处菜单跟左侧列表一一对应所以不需要分页 pageSize默认999 -->
     <el-table :data="tableData" border row-key="ID" stripe>
-      <el-table-column label="ID" min-width="100" prop="ID"></el-table-column>
+      <el-table-column label="序号" min-width="100" prop="ID"></el-table-column>
       <el-table-column label="路由Name" min-width="160" prop="name"></el-table-column>
       <el-table-column label="路由Path" min-width="160" prop="path"></el-table-column>
       <el-table-column label="是否隐藏" min-width="100" prop="hidden">

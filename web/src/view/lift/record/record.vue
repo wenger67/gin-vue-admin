@@ -30,7 +30,7 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" min-width="20"></el-table-column>
-      <el-table-column label="ID" prop="ID" sortable min-width="30" align="center"></el-table-column> 
+      <el-table-column label="序号" prop="ID" sortable min-width="30" align="center"></el-table-column> 
       <el-table-column label="电梯" prop="lift.nickName" sortable min-width="50" align="center"></el-table-column> 
       <el-table-column label="记录类别" prop="category.categoryName" sortable min-width="60" align="center"></el-table-column> 
       <el-table-column label="开始时间" sortable min-width="80" align="center">

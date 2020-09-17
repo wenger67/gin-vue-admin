@@ -32,30 +32,38 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="别名" prop="nickName" min-width="60"></el-table-column>
-<!--      <el-table-column label="编号" prop="code" min-width="60"></el-table-column>-->
-<!--      <el-table-column label="安装公司" prop="installer.fullName" min-width="60"></el-table-column>-->
-<!--      <el-table-column label="维保公司" prop="maintainer.fullName" min-width="60"></el-table-column>-->
-<!--      <el-table-column label="年检公司" prop="checker.fullName" min-width="60"></el-table-column>-->
-      <el-table-column label="使用公司" prop="owner.fullName" min-width="60"></el-table-column>
-<!--      <el-table-column label="出厂时间" prop="factoryTime" min-width="60">-->
-<!--        <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>-->
-<!--      </el-table-column>-->
-      <el-table-column label="安装时间" prop="installTime" min-width="60">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"></el-table-column>
+      <el-table-column label="别名" prop="nickName" min-width="70" align="center">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top"
+            trigger="click">
+            <p>安装公司: {{ scope.row.installer.fullName }}</p>
+            <p>维保公司: {{ scope.row.maintainer.fullName }}</p>
+            <p>年检公司: {{ scope.row.checker.fullName }}</p>
+            <p>使用公司: {{ scope.row.owner.fullName }}</p>
+            <p>出厂时间: {{ scope.row.factoryTime|formatDate }}</p>
+           <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.nickName}}</el-tag>
+            </div>
+          </el-popover>
+        </template>          
+      </el-table-column>
+      <el-table-column label="安装时间" prop="installTime" min-width="70" align="center">
         <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="年检时间" prop="checkTime" min-width="60">
+      <el-table-column label="年检时间" prop="checkTime" min-width="70" align="center">
         <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="型号" min-width="60">
+      <el-table-column label="型号" min-width="100" align="center">
         <template slot-scope="scope">
           {{ scope.row.liftModel.brand }}{{ scope.row.liftModel.modal }}
         </template>
       </el-table-column>
-      <el-table-column label="类别" prop="category.categoryName" min-width="48"></el-table-column>
-      <el-table-column label="总楼层" prop="floorCount" min-width="40"></el-table-column>
-      <el-table-column label="地址" min-width="120">
+      <el-table-column label="类别" prop="category.categoryName" min-width="48" align="center"></el-table-column>
+      <el-table-column label="总楼层" prop="floorCount" min-width="40" align="center"></el-table-column>
+      <el-table-column label="地址" min-width="150" align="center">
         <template slot-scope="scope">
           {{ scope.row.address.addressName }}{{ scope.row.building }}{{ scope.row.cell }}
         </template>
@@ -67,10 +75,10 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="日期" min-width="80">
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDateTime}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="200" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="assign(scope.row)" size="small" icon="el-icon-setting">Assign</el-button>
           <el-button @click="updateLift(scope.row)" icon="el-icon-edit" size="small" type="primary">变更</el-button>

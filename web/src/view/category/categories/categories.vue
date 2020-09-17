@@ -39,7 +39,7 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="ID" prop="ID" min-width="40"></el-table-column> 
+      <el-table-column label="序号" prop="ID" min-width="40"></el-table-column> 
       <el-table-column label="主体" prop="categorySubject.subjectName" min-width="60"></el-table-column> 
       <el-table-column label="类别" prop="categoryName" min-width="60"></el-table-column> 
       <el-table-column label="日期" min-width="70">

@@ -30,7 +30,7 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="ID" prop="ID" sortable min-width="60"></el-table-column>
+    <el-table-column label="序号" prop="ID" sortable min-width="60"></el-table-column>
     <el-table-column label="配置键值" prop="key" sortable min-width="60"></el-table-column>
     <el-table-column label="配置内容" prop="value" sortable min-width="60"></el-table-column>
     <el-table-column label="配置说明" prop="comment" sortable min-width="60"></el-table-column>

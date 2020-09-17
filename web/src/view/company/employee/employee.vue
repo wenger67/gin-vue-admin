@@ -39,19 +39,29 @@
             style="width: 100%"
             tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column sortable label="uuid" prop="uuid" min-width="60"></el-table-column>
-      <el-table-column sortable label="登陆手机号" prop="phoneNumber" min-width="60"></el-table-column>
-      <el-table-column sortable label="真名" prop="realName" min-width="40"></el-table-column>
-      <el-table-column sortable label="昵称" prop="nickName" min-width="30"></el-table-column>
-      <el-table-column label="用户头像" min-width="48">
+      <el-table-column type="selection" min-width="30"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="40" align="center"></el-table-column>
+      <el-table-column sortable label="真名" prop="realName" min-width="60" align="center">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top"
+            trigger="click">
+            <p>手机号: {{ scope.row.phoneNumber }}</p>
+            <p>uuid: {{ scope.row.uuid }}</p>
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.realName}}</el-tag>
+            </div>
+          </el-popover>
+        </template>            
+      </el-table-column>
+      <el-table-column sortable label="昵称" prop="nickName" min-width="60" align="center"></el-table-column>
+      <el-table-column label="用户头像" min-width="80" align="center">
         <template slot-scope="scope">
           <el-image :src="getAvatar(scope.row)" style="width: 100px;height: 100px" lazy/>
         </template>
       </el-table-column>
-      <el-table-column sortable label="所属公司" prop="company.fullName" min-width="60"></el-table-column>
-      <el-table-column sortable label="住址" prop="address" min-width="60"></el-table-column>
-      <el-table-column sortable label="角色" min-width="60">
+      <el-table-column sortable label="住址" prop="address" min-width="120" align="center"></el-table-column>
+      <el-table-column sortable label="角色" min-width="80" align="center">
         <template slot-scope="scope">
           <el-cascader
             @change="changeAuthority(scope.row)"
@@ -63,10 +73,10 @@
           ></el-cascader>
         </template>
       </el-table-column>
-      <el-table-column label="日期" min-width="60">
+      <el-table-column label="日期" min-width="80" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateUserAdmin(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUserAdmin(scope.row)">删除</el-button>

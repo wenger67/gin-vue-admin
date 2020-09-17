@@ -30,7 +30,7 @@
       </el-form>
     </div>
     <el-table :data="tableData" @sort-change="sortChange" border stripe>
-      <el-table-column label="id" min-width="60" prop="ID" sortable="custom"></el-table-column>
+      <el-table-column label="序号" min-width="60" prop="ID" sortable="custom"></el-table-column>
       <el-table-column label="api路径" min-width="150" prop="path" sortable="custom"></el-table-column>
       <el-table-column label="api分组" min-width="150" prop="apiGroup" sortable="custom"></el-table-column>
       <el-table-column label="api简介" min-width="150" prop="description" sortable="custom"></el-table-column>

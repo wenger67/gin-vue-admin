@@ -30,7 +30,7 @@
       tooltip-effect="dark"
     >
     <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="ID" prop="ID" min-width="30"></el-table-column>
+    <el-table-column label="序号" prop="ID" min-width="30"></el-table-column>
     <el-table-column label="在线状态" min-width="50" sortable>
       <template slot-scope="scope">
         <el-tag :type="scope.row.online === true ? 'success':'warning'">

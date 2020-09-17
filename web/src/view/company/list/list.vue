@@ -48,22 +48,44 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    <!-- <el-table-column label="公司全称" prop="fullName" min-width="60"></el-table-column>  -->
-    <el-table-column sortable label="公司简称" prop="alias" min-width="80"></el-table-column>
-    <el-table-column sortable label="法人信息" prop="legalPerson" min-width="40"></el-table-column>
-    <el-table-column label="联系方式" prop="phone" min-width="60"></el-table-column> 
-    <el-table-column sortable label="公司状态" prop="status" min-width="60"></el-table-column>
-    <el-table-column sortable label="统一信用代码" prop="creditCode" min-width="65"></el-table-column>
-    <!-- <el-table-column label="工商注册号" prop="regCode" min-width="60"></el-table-column> 
-    <el-table-column label="组织机构号" prop="orgCode" min-width="60"></el-table-column>    
-    <el-table-column label="纳税人识别号" prop="taxCode" min-width="60"></el-table-column>  -->
-    <el-table-column sortable label="注册地址" prop="address" min-width="60"></el-table-column>
-    <el-table-column sortable label="类别" prop="category.categoryName" min-width="60"></el-table-column>
-    <el-table-column sortable label="日期" :inline="true" min-width="80">
+    <el-table-column type="selection" min-width="30" align="center"></el-table-column>
+    <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"></el-table-column>
+    <el-table-column sortable label="简称" min-width="100" align="center">
+      <template slot-scope="scope">
+        <el-popover
+          placement="top"
+          trigger="click">
+          <p>全称: {{ scope.row.fullName }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.alias}}</el-tag>
+          </div>
+        </el-popover>
+      </template>      
+    </el-table-column>
+
+    <el-table-column sortable label="法人" prop="legalPerson" min-width="60" align="center"></el-table-column>
+    <el-table-column label="联系方式" prop="phone" min-width="80" align="center"></el-table-column> 
+    <el-table-column sortable label="公司状态" prop="status" min-width="70" align="center"></el-table-column>
+    <el-table-column sortable label="统一信用代码" prop="creditCode" min-width="100" align="center">
+      <template slot-scope="scope">
+        <el-popover
+          placement="top"
+          trigger="click">
+          <p v-if="scope.row.regCode">工商注册号 : {{ scope.row.regCode }}</p>
+          <p v-if="scope.row.orgCode">组织机构号 : {{ scope.row.orgCode }}</p>
+          <p v-if="scope.row.taxCode">纳税人号: {{ scope.row.taxCode }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.creditCode}}</el-tag>
+          </div>
+        </el-popover>
+      </template>  
+    </el-table-column>
+    <el-table-column sortable label="注册地址" prop="address" min-width="200" align="center"></el-table-column>
+    <el-table-column sortable label="类别" prop="category.categoryName" min-width="60" align="center"></el-table-column>
+    <el-table-column sortable label="日期" :inline="true" min-width="100" align="center">
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
-      <el-table-column fixed="right" width="200" label="按钮组">
+      <el-table-column fixed="right" min-width="100" label="按钮组">
         <template slot-scope="scope">
           <el-button @click="updateCompany(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" size="mini" @click="deleteCompany(scope.row)">删除</el-button>

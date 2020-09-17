@@ -30,7 +30,7 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="ID" prop="ID" min-width="30"></el-table-column>
+      <el-table-column label="序号" prop="ID" min-width="30"></el-table-column>
       <el-table-column label="Province" prop="region.province" min-width="60"></el-table-column>
       <el-table-column label="City" prop="region.city" min-width="60"></el-table-column>
       <el-table-column label="District" prop="region.district" min-width="60"></el-table-column> 

@@ -26,11 +26,11 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="ID" prop="ID" sortable min-width="30"></el-table-column> 
-      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="变更内容" prop="content" sortable min-width="100"></el-table-column> 
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column label="序号" prop="ID" sortable min-width="30" align="center"></el-table-column> 
+      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60" align="center"></el-table-column> 
+      <el-table-column label="变更内容" prop="content" sortable min-width="200" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
       <el-table-column label="按钮组" fixed="right" min-width="100">

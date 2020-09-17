@@ -32,11 +32,11 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="ID" prop="ID" sortable min-width="60"></el-table-column> 
-      <el-table-column label="故障进度" sortable min-width="120">
+      <el-table-column label="序号" prop="ID" sortable min-width="80"></el-table-column> 
+      <el-table-column label="进度" sortable min-width="100">
         <template slot-scope="scope">{{ scope.row.progress|formatProgress }}</template>
       </el-table-column>
-      <el-table-column label="创建" sortable min-width="120" align="center">
+      <el-table-column label="创建" sortable min-width="100" align="center">
         <template slot-scope="scope">
           <el-popover
             placement="top"
@@ -50,7 +50,7 @@
           </el-popover>
         </template>
       </el-table-column> 
-      <el-table-column label="响应" sortable min-width="120" align="center">
+      <el-table-column label="响应" sortable min-width="100" align="center">
         <template slot-scope="scope">
           <el-popover v-if="scope.row.responseUserId"
             placement="top"
@@ -65,7 +65,7 @@
         </template>
       </el-table-column>   
           
-      <el-table-column label="现场" sortable min-width="120" align="center">
+      <el-table-column label="现场" sortable min-width="100" align="center">
         <template slot-scope="scope">
           <el-popover v-if="scope.row.sceneUserId"
             placement="top"
@@ -80,7 +80,7 @@
         </template>
       </el-table-column> 
      
-      <el-table-column label="解除" sortable min-width="120" align="center">
+      <el-table-column label="解除" sortable min-width="100" align="center">
         <template slot-scope="scope">
           <el-popover v-if="scope.row.fixUserId"
             placement="top"
@@ -133,10 +133,10 @@
           <span v-else>---</span>
         </template>
       </el-table-column> 
-      <el-table-column label="日期" min-width="160">
+      <el-table-column label="日期" min-width="160" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="150">
+      <el-table-column label="按钮组" fixed="right" min-width="150" align="center">
         <template slot-scope="scope">
           <el-button @click="updateLiftTrouble(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftTrouble(scope.row)">删除</el-button>
