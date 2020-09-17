@@ -108,7 +108,7 @@ func Login(c *gin.Context) {
 // 登录以后签发jwt
 func tokenNext(c *gin.Context, user model.SysUser) {
 	j := &middleware.JWT{
-		SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey), // 唯一签名
+		SigningKey: []byte(global.PantaConfig.JWT.SigningKey), // 唯一签名
 	}
 	clams := request.CustomClaims{
 		UUID:        user.UUID,
@@ -126,7 +126,7 @@ func tokenNext(c *gin.Context, user model.SysUser) {
 		response.FailWithMessage("获取token失败", c)
 		return
 	}
-	if !global.GVA_CONFIG.System.UseMultipoint {
+	if !global.PantaConfig.System.UseMultipoint {
 		response.OkWithData(resp.LoginResponse{
 			User:      user,
 			Token:     token,

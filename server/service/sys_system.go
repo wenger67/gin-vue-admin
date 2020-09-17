@@ -14,7 +14,7 @@ import (
 // @return    conf            Server
 
 func GetSystemConfig() (err error, conf config.Server) {
-	return nil, global.GVA_CONFIG
+	return nil, global.PantaConfig
 }
 
 // @title    SetSystemConfig
@@ -26,8 +26,8 @@ func GetSystemConfig() (err error, conf config.Server) {
 func SetSystemConfig(system model.System) (err error) {
 	cs := utils.StructToMap(system.Config)
 	for k, v := range cs {
-		global.GVA_VP.Set(k, v)
+		global.PantaVp.Set(k, v)
 	}
-	err = global.GVA_VP.WriteConfig()
+	err = global.PantaVp.WriteConfig()
 	return err
 }

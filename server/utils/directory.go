@@ -37,10 +37,10 @@ func CreateDir(dirs ...string) (err error) {
 			return err
 		}
 		if !exist {
-			global.GVA_LOG.Debug("create directory ", v)
+			global.PantaLog.Debug("create directory ", v)
 			err = os.MkdirAll(v, os.ModePerm)
 			if err != nil {
-				global.GVA_LOG.Error("create directory", v, " error:", err)
+				global.PantaLog.Error("create directory", v, " error:", err)
 			}
 		}
 	}
@@ -51,7 +51,7 @@ func CreateDir(dirs ...string) (err error) {
  func RootPath() string {
      s, err := exec.LookPath(os.Args[0])
      if err != nil {
-         global.GVA_LOG.Error("发生错误",err.Error())
+         global.PantaLog.Error("发生错误",err.Error())
  	 }
      i := strings.LastIndex(s, "\\")
      path := s[0 : i+1]

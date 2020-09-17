@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateLiftModel(liftModel model.LiftModel) (err error) {
-	err = global.GVA_DB.Create(&liftModel).Error
+	err = global.PantaDb.Create(&liftModel).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateLiftModel(liftModel model.LiftModel) (err error) {
 // @return                    error
 
 func DeleteLiftModel(liftModel model.LiftModel) (err error) {
-	err = global.GVA_DB.Delete(liftModel).Error
+	err = global.PantaDb.Delete(liftModel).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteLiftModel(liftModel model.LiftModel) (err error) {
 // @return                    error
 
 func DeleteLiftModelByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.LiftModel{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.LiftModel{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteLiftModelByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateLiftModel(liftModel *model.LiftModel) (err error) {
-	err = global.GVA_DB.Save(liftModel).Error
+	err = global.PantaDb.Save(liftModel).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateLiftModel(liftModel *model.LiftModel) (err error) {
 // @return    LiftModel        LiftModel
 
 func GetLiftModel(id uint) (err error, liftModel model.LiftModel) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Company").First(&liftModel).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Company").First(&liftModel).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetLiftModelInfoList(info request.LiftModelSearch) (err error, list interfa
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.LiftModel{})
+	db := global.PantaDb.Model(&model.LiftModel{})
     var liftModels []model.LiftModel
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

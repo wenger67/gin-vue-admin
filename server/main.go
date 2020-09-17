@@ -15,7 +15,7 @@ import (
 // @name x-token
 // @BasePath /
 func main() {
-	switch global.GVA_CONFIG.System.DbType {
+	switch global.PantaConfig.System.DbType {
 	case "mysql":
 		initialize.Mysql()
 	// case "sqlite":
@@ -24,11 +24,11 @@ func main() {
 		initialize.Mysql()
 	}
 	initialize.DBTables()
-	if global.GVA_CONFIG.System.NeedInitData {
+	if global.PantaConfig.System.NeedInitData {
 		initialize.InitData()
 	}
 	// 程序结束前关闭数据库链接
-	db,_ := global.GVA_DB.DB()
+	db,_ := global.PantaDb.DB()
 	defer db.Close()
 
 	core.RunWindowsServer()

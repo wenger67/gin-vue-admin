@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	GVA_DB     *gorm.DB
-	GVA_REDIS  *redis.Client
-	GVA_CONFIG config.Server
-	GVA_VP     *viper.Viper
-	GVA_LOG    *oplogging.Logger
+	PantaDb     *gorm.DB
+	PantaRedis  *redis.Client
+	PantaConfig config.Server
+	PantaVp     *viper.Viper
+	PantaLog    *oplogging.Logger
 )

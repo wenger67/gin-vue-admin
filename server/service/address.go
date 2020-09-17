@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateAddress(address model.Address) (err error) {
-	err = global.GVA_DB.Create(&address).Error
+	err = global.PantaDb.Create(&address).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateAddress(address model.Address) (err error) {
 // @return                    error
 
 func DeleteAddress(address model.Address) (err error) {
-	err = global.GVA_DB.Delete(address).Error
+	err = global.PantaDb.Delete(address).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteAddress(address model.Address) (err error) {
 // @return                    error
 
 func DeleteAddressByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Address{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Address{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteAddressByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateAddress(address *model.Address) (err error) {
-	err = global.GVA_DB.Save(address).Error
+	err = global.PantaDb.Save(address).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateAddress(address *model.Address) (err error) {
 // @return    Address        Address
 
 func GetAddress(id uint) (err error, address model.Address) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Region").Preload("Tags").First(&address).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Region").Preload("Tags").First(&address).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetAddressInfoList(info request.AddressSearch) (err error, list interface{}
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.Address{})
+	db := global.PantaDb.Model(&model.Address{})
     var addresses []model.Address
 
 	if info.AddressName != "" {

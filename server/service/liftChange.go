@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateLiftChange(liftChange model.LiftChange) (err error) {
-	err = global.GVA_DB.Create(&liftChange).Error
+	err = global.PantaDb.Create(&liftChange).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateLiftChange(liftChange model.LiftChange) (err error) {
 // @return                    error
 
 func DeleteLiftChange(liftChange model.LiftChange) (err error) {
-	err = global.GVA_DB.Delete(liftChange).Error
+	err = global.PantaDb.Delete(liftChange).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteLiftChange(liftChange model.LiftChange) (err error) {
 // @return                    error
 
 func DeleteLiftChangeByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.LiftChange{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.LiftChange{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteLiftChangeByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateLiftChange(liftChange *model.LiftChange) (err error) {
-	err = global.GVA_DB.Save(liftChange).Error
+	err = global.PantaDb.Save(liftChange).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateLiftChange(liftChange *model.LiftChange) (err error) {
 // @return    LiftChange        LiftChange
 
 func GetLiftChange(id uint) (err error, liftChange model.LiftChange) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").First(&liftChange).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").First(&liftChange).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetLiftChangeInfoList(info request.LiftChangeSearch) (err error, list inter
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.LiftChange{})
+	db := global.PantaDb.Model(&model.LiftChange{})
     var liftChanges []model.LiftChange
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

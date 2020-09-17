@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateAdDeviceConfig(adDeviceConfig model.AdDeviceConfig) (err error) {
-	err = global.GVA_DB.Create(&adDeviceConfig).Error
+	err = global.PantaDb.Create(&adDeviceConfig).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateAdDeviceConfig(adDeviceConfig model.AdDeviceConfig) (err error) {
 // @return                    error
 
 func DeleteAdDeviceConfig(adDeviceConfig model.AdDeviceConfig) (err error) {
-	err = global.GVA_DB.Delete(adDeviceConfig).Error
+	err = global.PantaDb.Delete(adDeviceConfig).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteAdDeviceConfig(adDeviceConfig model.AdDeviceConfig) (err error) {
 // @return                    error
 
 func DeleteAdDeviceConfigByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.AdDeviceConfig{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.AdDeviceConfig{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteAdDeviceConfigByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateAdDeviceConfig(adDeviceConfig *model.AdDeviceConfig) (err error) {
-	err = global.GVA_DB.Save(adDeviceConfig).Error
+	err = global.PantaDb.Save(adDeviceConfig).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateAdDeviceConfig(adDeviceConfig *model.AdDeviceConfig) (err error) {
 // @return    AdDeviceConfig        AdDeviceConfig
 
 func GetAdDeviceConfig(id uint) (err error, adDeviceConfig model.AdDeviceConfig) {
-	err = global.GVA_DB.Where("id = ?", id).First(&adDeviceConfig).Error
+	err = global.PantaDb.Where("id = ?", id).First(&adDeviceConfig).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetAdDeviceConfigInfoList(info request.AdDeviceConfigSearch) (err error, li
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.AdDeviceConfig{})
+	db := global.PantaDb.Model(&model.AdDeviceConfig{})
     var adDeviceConfigs []model.AdDeviceConfig
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

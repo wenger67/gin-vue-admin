@@ -15,19 +15,19 @@ import (
 
 func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
 	liftRecord.Progress = 1
-	err = global.GVA_DB.Create(&liftRecord).Error
+	err = global.PantaDb.Create(&liftRecord).Error
 	return err
 }
 
 func FillLiftRecord(fill request.LiftRecordFill) (err error) {
-	global.GVA_LOG.Debug(fill)
-	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", fill.RecordId)
+	global.PantaLog.Debug(fill)
+	db := global.PantaDb.Model(model.LiftRecord{}).Where("id = ?", fill.RecordId)
 	err = db.Debug().Updates(map[string]interface{}{"content": fill.Content, "images": fill.Images, "EndTime": time.Now(), "progress": 2}).Error
 	return
 }
 
 func ReviewLiftRecord(review request.LiftRecordReview) (err error) {
-	db := global.GVA_DB.Model(model.LiftRecord{}).Where("id = ?", review.RecordId)
+	db := global.PantaDb.Model(model.LiftRecord{}).Where("id = ?", review.RecordId)
 	err = db.Updates(map[string]interface{}{"recorderId": review.RecorderId, "progress": 3}).Error
 	return
 }
@@ -40,7 +40,7 @@ func ReviewLiftRecord(review request.LiftRecordReview) (err error) {
 // @return                    error
 
 func DeleteLiftRecord(liftRecord model.LiftRecord) (err error) {
-	err = global.GVA_DB.Delete(liftRecord).Error
+	err = global.PantaDb.Delete(liftRecord).Error
 	return err
 }
 
@@ -51,7 +51,7 @@ func DeleteLiftRecord(liftRecord model.LiftRecord) (err error) {
 // @return                    error
 
 func DeleteLiftRecordByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.LiftRecord{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.LiftRecord{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -62,7 +62,7 @@ func DeleteLiftRecordByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateLiftRecord(liftRecord *model.LiftRecord) (err error) {
-	err = global.GVA_DB.Save(liftRecord).Error
+	err = global.PantaDb.Save(liftRecord).Error
 	return err
 }
 
@@ -74,7 +74,7 @@ func UpdateLiftRecord(liftRecord *model.LiftRecord) (err error) {
 // @return    LiftRecord        LiftRecord
 
 func GetLiftRecord(id uint) (err error, liftRecord model.LiftRecord) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Category").Preload("Medias").
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").Preload("Category").Preload("Medias").
 		Preload("Worker").Preload("Recorder").First(&liftRecord).Error
 	return
 }
@@ -89,7 +89,7 @@ func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list inter
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.LiftRecord{})
+	db := global.PantaDb.Model(&model.LiftRecord{})
     var liftRecords []model.LiftRecord
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

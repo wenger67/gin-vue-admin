@@ -58,7 +58,7 @@ func AddCasbin(cm model.CasbinModel) bool {
 
 func UpdateCasbinApi(oldPath string, newPath string, oldMethod string, newMethod string) error {
 	var cs []model.CasbinModel
-	err := global.GVA_DB.Table("casbin_rule").Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Find(&cs).Updates(map[string]string{
+	err := global.PantaDb.Table("casbin_rule").Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Find(&cs).Updates(map[string]string{
 		"v1": newPath,
 		"v2": newMethod,
 	}).Error
@@ -101,9 +101,9 @@ func ClearCasbin(v int, p ...string) bool {
 // @auth                     （2020/04/05  20:22）
 
 func Casbin() *casbin.Enforcer {
-	admin := global.GVA_CONFIG.Mysql
-	a, _ := gormadapter.NewAdapter(global.GVA_CONFIG.System.DbType, admin.Username+":"+admin.Password+"@("+admin.Path+")/"+admin.Dbname, true)
-	e, _ := casbin.NewEnforcer(global.GVA_CONFIG.Casbin.ModelPath, a)
+	admin := global.PantaConfig.Mysql
+	a, _ := gormadapter.NewAdapter(global.PantaConfig.System.DbType, admin.Username+":"+admin.Password+"@("+admin.Path+")/"+admin.Dbname, true)
+	e, _ := casbin.NewEnforcer(global.PantaConfig.Casbin.ModelPath, a)
 	e.AddFunction("ParamsMatch", ParamsMatchFunc)
 	_ = e.LoadPolicy()
 	return e

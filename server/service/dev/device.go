@@ -6,7 +6,7 @@ import (
 )
 
 func FindLift(id uint) (err error, lift model.Lift) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Installer").Preload("Installer.Category").Preload("Maintainer").
+	err = global.PantaDb.Where("id = ?", id).Preload("Installer").Preload("Installer.Category").Preload("Maintainer").
 		Preload("Maintainer.Category").Preload("Checker").Preload("Checker.Category").
 		Preload("Owner").Preload("Owner.Category").Preload("LiftModel").Preload("Category").
 		Preload("Address").Preload("Address.Region").Preload("Device").First(&lift).Error
@@ -14,11 +14,11 @@ func FindLift(id uint) (err error, lift model.Lift) {
 }
 
 func CreateEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
-	err = global.GVA_DB.Create(adDeviceEvent).Error
+	err = global.PantaDb.Create(adDeviceEvent).Error
 	return err
 }
 
 func UpdateEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
-	err = global.GVA_DB.Save(adDeviceEvent).Error
+	err = global.PantaDb.Save(adDeviceEvent).Error
 	return err
 }

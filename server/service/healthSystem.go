@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateHealthSystem(healthSystem model.HealthSystem) (err error) {
-	err = global.GVA_DB.Create(&healthSystem).Error
+	err = global.PantaDb.Create(&healthSystem).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateHealthSystem(healthSystem model.HealthSystem) (err error) {
 // @return                    error
 
 func DeleteHealthSystem(healthSystem model.HealthSystem) (err error) {
-	err = global.GVA_DB.Delete(healthSystem).Error
+	err = global.PantaDb.Delete(healthSystem).Error
 	return err
 }
 
@@ -35,12 +35,12 @@ func DeleteHealthSystem(healthSystem model.HealthSystem) (err error) {
 // @return                    error
 
 func DeleteHealthSystemByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.HealthSystem{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.HealthSystem{},"id in (?)",ids.Ids).Error
 	return err
 }
 
 func DeleteHealthSystemByLiftIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.HealthSystem{},"lift_id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.HealthSystem{},"lift_id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -52,7 +52,7 @@ func DeleteHealthSystemByLiftIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateHealthSystem(healthSystem *model.HealthSystem) (err error) {
-	err = global.GVA_DB.Save(healthSystem).Error
+	err = global.PantaDb.Save(healthSystem).Error
 	return err
 }
 
@@ -64,7 +64,7 @@ func UpdateHealthSystem(healthSystem *model.HealthSystem) (err error) {
 // @return    HealthSystem        HealthSystem
 
 func GetHealthSystem(id uint) (err error, healthSystem model.HealthSystem) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").First(&healthSystem).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").First(&healthSystem).Error
 	return
 }
 
@@ -78,7 +78,7 @@ func GetHealthSystemInfoList(info request.HealthSystemSearch) (err error, list i
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.HealthSystem{})
+	db := global.PantaDb.Model(&model.HealthSystem{})
     var healthSystems []model.HealthSystem
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

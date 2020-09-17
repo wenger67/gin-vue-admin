@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateUserLift(userLift model.UserLift) (err error) {
-	err = global.GVA_DB.Create(&userLift).Error
+	err = global.PantaDb.Create(&userLift).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateUserLift(userLift model.UserLift) (err error) {
 // @return                    error
 
 func DeleteUserLift(userLift model.UserLift) (err error) {
-	err = global.GVA_DB.Delete(userLift).Error
+	err = global.PantaDb.Delete(userLift).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteUserLift(userLift model.UserLift) (err error) {
 // @return                    error
 
 func DeleteUserLiftByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.UserLift{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.UserLift{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteUserLiftByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateUserLift(userLift *model.UserLift) (err error) {
-	err = global.GVA_DB.Save(userLift).Error
+	err = global.PantaDb.Save(userLift).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateUserLift(userLift *model.UserLift) (err error) {
 // @return    UserLift        UserLift
 
 func GetUserLift(id uint) (err error, userLift model.UserLift) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("User").Preload("Category").First(&userLift).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").Preload("User").Preload("Category").First(&userLift).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetUserLiftList(info request.UserLiftSearch) (err error, list interface{}, 
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.UserLift{})
+	db := global.PantaDb.Model(&model.UserLift{})
     var userLift []model.UserLift
     // 如果有条件搜索 下方会自动创建搜索语句
 	if info.LiftId != 0 {

@@ -72,7 +72,7 @@ func UploadFiles(c *gin.Context)  {
 
 	form, err := c.MultipartForm()
 	if form == nil {
-		global.GVA_LOG.Debug(form, err)
+		global.PantaLog.Debug(form, err)
 	}
 	files := form.File["files"]
 	if err != nil {
@@ -91,7 +91,7 @@ func UploadFiles(c *gin.Context)  {
 			}
 
 			if err != nil {
-				global.GVA_LOG.Warning("get file path failed " , fileHeader.Filename)
+				global.PantaLog.Warning("get file path failed " , fileHeader.Filename)
 			} else {
 				// 修改数据库后得到修改后的user并且返回供前端使用
 				var file model.ExaFileUploadAndDownload
@@ -104,7 +104,7 @@ func UploadFiles(c *gin.Context)  {
 					err = service.Upload(file)
 				}
 				if err != nil {
-					global.GVA_LOG.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
+					global.PantaLog.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
 				} else {
 					fileList = append(fileList, file)
 				}

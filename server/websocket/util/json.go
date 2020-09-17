@@ -11,13 +11,13 @@ import (
 func ReadJson(input io.ReadCloser, obj interface{}) bool {
 	buffer, err := ioutil.ReadAll(input)
 	if err != nil {
-		global.GVA_LOG.Warning("read json failed:", err)
+		global.PantaLog.Warning("read json failed:", err)
 		return false
 	}
 	err = json.Unmarshal(buffer, obj)
 	if err != nil {
-		global.GVA_LOG.Warning("parse json failed:", err)
-		global.GVA_LOG.Warning("original body:", string(buffer))
+		global.PantaLog.Warning("parse json failed:", err)
+		global.PantaLog.Warning("original body:", string(buffer))
 		return false
 	}
 	return true
@@ -28,6 +28,6 @@ func SendJson(w http.ResponseWriter, obj interface{}) {
 	w.WriteHeader(http.StatusOK)
 	err := json.NewEncoder(w).Encode(obj)
 	if err != nil {
-		global.GVA_LOG.Warning("send json failed:", err)
+		global.PantaLog.Warning("send json failed:", err)
 	}
 }

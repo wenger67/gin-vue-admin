@@ -11,7 +11,7 @@ import (
 
 // 初始化数据库并产生数据库全局变量
 func Mysql() {
-	admin := global.GVA_CONFIG.Mysql
+	admin := global.PantaConfig.Mysql
 	mysqlConfig := mysql.Config{
 		DSN:                       admin.Username + ":" + admin.Password + "@(" + admin.Path + ")/" + admin.Dbname + "?" + admin.Config, // DSN data source name
 		DefaultStringSize:         191,                                                                                                  // string 类型字段的默认长度
@@ -34,10 +34,10 @@ func Mysql() {
 	}
 
 	if db, err := gorm.Open(mysql.New(mysqlConfig), gormConfig); err != nil {
-		global.GVA_LOG.Error("MySQL启动异常", zap.Any("err", err))
+		global.PantaLog.Error("MySQL启动异常", zap.Any("err", err))
 		os.Exit(0)
 	} else {
-		global.GVA_DB = db
+		global.PantaDb = db
 		sqlDB, _ := db.DB()
 		sqlDB.SetMaxIdleConns(admin.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(admin.MaxOpenConns)

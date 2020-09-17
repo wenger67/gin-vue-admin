@@ -15,7 +15,7 @@ const (
 )
 
 func UpdateDeviceStatus(serial string, status string) {
-	global.GVA_LOG.Debug("update device[", serial, "] status:", status)
+	global.PantaLog.Debug("update device[", serial, "] status:", status)
 	if !strings.HasPrefix(serial, "LIFT_") {
 		// TODO handle lift only, handle others later
 		return
@@ -24,11 +24,11 @@ func UpdateDeviceStatus(serial string, status string) {
 	id, _ := strconv.Atoi(liftId)
 	err, lift := service.GetLift(uint(id))
 	if err != nil {
-		global.GVA_LOG.Warning("get lift info failed", err.Error())
+		global.PantaLog.Warning("get lift info failed", err.Error())
 		return
 	}
 
-	db := global.GVA_DB.Model(&lift.AdDevice);
+	db := global.PantaDb.Model(&lift.AdDevice);
 	var eventTypeId uint
 	var str string
 	// update state

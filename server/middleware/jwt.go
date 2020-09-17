@@ -68,7 +68,7 @@ var (
 
 func NewJWT() *JWT {
 	return &JWT{
-		[]byte(global.GVA_CONFIG.JWT.SigningKey),
+		[]byte(global.PantaConfig.JWT.SigningKey),
 	}
 }
 

@@ -25,11 +25,11 @@ func ServeWS(c *gin.Context) {
 func NotifyDevice(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	buffer, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		global.GVA_LOG.Warning("read body failed:", err)
+		global.PantaLog.Warning("read body failed:", err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	global.GVA_LOG.Debug("notify device with message:", string(buffer))
+	global.PantaLog.Debug("notify device with message:", string(buffer))
 
 	event := &WSEvent{}
 	_ = json.Unmarshal(buffer, event)
@@ -40,7 +40,7 @@ func NotifyDevice(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		}
 	}
 
-	global.GVA_LOG.Debug("target:", event.Target)
+	global.PantaLog.Debug("target:", event.Target)
 	if event.Target != nil && len(event.Target) > 0 {
 		hub.Send(event.Target, buffer)
 	} else {

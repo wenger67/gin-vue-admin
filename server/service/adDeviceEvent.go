@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateAdDeviceEvent(adDeviceEvent model.AdDeviceEvent) (err error) {
-	err = global.GVA_DB.Create(&adDeviceEvent).Error
+	err = global.PantaDb.Create(&adDeviceEvent).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateAdDeviceEvent(adDeviceEvent model.AdDeviceEvent) (err error) {
 // @return                    error
 
 func DeleteAdDeviceEvent(adDeviceEvent model.AdDeviceEvent) (err error) {
-	err = global.GVA_DB.Delete(adDeviceEvent).Error
+	err = global.PantaDb.Delete(adDeviceEvent).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteAdDeviceEvent(adDeviceEvent model.AdDeviceEvent) (err error) {
 // @return                    error
 
 func DeleteAdDeviceEventByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.AdDeviceEvent{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.AdDeviceEvent{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteAdDeviceEventByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateAdDeviceEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
-	err = global.GVA_DB.Save(adDeviceEvent).Error
+	err = global.PantaDb.Save(adDeviceEvent).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateAdDeviceEvent(adDeviceEvent *model.AdDeviceEvent) (err error) {
 // @return    AdDeviceEvent        AdDeviceEvent
 
 func GetAdDeviceEvent(id uint) (err error, adDeviceEvent model.AdDeviceEvent) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Device").Preload("Type").First(&adDeviceEvent).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Device").Preload("Type").First(&adDeviceEvent).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetAdDeviceEventInfoList(info request.AdDeviceEventSearch) (err error, list
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.AdDeviceEvent{})
+	db := global.PantaDb.Model(&model.AdDeviceEvent{})
     var adDeviceEvents []model.AdDeviceEvent
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateCategories(category model.Category) (err error) {
-	err = global.GVA_DB.Create(&category).Error
+	err = global.PantaDb.Create(&category).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateCategories(category model.Category) (err error) {
 // @return                    error
 
 func DeleteCategories(category model.Category) (err error) {
-	err = global.GVA_DB.Delete(category).Error
+	err = global.PantaDb.Delete(category).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteCategories(category model.Category) (err error) {
 // @return                    error
 
 func DeleteCategoriesByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Category{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Category{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteCategoriesByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateCategories(category *model.Category) (err error) {
-	err = global.GVA_DB.Save(category).Error
+	err = global.PantaDb.Save(category).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateCategories(category *model.Category) (err error) {
 // @return    Categories        Categories
 
 func GetCategories(id uint) (err error, category model.Category) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Subject").First(&category).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Subject").First(&category).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetCategoriesInfoList(info request.CategorySearch) (err error, list interfa
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	subjectId := info.ID
-	db := global.GVA_DB.Model(&model.Category{})
+	db := global.PantaDb.Model(&model.Category{})
     var categories []model.Category
 	if subjectId != 0 {
 		db = db.Where("category_subject_id = ?", subjectId)

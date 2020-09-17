@@ -6,7 +6,7 @@ import (
 )
 
 func Redis() {
-	redisCfg := global.GVA_CONFIG.Redis
+	redisCfg := global.PantaConfig.Redis
 	client := redis.NewClient(&redis.Options{
 		Addr:     redisCfg.Addr,
 		Password: redisCfg.Password, // no password set
@@ -14,9 +14,9 @@ func Redis() {
 	})
 	pong, err := client.Ping().Result()
 	if err != nil {
-		global.GVA_LOG.Error(err)
+		global.PantaLog.Error(err)
 	} else {
-		global.GVA_LOG.Info("redis connect ping response:", pong)
-		global.GVA_REDIS = client
+		global.PantaLog.Info("redis connect ping response:", pong)
+		global.PantaRedis = client
 	}
 }

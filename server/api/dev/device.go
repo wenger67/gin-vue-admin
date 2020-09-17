@@ -89,19 +89,19 @@ func handleFiles(c *gin.Context, files []*multipart.FileHeader, noSave string, s
 			newFileName := utils.MD5V([]byte(dateTime)) + "_" + fileName
 			err = os.MkdirAll(prefix + additionPath, os.ModePerm)
 			if err != nil {
-				global.GVA_LOG.Warning("create dir failed", err)
+				global.PantaLog.Warning("create dir failed", err)
 			}
 			dst := prefix + additionPath + newFileName
 			err = c.SaveUploadedFile(fileHeader, dst)
 			if err == nil {
 				filePath = "http://127.0.0.1:8888" + additionPath + newFileName
 			} else {
-				global.GVA_LOG.Warning("save file failed ", err)
+				global.PantaLog.Warning("save file failed ", err)
 			}
 		}
 
 		if err != nil {
-			global.GVA_LOG.Warning("get file path failed " , fileHeader.Filename)
+			global.PantaLog.Warning("get file path failed " , fileHeader.Filename)
 		} else {
 			// 修改数据库后得到修改后的user并且返回供前端使用
 			var file model.ExaFileUploadAndDownload
@@ -114,7 +114,7 @@ func handleFiles(c *gin.Context, files []*multipart.FileHeader, noSave string, s
 				err = service.Upload(file)
 			}
 			if err != nil {
-				global.GVA_LOG.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
+				global.PantaLog.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
 			} else {
 				list = append(list, filePath)
 			}

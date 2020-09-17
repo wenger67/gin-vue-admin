@@ -13,9 +13,9 @@ import (
 
 func Temp() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.CategorySubject{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.CategorySubject{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.CategorySubject{}
 	if err := tx.Create(&insert).Error; err != nil {
 		tx.Rollback()
@@ -26,9 +26,9 @@ func Temp() (err error) {
 
 func InitSubject() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.CategorySubject{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.CategorySubject{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.CategorySubject{
 		{gorm.Model{ID: uint(enum.SubjectLiftType), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			"电梯使用场景"},
@@ -73,9 +73,9 @@ func InitSubject() (err error) {
 
 func InitCategory() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Category{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Category{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Category{
 		{Model: gorm.Model{ID: uint(enum.HousePassengerLift), CreatedAt: time.Now(), UpdatedAt: time.Now()},
 			CategorySubjectId: uint(enum.SubjectLiftType), CategoryName: "住宅客梯"},
@@ -304,9 +304,9 @@ func InitCategory() (err error) {
 
 func InitRegion() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Region{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Region{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Region{
 		{gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "湖北省", "武汉市", "东湖高新区"},
 		{gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "湖北省", "武汉市", "江夏区"},
@@ -449,9 +449,9 @@ type DeviceOwner struct {
 
 func InitAddress() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Address{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Address{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Address{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, RegionId: 1, AddressName: "光谷一路与湖口一路交汇处统建天成美景",
 			Location: "114.443241,30.490429", UserAmount: 11 * 120 * 3},
@@ -506,9 +506,9 @@ func InitAddress() (err error) {
 
 func InitAddressTags() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("address_id > 0").Delete(&AddressTag{})
+	global.PantaDb.Unscoped().Where("address_id > 0").Delete(&AddressTag{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []AddressTag{
 		{AddressID: 1, CategoryID: uint(enum.AddressTagBaby)},
 		{AddressID: 1, CategoryID: uint(enum.AddressTagEngineer)},
@@ -595,9 +595,9 @@ func InitAddressTags() (err error) {
 
 func InitSysAuthority() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("authority_id > 0").Delete(&model.SysAuthority{})
+	global.PantaDb.Unscoped().Where("authority_id > 0").Delete(&model.SysAuthority{})
 
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.SysAuthority{
 		{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityId: "101", AuthorityName: "普通用户", ParentId: "0"},
 		{CreatedAt: time.Now(), UpdatedAt: time.Now(), AuthorityId: "201", AuthorityName: "公司管理账户", ParentId: "0"},
@@ -620,9 +620,9 @@ func InitSysAuthority() (err error) {
 
 func InitUser() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysUser{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.SysUser{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.SysUser{
 		// super admin
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UUID: uuid.NewV4(),
@@ -771,9 +771,9 @@ func InitUser() (err error) {
 
 func InitCompany() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Company{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Company{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Company{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FullName: "武汉智能电梯有限公司",
 			Alias: "武汉智能电梯有限公司", LegalPerson: "陈纯星", PhoneNumber: "027-87928666", Status: "正常营业",
@@ -851,11 +851,11 @@ func InitCompany() (err error) {
 
 func InitSysDictionaryDetail() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysDictionaryDetail{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.SysDictionaryDetail{})
 
 	status := new(bool)
 	*status = true
-	tx := global.GVA_DB.Begin() // 开始事务
+	tx := global.PantaDb.Begin() // 开始事务
 	insert := []model.SysDictionaryDetail{
 		{gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "smallint", 1, status, 1, 2},
 		{gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "mediumint", 2, status, 2, 2},
@@ -889,11 +889,11 @@ func InitSysDictionaryDetail() (err error) {
 
 func InitSysDictionary() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysDictionary{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.SysDictionary{})
 
 	status := new(bool)
 	*status = true
-	tx := global.GVA_DB.Begin() // 开始事务
+	tx := global.PantaDb.Begin() // 开始事务
 	insert := []model.SysDictionary{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "性别", Type: "sex", Status: status, Desc: "性别字典"},
 		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Name: "数据库int类型", Type: "int", Status: status, Desc: "int类型对应的数据库类型"},
@@ -910,9 +910,9 @@ func InitSysDictionary() (err error) {
 
 func InitExaFileUploadAndDownload() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.ExaFileUploadAndDownload{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.ExaFileUploadAndDownload{})
 
-	tx := global.GVA_DB.Begin() // 开始事务
+	tx := global.PantaDb.Begin() // 开始事务
 	insert := []model.ExaFileUploadAndDownload{
 		// record 1
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 9, 1, 7, 25, 9, 428, time.Local),
@@ -989,9 +989,9 @@ func InitExaFileUploadAndDownload() (err error) {
 
 func InitSysBaseMenus() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysBaseMenu{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.SysBaseMenu{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.SysBaseMenu{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, MenuLevel: 0, ParentId: "0",
 			Path: "dashboard", Name: "dashboard", Hidden: false, Component: "view/dashboard/index.vue", Sort: 1,
@@ -1173,8 +1173,8 @@ func InitSysBaseMenus() (err error) {
 
 func InitExaCustomer() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.ExaCustomer{})
-	tx := global.GVA_DB.Begin() // 开始事务
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.ExaCustomer{})
+	tx := global.PantaDb.Begin() // 开始事务
 	insert := []model.ExaCustomer{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, CustomerName: "测试客户", CustomerPhoneData: "1761111111", SysUserID: 1, SysUserAuthorityID: "888"},
 	}
@@ -1185,16 +1185,16 @@ func InitExaCustomer() (err error) {
 }
 
 func InitCasbinModel() (err error) {
-	if global.GVA_DB.Migrator().HasTable("casbin_rule") {
+	if global.PantaDb.Migrator().HasTable("casbin_rule") {
 		// first clear, hard mode
-		_ = global.GVA_DB.Migrator().DropTable("casbin_rule")
+		_ = global.PantaDb.Migrator().DropTable("casbin_rule")
 	}
 
-	if err := global.GVA_DB.Migrator().CreateTable(&gormadapter.CasbinRule{}); err != nil {
+	if err := global.PantaDb.Migrator().CreateTable(&gormadapter.CasbinRule{}); err != nil {
 		return err
 	}
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.CasbinModel{
 		{"p", "8881", "/base/login", "POST"},
 		{"p", "8881", "/base/register", "POST"},
@@ -1467,9 +1467,9 @@ func InitCasbinModel() (err error) {
 
 func InitSysAuthorityMenus() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Where("sys_authority_authority_id > 0").Delete(SysAuthorityMenus{})
+	global.PantaDb.Where("sys_authority_authority_id > 0").Delete(SysAuthorityMenus{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []SysAuthorityMenus{
 		{"101", 1},
 		{"888", 1},
@@ -1559,9 +1559,9 @@ func InitSysAuthorityMenus() (err error) {
 
 func InitDeviceConfig() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.AdDeviceConfig{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.AdDeviceConfig{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.AdDeviceConfig{
 		{gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "power_on", "06:00:00", "设备默认开机时间,早上6点整"},
 		{gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, "power_off", "22:00:00", "设备默认关机时间,晚上十点整"},
@@ -1575,9 +1575,9 @@ func InitDeviceConfig() (err error) {
 
 func InitLiftModel() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.LiftModel{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.LiftModel{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.LiftModel{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FactoryId: 7, Brand: "奥的斯",
 			Modal: "TECE-300VF", Load: 1000},
@@ -1597,9 +1597,9 @@ func InitLiftModel() (err error) {
 
 func InitLift() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Lift{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Lift{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Lift{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, NickName: "天成美景001", Code: "WU0001TCMJ001", InstallerId: 7,
 			MaintainerId: 1, OwnerId: 10, CheckerId: 4, FactoryTime: time.Date(2020, 7, 15, 12, 0, 0, 0, time.Local),
@@ -1621,9 +1621,9 @@ func InitLift() (err error) {
 
 func InitDevice() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Device{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Device{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Device{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, TypeId: enum.DeviceModalV1,
 			FactoryId: 15, FactoryTime: time.Date(2020, 5, 28, 12, 0, 0, 0, time.Local),
@@ -1645,9 +1645,9 @@ func InitDevice() (err error) {
 
 func InitDeviceConfigRelation() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("device_id > 0").Delete(&DeviceConfigRelation{})
+	global.PantaDb.Unscoped().Where("device_id > 0").Delete(&DeviceConfigRelation{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []DeviceConfigRelation{
 		{DeviceID: 1, DeviceConfigID: 1},
 		{DeviceID: 1, DeviceConfigID: 2},
@@ -1663,9 +1663,9 @@ func InitDeviceConfigRelation() (err error) {
 
 func InitDeviceOwner() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("device_id > 0").Delete(&DeviceOwner{})
+	global.PantaDb.Unscoped().Where("device_id > 0").Delete(&DeviceOwner{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []DeviceOwner{
 		{DeviceID: 1, SysUserID: 3},
 		{DeviceID: 1, SysUserID: 4},
@@ -1681,9 +1681,9 @@ func InitDeviceOwner() (err error) {
 
 func InitLiftRecord() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.LiftRecord{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.LiftRecord{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.LiftRecord{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
 			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
@@ -1714,9 +1714,9 @@ func InitLiftRecord() (err error) {
 
 func InitLiftTrouble() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.LiftTrouble{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.LiftTrouble{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.LiftTrouble{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Date(2020, 8, 20, 12, 23, 0, 0, time.Local),
 			UpdatedAt: time.Date(2020, 8, 20, 14, 20, 0, 0, time.Local)}, LiftId: 1,
@@ -1768,9 +1768,9 @@ func InitLiftTrouble() (err error) {
 }
 func InitHealthSystem() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.HealthSystem{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.HealthSystem{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.HealthSystem{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1, TimeDimension: 200,
 			MaintainDimension: 200, HumanDimension: 200, InnerDimension: 200, SensorDimension: 200},
@@ -1785,9 +1785,9 @@ func InitHealthSystem() (err error) {
 }
 func InitHealthChange() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.HealthChange{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.HealthChange{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.HealthChange{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, LiftId: 1,
 			DimensionId: uint(enum.HealthTimeDimension), Content: "Initial", Score: 200},
@@ -1818,9 +1818,9 @@ func InitHealthChange() (err error) {
 }
 func InitMessage() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.Message{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.Message{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.Message{}
 	if err := tx.Create(&insert).Error; err != nil {
 		tx.Rollback()
@@ -1831,9 +1831,9 @@ func InitMessage() (err error) {
 
 func InitSysApi() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.SysApi{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.SysApi{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.SysApi{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, Path: "/base/login",
 			Description: "用户登录", ApiGroup: "base", Method: "POST"},
@@ -2258,9 +2258,9 @@ func InitSysApi() (err error) {
 
 func InitUserLift() (err error) {
 	// first clear, hard mode
-	global.GVA_DB.Unscoped().Where("ID > 0").Delete(&model.UserLift{})
+	global.PantaDb.Unscoped().Where("ID > 0").Delete(&model.UserLift{})
 	// then add new
-	tx := global.GVA_DB.Begin()
+	tx := global.PantaDb.Begin()
 	insert := []model.UserLift{
 		{Model:gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, UserId: 18 , LiftId: 1,
 			CategoryId: uint(enum.UserLiftMaintain)},
@@ -2336,8 +2336,8 @@ func InitData() {
 	err = InitLiftTrouble()
 	err = InitUserLift()
 	if err != nil {
-		global.GVA_LOG.Error("initialize data failed", err)
+		global.PantaLog.Error("initialize data failed", err)
 	} else {
-		global.GVA_LOG.Debug("initialize data success")
+		global.PantaLog.Debug("initialize data success")
 	}
 }

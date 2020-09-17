@@ -15,11 +15,11 @@ import (
 // @return                    error
 
 func CreateApi(api model.SysApi) (err error) {
-	findOne := global.GVA_DB.Where("path = ? AND method = ?", api.Path, api.Method).Find(&model.SysApi{}).Error
+	findOne := global.PantaDb.Where("path = ? AND method = ?", api.Path, api.Method).Find(&model.SysApi{}).Error
 	if findOne == nil {
 		return errors.New("存在相同api")
 	} else {
-		err = global.GVA_DB.Create(&api).Error
+		err = global.PantaDb.Create(&api).Error
 	}
 	return err
 }
@@ -31,7 +31,7 @@ func CreateApi(api model.SysApi) (err error) {
 // @return                    error
 
 func DeleteApi(api model.SysApi) (err error) {
-	err = global.GVA_DB.Delete(api).Error
+	err = global.PantaDb.Delete(api).Error
 	ClearCasbin(1, api.Path, api.Method)
 	return err
 }
@@ -50,7 +50,7 @@ func DeleteApi(api model.SysApi) (err error) {
 func GetAPIInfoList(api model.SysApi, info request.PageInfo, order string, desc bool) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.GVA_DB.Model(&model.SysApi{})
+	db := global.PantaDb.Model(&model.SysApi{})
 	var apiList []model.SysApi
 
 	if api.Path != "" {
@@ -97,7 +97,7 @@ func GetAPIInfoList(api model.SysApi, info request.PageInfo, order string, desc 
 // @return       apis         []SysApi
 
 func GetAllApis() (err error, apis []model.SysApi) {
-	err = global.GVA_DB.Find(&apis).Error
+	err = global.PantaDb.Find(&apis).Error
 	return
 }
 
@@ -109,7 +109,7 @@ func GetAllApis() (err error, apis []model.SysApi) {
 // @return                    error
 
 func GetApiById(id float64) (err error, api model.SysApi) {
-	err = global.GVA_DB.Where("id = ?", id).First(&api).Error
+	err = global.PantaDb.Where("id = ?", id).First(&api).Error
 	return
 }
 
@@ -122,10 +122,10 @@ func GetApiById(id float64) (err error, api model.SysApi) {
 func UpdateApi(api model.SysApi) (err error) {
 	var oldA model.SysApi
 
-	err = global.GVA_DB.Where("id = ?", api.ID).First(&oldA).Error
+	err = global.PantaDb.Where("id = ?", api.ID).First(&oldA).Error
 
 	if oldA.Path != api.Path || oldA.Method != api.Method {
-		flag := errors.Is(global.GVA_DB.Where("path = ? AND method = ?", api.Path,
+		flag := errors.Is(global.PantaDb.Where("path = ? AND method = ?", api.Path,
 			api.Method).Find(&model.SysApi{}).Error, gorm.ErrRecordNotFound)
 		if !flag {
 			return errors.New("存在相同api路径")
@@ -138,7 +138,7 @@ func UpdateApi(api model.SysApi) (err error) {
 		if err != nil {
 			return err
 		} else {
-			err = global.GVA_DB.Save(&api).Error
+			err = global.PantaDb.Save(&api).Error
 		}
 	}
 	return err

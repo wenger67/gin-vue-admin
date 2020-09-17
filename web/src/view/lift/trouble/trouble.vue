@@ -18,7 +18,7 @@
             <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
-        <el-form-item label="export">
+        <el-form-item>
           <el-button type="primary" @click="exportXlsx">Export</el-button>
         </el-form-item>
       </el-form>
@@ -99,7 +99,7 @@
 
       <el-table-column label="故障详情" sortable min-width="200" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.content">{{ scope.row.content }}</span>
+          <span v-if="scope.row.content && scope.row.content != `null`">{{ scope.row.content }}</span>
           <span v-else>---</span>
         </template>
       </el-table-column>  -->
@@ -115,7 +115,12 @@
           <span v-else>---</span>
         </template>     
       </el-table-column>     
-      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="120"></el-table-column> 
+      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="120" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.recorderId">{{ scope.row.recorder.realName }}</span>
+          <span v-else>---</span>
+        </template>
+      </el-table-column> 
       <el-table-column label="反馈内容" sortable min-width="150" prop="feedbackContent" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.feedbackContent">{{ scope.row.feedbackContent }}</span>

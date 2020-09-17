@@ -8,6 +8,6 @@ import (
 func SafeClose(closer io.Closer) {
 	err := closer.Close()
 	if err != nil {
-		global.GVA_LOG.Warning("close closer failed")
+		global.PantaLog.Warning("close closer failed")
 	}
 }

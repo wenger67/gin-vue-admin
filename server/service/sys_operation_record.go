@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateSysOperationRecord(sysOperationRecord model.SysOperationRecord) (err error) {
-	err = global.GVA_DB.Create(&sysOperationRecord).Error
+	err = global.PantaDb.Create(&sysOperationRecord).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateSysOperationRecord(sysOperationRecord model.SysOperationRecord) (err 
 // @return                    error
 
 func DeleteSysOperationRecordByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.SysOperationRecord{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.SysOperationRecord{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteSysOperationRecordByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func DeleteSysOperationRecord(sysOperationRecord model.SysOperationRecord) (err error) {
-	err = global.GVA_DB.Delete(sysOperationRecord).Error
+	err = global.PantaDb.Delete(sysOperationRecord).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteSysOperationRecord(sysOperationRecord model.SysOperationRecord) (err 
 // @return                    error
 
 func UpdateSysOperationRecord(sysOperationRecord *model.SysOperationRecord) (err error) {
-	err = global.GVA_DB.Save(sysOperationRecord).Error
+	err = global.PantaDb.Save(sysOperationRecord).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateSysOperationRecord(sysOperationRecord *model.SysOperationRecord) (err
 // @return    SysOperationRecord        SysOperationRecord
 
 func GetSysOperationRecord(id uint) (err error, sysOperationRecord model.SysOperationRecord) {
-	err = global.GVA_DB.Where("id = ?", id).First(&sysOperationRecord).Error
+	err = global.PantaDb.Where("id = ?", id).First(&sysOperationRecord).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetSysOperationRecordInfoList(info request.SysOperationRecordSearch) (err e
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&model.SysOperationRecord{})
+	db := global.PantaDb.Model(&model.SysOperationRecord{})
 	var sysOperationRecords []model.SysOperationRecord
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.Method != "" {

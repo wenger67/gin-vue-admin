@@ -14,7 +14,7 @@ import (
 // @return    err             error
 
 func JsonInBlacklist(jwtList model.JwtBlacklist) (err error) {
-	err = global.GVA_DB.Create(&jwtList).Error
+	err = global.PantaDb.Create(&jwtList).Error
 	return
 }
 
@@ -26,7 +26,7 @@ func JsonInBlacklist(jwtList model.JwtBlacklist) (err error) {
 // @return    err             error
 
 func IsBlacklist(jwt string, jwtList model.JwtBlacklist) bool {
-	isNotFound := errors.Is(global.GVA_DB.Where("jwt = ?", jwt).First(&jwtList).Error, gorm.ErrRecordNotFound)
+	isNotFound := errors.Is(global.PantaDb.Where("jwt = ?", jwt).First(&jwtList).Error, gorm.ErrRecordNotFound)
 	return !isNotFound
 }
 
@@ -38,7 +38,7 @@ func IsBlacklist(jwt string, jwtList model.JwtBlacklist) bool {
 // @return    redisJWT        string
 
 func GetRedisJWT(userName string) (err error, redisJWT string) {
-	redisJWT, err = global.GVA_REDIS.Get(userName).Result()
+	redisJWT, err = global.PantaRedis.Get(userName).Result()
 	return err, redisJWT
 }
 
@@ -50,6 +50,6 @@ func GetRedisJWT(userName string) (err error, redisJWT string) {
 // @return    err             error
 
 func SetRedisJWT(jwtList model.JwtBlacklist, userName string) (err error) {
-	err = global.GVA_REDIS.Set(userName, jwtList.Jwt, 1000*1000*1000*60*60*24*7).Err()
+	err = global.PantaRedis.Set(userName, jwtList.Jwt, 1000*1000*1000*60*60*24*7).Err()
 	return err
 }

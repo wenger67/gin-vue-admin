@@ -43,14 +43,14 @@ func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
-			global.GVA_LOG.Info("client register")
+			global.PantaLog.Info("client register")
 			h.clients[client] = true
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {
 				h.removeClient(client)
 			}
 		case message := <-h.broadcast:
-			global.GVA_LOG.Debug("broadcast msg to all clients")
+			global.PantaLog.Debug("broadcast msg to all clients")
 			for client := range h.clients {
 				select {
 				case client.send <- message:
@@ -59,13 +59,13 @@ func (h *Hub) Run() {
 				}
 			}
 		case message := <-h.send:
-			global.GVA_LOG.Debug("send msg to target:", message.target)
+			global.PantaLog.Debug("send msg to target:", message.target)
 			for client := range h.clients {
 				//log.D("check client [", client.conn.RemoteAddr(), "/", client.serial, "]")
 				if !contains(message.target, client.serial) {
 					continue
 				}
-				global.GVA_LOG.Debug("send msg to [", client.conn.RemoteAddr(), "/", client.serial, "]")
+				global.PantaLog.Debug("send msg to [", client.conn.RemoteAddr(), "/", client.serial, "]")
 				select {
 				case client.send <- message.content:
 				default:

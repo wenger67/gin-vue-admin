@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateAdDeviceData(adDeviceData model.AdDeviceData) (err error) {
-	err = global.GVA_DB.Create(&adDeviceData).Error
+	err = global.PantaDb.Create(&adDeviceData).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateAdDeviceData(adDeviceData model.AdDeviceData) (err error) {
 // @return                    error
 
 func DeleteAdDeviceData(adDeviceData model.AdDeviceData) (err error) {
-	err = global.GVA_DB.Delete(adDeviceData).Error
+	err = global.PantaDb.Delete(adDeviceData).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteAdDeviceData(adDeviceData model.AdDeviceData) (err error) {
 // @return                    error
 
 func DeleteAdDeviceDataByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.AdDeviceData{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.AdDeviceData{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteAdDeviceDataByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateAdDeviceData(adDeviceData *model.AdDeviceData) (err error) {
-	err = global.GVA_DB.Save(adDeviceData).Error
+	err = global.PantaDb.Save(adDeviceData).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateAdDeviceData(adDeviceData *model.AdDeviceData) (err error) {
 // @return    AdDeviceData        AdDeviceData
 
 func GetAdDeviceData(id uint) (err error, adDeviceData model.AdDeviceData) {
-	err = global.GVA_DB.Where("id = ?", id).First(&adDeviceData).Error
+	err = global.PantaDb.Where("id = ?", id).First(&adDeviceData).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetAdDeviceDataInfoList(info request.AdDeviceDataSearch) (err error, list i
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.AdDeviceData{})
+	db := global.PantaDb.Model(&model.AdDeviceData{})
     var adDeviceDatas []model.AdDeviceData
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

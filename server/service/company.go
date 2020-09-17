@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateCompany(company model.Company) (err error) {
-	err = global.GVA_DB.Create(&company).Error
+	err = global.PantaDb.Create(&company).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateCompany(company model.Company) (err error) {
 // @return                    error
 
 func DeleteCompany(company model.Company) (err error) {
-	err = global.GVA_DB.Delete(company).Error
+	err = global.PantaDb.Delete(company).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteCompany(company model.Company) (err error) {
 // @return                    error
 
 func DeleteCompanyByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Company{}, "id in (?)", ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Company{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteCompanyByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateCompany(company *model.Company) (err error) {
-	err = global.GVA_DB.Save(company).Error
+	err = global.PantaDb.Save(company).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateCompany(company *model.Company) (err error) {
 // @return    Company        Company
 
 func GetCompany(id uint) (err error, company model.Company) {
-	err = global.GVA_DB.Where("id = ?", id).First(&company).Error
+	err = global.PantaDb.Where("id = ?", id).First(&company).Error
 	return
 }
 
@@ -73,7 +73,7 @@ func GetCompanyInfoList(info request.CompanySearch) (err error, list interface{}
 	offset := info.PageSize * (info.Page - 1)
 	categoryId := info.ID
 	// 创建db
-	db := global.GVA_DB.Model(&model.Company{})
+	db := global.PantaDb.Model(&model.Company{})
 	var companies []model.Company
 
 	if categoryId != 0 {

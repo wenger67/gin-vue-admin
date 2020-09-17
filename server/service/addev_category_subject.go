@@ -9,17 +9,17 @@ import (
 )
 
 func CreateSubject(subject model.CategorySubject) (err error) {
-	findOne := global.GVA_DB.Where("subject_name = ?", subject.SubjectName).Find(&model.CategorySubject{}).Error
+	findOne := global.PantaDb.Where("subject_name = ?", subject.SubjectName).Find(&model.CategorySubject{}).Error
 	if findOne == nil {
 		 return errors.New("same subject name exists")
 	} else {
-		err = global.GVA_DB.Create(&subject).Error
+		err = global.PantaDb.Create(&subject).Error
 	}
 	return err
 }
 
 func DeleteSubject(subject model.CategorySubject) (err error) {
-	err = global.GVA_DB.Delete(subject).Error
+	err = global.PantaDb.Delete(subject).Error
 	// TODO delete relative logic
 	return err
 }
@@ -27,7 +27,7 @@ func DeleteSubject(subject model.CategorySubject) (err error) {
 func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order string, desc bool) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.GVA_DB.Model(&model.CategorySubject{})
+	db := global.PantaDb.Model(&model.CategorySubject{})
 	var subjectList []model.CategorySubject
 
 	if subject.SubjectName != "" {
@@ -56,19 +56,19 @@ func GetSubjectList(subject model.CategorySubject, info request.PageInfo, order 
 }
 
 func GetSubjectById(id float64) (err error, subject model.CategorySubject) {
-	err = global.GVA_DB.Where("id = ?", id).First(&subject).Error
+	err = global.PantaDb.Where("id = ?", id).First(&subject).Error
 	return
 }
 
 func UpdateSubject(subject model.CategorySubject) (err error) {
 	var origin model.CategorySubject
-	err = global.GVA_DB.Where("id = ?", subject.ID).First(&origin).Error
+	err = global.PantaDb.Where("id = ?", subject.ID).First(&origin).Error
 
 	if err != nil {
 		return err
 	} else {
 		if origin.SubjectName != subject.SubjectName {
-			flag := errors.Is(global.GVA_DB.Where("subject_name = ?",
+			flag := errors.Is(global.PantaDb.Where("subject_name = ?",
 				subject.SubjectName).Find(&model.CategorySubject{}).Error, gorm.ErrRecordNotFound)
 			if !flag {
 				return errors.New("same subject name exist!")
@@ -77,12 +77,12 @@ func UpdateSubject(subject model.CategorySubject) (err error) {
 			return errors.New("same subject name, nothing changed!")
 		}
 
-		err = global.GVA_DB.Save(&subject).Error
+		err = global.PantaDb.Save(&subject).Error
 	}
 	return err
 }
 
 func GetAllSubjects() (err error, subjects []model.CategorySubject)  {
-	err = global.GVA_DB.Find(&subjects).Error
+	err = global.PantaDb.Find(&subjects).Error
 	return
 }

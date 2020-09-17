@@ -174,10 +174,10 @@ func UpdateLift(c *gin.Context) {
 			// TODO send message
 
 			if err != nil {
-				global.GVA_LOG.Warning("create lift change failed.", err.Error())
+				global.PantaLog.Warning("create lift change failed.", err.Error())
 			}
 		} else {
-			global.GVA_LOG.Debug("nothing changed")
+			global.PantaLog.Debug("nothing changed")
 		}
 		response.OkWithMessage("更新成功", c)
 	}

@@ -19,7 +19,7 @@ func OperationRecord() gin.HandlerFunc {
 			var err error
 			body, err = ioutil.ReadAll(c.Request.Body)
 			if err != nil {
-				global.GVA_LOG.Error("read body from request error:", err)
+				global.PantaLog.Error("read body from request error:", err)
 			} else {
 				c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 			}
@@ -54,7 +54,7 @@ func OperationRecord() gin.HandlerFunc {
 		saveOperationRecord := false
 		if(saveOperationRecord) {
 			if err := service.CreateSysOperationRecord(record); err != nil {
-			global.GVA_LOG.Error("create operation record error:", err)
+			global.PantaLog.Error("create operation record error:", err)
 		}
 		}
 	}

@@ -8,7 +8,7 @@ import (
 
 // 注册数据库表专用
 func DBTables() {
-	db := global.GVA_DB
+	db := global.PantaDb
 	err := db.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8").
 		AutoMigrate(model.SysUser{},
 		model.SysAuthority{},
@@ -44,8 +44,8 @@ func DBTables() {
 		model.Message{},
 	)
 	if err != nil {
-		global.GVA_LOG.Error("register table failed", err)
+		global.PantaLog.Error("register table failed", err)
 		os.Exit(0)
 	}
-	global.GVA_LOG.Debug("register table success")
+	global.PantaLog.Debug("register table success")
 }

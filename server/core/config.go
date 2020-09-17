@@ -20,12 +20,12 @@ func init() {
 
 	v.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed:", e.Name)
-		if err := v.Unmarshal(&global.GVA_CONFIG); err != nil {
+		if err := v.Unmarshal(&global.PantaConfig); err != nil {
 			fmt.Println(err)
 		}
 	})
-	if err := v.Unmarshal(&global.GVA_CONFIG); err != nil {
+	if err := v.Unmarshal(&global.PantaConfig); err != nil {
 		fmt.Println(err)
 	}
-	global.GVA_VP = v
+	global.PantaVp = v
 }

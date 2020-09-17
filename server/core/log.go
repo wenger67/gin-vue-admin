@@ -25,7 +25,7 @@ var (
 )
 
 func init() {
-	c := global.GVA_CONFIG.Log
+	c := global.PantaConfig.Log
 	if c.Prefix == "" {
 		_ = fmt.Errorf("logger prefix not found")
 	}
@@ -36,7 +36,7 @@ func init() {
 		gin.DefaultWriter = io.MultiWriter(fileWriter, os.Stdout)
 	}
 	oplogging.SetBackend(backends...)
-	global.GVA_LOG = logger
+	global.PantaLog = logger
 }
 
 func registerStdout(c config.Log, backends *[]oplogging.Backend) {

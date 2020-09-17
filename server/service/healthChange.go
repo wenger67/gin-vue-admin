@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateHealthChange(healthChange model.HealthChange) (err error) {
-	err = global.GVA_DB.Create(&healthChange).Error
+	err = global.PantaDb.Create(&healthChange).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateHealthChange(healthChange model.HealthChange) (err error) {
 // @return                    error
 
 func DeleteHealthChange(healthChange model.HealthChange) (err error) {
-	err = global.GVA_DB.Delete(healthChange).Error
+	err = global.PantaDb.Delete(healthChange).Error
 	return err
 }
 
@@ -35,12 +35,12 @@ func DeleteHealthChange(healthChange model.HealthChange) (err error) {
 // @return                    error
 
 func DeleteHealthChangeByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.HealthChange{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.HealthChange{},"id in (?)",ids.Ids).Error
 	return err
 }
 
 func DeleteHealthChangeByLiftIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.HealthChange{},"lift_id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.HealthChange{},"lift_id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -51,7 +51,7 @@ func DeleteHealthChangeByLiftIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateHealthChange(healthChange *model.HealthChange) (err error) {
-	err = global.GVA_DB.Save(healthChange).Error
+	err = global.PantaDb.Save(healthChange).Error
 	return err
 }
 
@@ -63,7 +63,7 @@ func UpdateHealthChange(healthChange *model.HealthChange) (err error) {
 // @return    HealthChange        HealthChange
 
 func GetHealthChange(id uint) (err error, healthChange model.HealthChange) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("Dimension").First(&healthChange).Error
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").Preload("Dimension").First(&healthChange).Error
 	return
 }
 
@@ -77,7 +77,7 @@ func GetHealthChangeList(info request.HealthChangeSearch) (err error, list inter
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.HealthChange{})
+	db := global.PantaDb.Model(&model.HealthChange{})
     var healthChanges []model.HealthChange
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

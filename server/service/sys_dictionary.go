@@ -15,10 +15,10 @@ import (
 // @return    err             error
 
 func CreateSysDictionary(sysDictionary model.SysDictionary) (err error) {
-	if (!errors.Is(global.GVA_DB.First(&model.SysDictionary{}, "type = ?", sysDictionary.Type).Error, gorm.ErrRecordNotFound)) {
+	if (!errors.Is(global.PantaDb.First(&model.SysDictionary{}, "type = ?", sysDictionary.Type).Error, gorm.ErrRecordNotFound)) {
 		return errors.New("存在相同的type，不允许创建")
 	}
-	err = global.GVA_DB.Create(&sysDictionary).Error
+	err = global.PantaDb.Create(&sysDictionary).Error
 	return err
 }
 
@@ -29,7 +29,7 @@ func CreateSysDictionary(sysDictionary model.SysDictionary) (err error) {
 // @return                    error
 
 func DeleteSysDictionary(sysDictionary model.SysDictionary) (err error) {
-	err = global.GVA_DB.Delete(sysDictionary).Delete(&sysDictionary.SysDictionaryDetails).Error
+	err = global.PantaDb.Delete(sysDictionary).Delete(&sysDictionary.SysDictionaryDetails).Error
 	return err
 }
 
@@ -47,11 +47,11 @@ func UpdateSysDictionary(sysDictionary *model.SysDictionary) (err error) {
 		"Status": sysDictionary.Status,
 		"Desc":   sysDictionary.Desc,
 	}
-	db := global.GVA_DB.Where("id = ?", sysDictionary.ID).First(&dict)
+	db := global.PantaDb.Where("id = ?", sysDictionary.ID).First(&dict)
 	if dict.Type == sysDictionary.Type {
 		err = db.Updates(sysDictionaryMap).Error
 	} else {
-		if (!errors.Is(global.GVA_DB.First(&model.SysDictionary{}, "type = ?", sysDictionary.Type).Error, gorm.ErrRecordNotFound)) {
+		if (!errors.Is(global.PantaDb.First(&model.SysDictionary{}, "type = ?", sysDictionary.Type).Error, gorm.ErrRecordNotFound)) {
 			return errors.New("存在相同的type，不允许创建")
 		} else {
 			err = db.Updates(sysDictionaryMap).Error
@@ -68,7 +68,7 @@ func UpdateSysDictionary(sysDictionary *model.SysDictionary) (err error) {
 // @return    SysDictionary        SysDictionary
 
 func GetSysDictionary(Type string, Id uint) (err error, sysDictionary model.SysDictionary) {
-	err = global.GVA_DB.Where("type = ? OR id = ?", Type, Id).Preload("SysDictionaryDetails").First(&sysDictionary).Error
+	err = global.PantaDb.Where("type = ? OR id = ?", Type, Id).Preload("SysDictionaryDetails").First(&sysDictionary).Error
 	return
 }
 
@@ -82,7 +82,7 @@ func GetSysDictionaryInfoList(info request.SysDictionarySearch) (err error, list
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&model.SysDictionary{})
+	db := global.PantaDb.Model(&model.SysDictionary{})
 	var sysDictionarys []model.SysDictionary
 	// 如果有条件搜索 下方会自动创建搜索语句
 	if info.Name != "" {

@@ -13,7 +13,7 @@ import (
 // @return                    error
 
 func Upload(file model.ExaFileUploadAndDownload) error {
-	err := global.GVA_DB.Create(&file).Error
+	err := global.PantaDb.Create(&file).Error
 	return err
 }
 
@@ -25,7 +25,7 @@ func Upload(file model.ExaFileUploadAndDownload) error {
 
 func FindFile(id uint) (error, model.ExaFileUploadAndDownload) {
 	var file model.ExaFileUploadAndDownload
-	err := global.GVA_DB.Where("id = ?", id).First(&file).Error
+	err := global.PantaDb.Where("id = ?", id).First(&file).Error
 	return err, file
 }
 
@@ -36,7 +36,7 @@ func FindFile(id uint) (error, model.ExaFileUploadAndDownload) {
 // @return                    error
 
 func DeleteFile(file model.ExaFileUploadAndDownload) error {
-	err := global.GVA_DB.Where("id = ?", file.ID).Unscoped().Delete(file).Error
+	err := global.PantaDb.Where("id = ?", file.ID).Unscoped().Delete(file).Error
 	return err
 }
 
@@ -51,7 +51,7 @@ func DeleteFile(file model.ExaFileUploadAndDownload) error {
 func GetFileRecordInfoList(info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.GVA_DB
+	db := global.PantaDb
 	var fileLists []model.ExaFileUploadAndDownload
 	err = db.Find(&fileLists).Count(&total).Error
 	err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error

@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateRegion(region model.Region) (err error) {
-	err = global.GVA_DB.Create(&region).Error
+	err = global.PantaDb.Create(&region).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateRegion(region model.Region) (err error) {
 // @return                    error
 
 func DeleteRegion(region model.Region) (err error) {
-	err = global.GVA_DB.Delete(region).Error
+	err = global.PantaDb.Delete(region).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteRegion(region model.Region) (err error) {
 // @return                    error
 
 func DeleteRegionByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Region{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Region{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteRegionByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateRegion(region *model.Region) (err error) {
-	err = global.GVA_DB.Save(region).Error
+	err = global.PantaDb.Save(region).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateRegion(region *model.Region) (err error) {
 // @return    Region        Region
 
 func GetRegion(id uint) (err error, region model.Region) {
-	err = global.GVA_DB.Where("id = ?", id).First(&region).Error
+	err = global.PantaDb.Where("id = ?", id).First(&region).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, 
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.Region{})
+	db := global.PantaDb.Model(&model.Region{})
     var regions []model.Region
 	if info.GroupKey == "province" {
 		if info.Province == "" {

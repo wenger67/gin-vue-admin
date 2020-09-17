@@ -14,7 +14,7 @@ import (
 // @return    err             error
 
 func CreateLiftTrouble(liftTrouble model.LiftTrouble) (err error) {
-	err = global.GVA_DB.Create(&liftTrouble).Error
+	err = global.PantaDb.Create(&liftTrouble).Error
 	return err
 }
 
@@ -25,7 +25,7 @@ func CreateLiftTrouble(liftTrouble model.LiftTrouble) (err error) {
 // @return                    error
 
 func DeleteLiftTrouble(liftTrouble model.LiftTrouble) (err error) {
-	err = global.GVA_DB.Delete(liftTrouble).Error
+	err = global.PantaDb.Delete(liftTrouble).Error
 	return err
 }
 
@@ -36,7 +36,7 @@ func DeleteLiftTrouble(liftTrouble model.LiftTrouble) (err error) {
 // @return                    error
 
 func DeleteLiftTroubleByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.LiftTrouble{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.LiftTrouble{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -77,10 +77,10 @@ func UpdateLiftTrouble(liftTrouble *model.LiftTrouble) (err error) {
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
 	default:
-		global.GVA_LOG.Warning("unknown lift trouble progress, ", liftTrouble.Progress)
+		global.PantaLog.Warning("unknown lift trouble progress, ", liftTrouble.Progress)
 
 	}
-	err = global.GVA_DB.Model(model.LiftTrouble{}).Where("ID = ?", liftTrouble.ID).Updates(updateMap).Error
+	err = global.PantaDb.Model(model.LiftTrouble{}).Where("ID = ?", liftTrouble.ID).Updates(updateMap).Error
 	return err
 }
 
@@ -92,7 +92,7 @@ func UpdateLiftTrouble(liftTrouble *model.LiftTrouble) (err error) {
 // @return    LiftTrouble        LiftTrouble
 
 func GetLiftTrouble(id uint) (err error, liftTrouble model.LiftTrouble) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Lift").Preload("FromCategory").
+	err = global.PantaDb.Where("id = ?", id).Preload("Lift").Preload("FromCategory").
 		Preload("StartUser").Preload("ResponseUser").Preload("SceneUser").
 		Preload("FixUser").Preload("FixCategory").Preload("ReasonCategory").
 		Preload("Recorder").First(&liftTrouble).Error
@@ -109,7 +109,7 @@ func GetLiftTroubleInfoList(info request.LiftTroubleSearch) (err error, list int
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.LiftTrouble{})
+	db := global.PantaDb.Model(&model.LiftTrouble{})
     var liftTroubles []model.LiftTrouble
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

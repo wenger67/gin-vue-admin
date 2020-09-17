@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateMessage(message model.Message) (err error) {
-	err = global.GVA_DB.Create(&message).Error
+	err = global.PantaDb.Create(&message).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateMessage(message model.Message) (err error) {
 // @return                    error
 
 func DeleteMessage(message model.Message) (err error) {
-	err = global.GVA_DB.Delete(message).Error
+	err = global.PantaDb.Delete(message).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteMessage(message model.Message) (err error) {
 // @return                    error
 
 func DeleteMessageByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Message{}, "id in (?)", ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Message{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteMessageByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateMessage(message *model.Message) (err error) {
-	err = global.GVA_DB.Save(message).Error
+	err = global.PantaDb.Save(message).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateMessage(message *model.Message) (err error) {
 // @return    Message        Message
 
 func GetMessage(id uint) (err error, message model.Message) {
-	err = global.GVA_DB.Where("id = ?", id).First(&message).Error
+	err = global.PantaDb.Where("id = ?", id).First(&message).Error
 	return
 }
 
@@ -72,7 +72,7 @@ func GetMessageInfoList(info request.MessageSearch) (err error, list interface{}
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := global.GVA_DB.Model(&model.Message{})
+	db := global.PantaDb.Model(&model.Message{})
 	var messages []model.Message
 	// 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error

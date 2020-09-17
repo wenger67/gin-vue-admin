@@ -13,7 +13,7 @@ import (
 // @return    err             error
 
 func CreateLift(lift *model.Lift) (err error) {
-	err = global.GVA_DB.Create(lift).Error
+	err = global.PantaDb.Create(lift).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreateLift(lift *model.Lift) (err error) {
 // @return                    error
 
 func DeleteLift(lift model.Lift) (err error) {
-	err = global.GVA_DB.Delete(lift).Error
+	err = global.PantaDb.Delete(lift).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeleteLift(lift model.Lift) (err error) {
 // @return                    error
 
 func DeleteLiftByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.Lift{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.Lift{},"id in (?)",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeleteLiftByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateLift(lift *model.Lift) (err error) {
-	err = global.GVA_DB.Save(lift).Error
+	err = global.PantaDb.Save(lift).Error
 	return err
 }
 
@@ -58,7 +58,7 @@ func UpdateLift(lift *model.Lift) (err error) {
 // @return    Lift        Lift
 
 func GetLift(id uint) (err error, lift model.Lift) {
-	err = global.GVA_DB.Where("id = ?", id).Preload("Installer").Preload("Installer.Admin").Preload("Installer." +
+	err = global.PantaDb.Where("id = ?", id).Preload("Installer").Preload("Installer.Admin").Preload("Installer." +
 		"Category").Preload("Maintainer").Preload("Maintainer.Admin").Preload("Maintainer.Category").
 		Preload("Checker").Preload("Checker.Admin").Preload("Checker.Category").
 		Preload("Owner").Preload("Owner.Admin").Preload("Owner.Category").Preload("LiftModel").Preload("Category").
@@ -76,7 +76,7 @@ func GetLiftInfoList(info request.LiftSearch) (err error, list interface{}, tota
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.Lift{})
+	db := global.PantaDb.Model(&model.Lift{})
     var lifts []model.Lift
     // 如果有条件搜索 下方会自动创建搜索语句
 	err = db.Count(&total).Error
