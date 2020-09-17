@@ -2,9 +2,9 @@ package core
 
 import (
 	"fmt"
-	"gin-vue-admin/global"
-	"gin-vue-admin/initialize"
-	"gin-vue-admin/websocket"
+	"panta/global"
+	"panta/initialize"
+	"panta/websocket"
 	"time"
 )
 
@@ -34,7 +34,7 @@ func RunWindowsServer() {
 	time.Sleep(10 * time.Microsecond)
 	global.PantaLog.Debug("server run success on ", address)
 
-	fmt.Printf(`欢迎使用 Gin-Vue-Admin
+	fmt.Printf(`欢迎使用 panta
 	默认自动化文档地址:http://127.0.0.1%s/swagger/index.html
 	默认前端文件运行地址:http://127.0.0.1:8080
 `, address)

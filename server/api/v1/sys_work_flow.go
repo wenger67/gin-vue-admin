@@ -2,10 +2,10 @@ package v1
 
 import (
 	"fmt"
-	"gin-vue-admin/global/response"
-	"gin-vue-admin/model"
-	"gin-vue-admin/service"
-	"gin-vue-admin/utils"
+	"panta/global/response"
+	"panta/model"
+	"panta/service"
+	"panta/utils"
 	"github.com/gin-gonic/gin"
 )
 

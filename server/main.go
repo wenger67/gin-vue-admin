@@ -1,9 +1,9 @@
 package main
 
 import (
-	"gin-vue-admin/core"
-	"gin-vue-admin/global"
-	"gin-vue-admin/initialize"
+	"panta/core"
+	"panta/global"
+	"panta/initialize"
 	//"runtime"
 )
 

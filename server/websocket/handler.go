@@ -2,7 +2,7 @@ package websocket
 
 import (
 	"encoding/json"
-	"gin-vue-admin/global"
+	"panta/global"
 	"github.com/gin-gonic/gin"
 	"github.com/julienschmidt/httprouter"
 	"io/ioutil"

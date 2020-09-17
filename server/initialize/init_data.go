@@ -1,13 +1,13 @@
 package initialize
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/utils/enum"
 	"github.com/bxcodec/faker/v3"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
+	"panta/global"
+	"panta/model"
+	"panta/utils/enum"
 	"time"
 )
 
@@ -1185,13 +1185,10 @@ func InitExaCustomer() (err error) {
 }
 
 func InitCasbinModel() (err error) {
-	if global.PantaDb.Migrator().HasTable("casbin_rule") {
-		// first clear, hard mode
-		_ = global.PantaDb.Migrator().DropTable("casbin_rule")
-	}
-
-	if err := global.PantaDb.Migrator().CreateTable(&gormadapter.CasbinRule{}); err != nil {
-		return err
+	if !global.PantaDb.Migrator().HasTable("casbin_rule") {
+		if err := global.PantaDb.Migrator().CreateTable(&gormadapter.CasbinRule{}); err != nil {
+			return err
+		}
 	}
 	// then add new
 	tx := global.PantaDb.Begin()
@@ -2326,7 +2323,6 @@ func InitData() {
 	err = InitHealthSystem()
 	err = InitHealthChange()
 	err = InitSysAuthorityMenus()
-	err = InitCasbinModel()
 	err = InitExaCustomer()
 	err = InitSysBaseMenus()
 	err = InitSysDictionary()
@@ -2335,6 +2331,7 @@ func InitData() {
 	err = InitLiftRecord()
 	err = InitLiftTrouble()
 	err = InitUserLift()
+	err = InitCasbinModel()
 	if err != nil {
 		global.PantaLog.Error("initialize data failed", err)
 	} else {

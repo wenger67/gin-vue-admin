@@ -1,9 +1,9 @@
 package model
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/service"
+	"panta/global"
+	"panta/model"
+	"panta/service"
 	"strconv"
 	"strings"
 	"time"

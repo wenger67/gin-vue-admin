@@ -1,8 +1,8 @@
 package dev
 
 import (
-	"gin-vue-admin/api/dev"
-	"gin-vue-admin/middleware"
+	"panta/api/dev"
+	"panta/middleware"
 	"github.com/gin-gonic/gin"
 )
 

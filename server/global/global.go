@@ -1,7 +1,7 @@
 package global
 
 import (
-	"gin-vue-admin/config"
+	"panta/config"
 	"github.com/go-redis/redis"
 	"gorm.io/gorm"
 	oplogging "github.com/op/go-logging"

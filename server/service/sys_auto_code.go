@@ -1,10 +1,10 @@
 package service
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/model/request"
-	"gin-vue-admin/utils"
+	"panta/global"
+	"panta/model"
+	"panta/model/request"
+	"panta/utils"
 	"io/ioutil"
 	"os"
 	"strings"

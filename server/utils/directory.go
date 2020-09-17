@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"gin-vue-admin/global"
+	"panta/global"
 	"os"
 	"os/exec"
 	"strings"

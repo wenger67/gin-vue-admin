@@ -1,6 +1,6 @@
 package request
 
-import "gin-vue-admin/model"
+import "panta/model"
 
 type SysDictionarySearch struct{
     model.SysDictionary

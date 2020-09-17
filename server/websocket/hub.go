@@ -1,8 +1,8 @@
 package websocket
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/websocket/model"
+	"panta/global"
+	"panta/websocket/model"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the

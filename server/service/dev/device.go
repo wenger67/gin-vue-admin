@@ -1,8 +1,8 @@
 package dev
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
+	"panta/global"
+	"panta/model"
 )
 
 func FindLift(id uint) (err error, lift model.Lift) {

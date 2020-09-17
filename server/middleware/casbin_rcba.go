@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/global/response"
-	"gin-vue-admin/model/request"
-	"gin-vue-admin/service"
+	"panta/global"
+	"panta/global/response"
+	"panta/model/request"
+	"panta/service"
 	"github.com/gin-gonic/gin"
 )
 

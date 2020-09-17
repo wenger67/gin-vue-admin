@@ -1,7 +1,7 @@
 package util
 
 import (
-	"gin-vue-admin/global"
+	"panta/global"
 	"io"
 )
 

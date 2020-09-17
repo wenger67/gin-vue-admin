@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"gin-vue-admin/global"
+	"panta/global"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )

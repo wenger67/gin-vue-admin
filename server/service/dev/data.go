@@ -1,8 +1,8 @@
 package dev
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
+	"panta/global"
+	"panta/model"
 )
 
 func CreateRunningData(adDeviceData model.AdDeviceData) (err error) {

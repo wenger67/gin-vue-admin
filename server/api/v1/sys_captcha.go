@@ -2,9 +2,9 @@ package v1
 
 import (
 	"fmt"
-	"gin-vue-admin/global"
-	"gin-vue-admin/global/response"
-	resp "gin-vue-admin/model/response"
+	"panta/global"
+	"panta/global/response"
+	resp "panta/model/response"
 	"github.com/gin-gonic/gin"
 	"github.com/mojocn/base64Captcha"
 )

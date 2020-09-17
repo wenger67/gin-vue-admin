@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"bytes"
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
-	"gin-vue-admin/service"
+	"panta/global"
+	"panta/model"
+	"panta/service"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"

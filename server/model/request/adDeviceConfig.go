@@ -1,6 +1,6 @@
 package request
 
-import "gin-vue-admin/model"
+import "panta/model"
 
 type AdDeviceConfigSearch struct{
     model.AdDeviceConfig

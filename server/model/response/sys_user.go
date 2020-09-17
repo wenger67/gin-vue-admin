@@ -1,7 +1,7 @@
 package response
 
 import (
-	"gin-vue-admin/model"
+	"panta/model"
 )
 
 type SysUserResponse struct {

@@ -1,11 +1,11 @@
 package initialize
 
 import (
-	_ "gin-vue-admin/docs"
-	"gin-vue-admin/global"
-	"gin-vue-admin/middleware"
-	"gin-vue-admin/router"
-	"gin-vue-admin/router/dev"
+	_ "panta/docs"
+	"panta/global"
+	"panta/middleware"
+	"panta/router"
+	"panta/router/dev"
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

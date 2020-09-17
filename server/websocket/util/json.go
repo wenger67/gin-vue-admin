@@ -2,7 +2,7 @@ package util
 
 import (
 	"encoding/json"
-	"gin-vue-admin/global"
+	"panta/global"
 	"io"
 	"io/ioutil"
 	"net/http"

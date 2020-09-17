@@ -6,7 +6,7 @@ package initialize
 
 // import (
 // 	"fmt"
-// 	"gin-vue-admin/global"
+// 	"panta/global"
 // )
 //
 // // 初始化数据库并产生数据库全局变量

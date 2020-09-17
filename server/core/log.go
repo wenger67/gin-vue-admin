@@ -2,9 +2,9 @@ package core
 
 import (
 	"fmt"
-	"gin-vue-admin/config"
-	"gin-vue-admin/global"
-	"gin-vue-admin/utils"
+	"panta/config"
+	"panta/global"
+	"panta/utils"
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	oplogging "github.com/op/go-logging"
@@ -17,7 +17,7 @@ import (
 const (
 	logDir      = "log"
 	logSoftLink = "latest_log"
-	module      = "gin-vue-admin"
+	module      = "panta"
 )
 
 var (

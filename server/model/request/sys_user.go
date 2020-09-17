@@ -1,7 +1,7 @@
 package request
 
 import (
-	"gin-vue-admin/model"
+	"panta/model"
 	uuid "github.com/satori/go.uuid"
 )
 

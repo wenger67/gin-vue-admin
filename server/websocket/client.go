@@ -2,9 +2,9 @@ package websocket
 
 import (
 	"encoding/json"
-	"gin-vue-admin/global"
-	"gin-vue-admin/websocket/model"
-	"gin-vue-admin/websocket/util"
+	"panta/global"
+	"panta/websocket/model"
+	"panta/websocket/util"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"

@@ -1,8 +1,8 @@
 package initialize
 
 import (
-	"gin-vue-admin/global"
-	"gin-vue-admin/model"
+	"panta/global"
+	"panta/model"
 	"os"
 )
 
