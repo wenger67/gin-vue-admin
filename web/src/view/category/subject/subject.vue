@@ -14,12 +14,13 @@
         </el-form>
     </div>
     <el-table :data="tableData" @sort-change="sortChange" border stripe>
-      <el-table-column label="序号" min-width="60" prop="ID" sortable="custom"></el-table-column>
-      <el-table-column label="主体" min-width="60" prop="subjectName" sortable="custom"></el-table-column>
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="主体" min-width="100" align="center" prop="subjectName" sortable></el-table-column>
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column fixed="right" label="按钮组" min-width="100">
+      <el-table-column fixed="right" label="按钮组" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="editSubject(scope.row)" size="small" icon="el-icon-edit">Edit</el-button>
           <el-button type="danger" @click="deleteSubject(scope.row)" size="small" icon="el-icon-delete">Delete</el-button>

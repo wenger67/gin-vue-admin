@@ -26,39 +26,26 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-
-    
-    <el-table-column label="设备id" prop="deviceId" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="x轴加速度" prop="accx" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="y轴加速度" prop="accy" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="z轴加速度" prop="accz" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="x轴倾斜角" prop="degx" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="y轴倾斜角" prop="degy" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="z轴倾斜角" prop="degz" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="电梯速度" prop="speedz" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="电梯当前楼层" prop="floor" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="电梯门状态类型" prop="doorState.categoryName" sortable min-width="60"></el-table-column> 
-    
-    <el-table-column label="电梯内是否有人" prop="peopleInside" min-width="60">
-         <template slot-scope="scope">{{scope.row.peopleInside|formatBoolean}}</template>
-    </el-table-column>
-    
-    <el-table-column label="电梯状态/故障类型" prop="trouble.categoryName" sortable min-width="60"></el-table-column> 
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="80" align="center" />
+      <el-table-column label="设备" prop="deviceId" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="x轴加速度" prop="accx" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="y轴加速度" prop="accy" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="z轴加速度" prop="accz" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="x轴倾斜角" prop="degx" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="y轴倾斜角" prop="degy" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="z轴倾斜角" prop="degz" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="速度" prop="speedz" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="当前楼层" prop="floor" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="门状态" prop="doorState.categoryName" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="否有人" prop="peopleInside" min-width="120" align="center">
+          <template slot-scope="scope">{{scope.row.peopleInside|formatBoolean}}</template>
+      </el-table-column>
+      <el-table-column label="故障类型" prop="trouble.categoryName" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="160" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="150" align="center">
         <template slot-scope="scope">
           <el-button @click="updateAdDeviceData(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>

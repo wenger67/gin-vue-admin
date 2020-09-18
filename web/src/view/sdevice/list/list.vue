@@ -29,34 +29,48 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="序号" prop="ID" min-width="30"></el-table-column>
-    <el-table-column label="在线状态" min-width="50" sortable>
-      <template slot-scope="scope">
-        <el-tag :type="scope.row.online === true ? 'success':'warning'">
-          {{scope.row.online|formatBoolean}}
-        </el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column label="型号" prop="type.categoryName" sortable min-width="60"></el-table-column>
-    <el-table-column label="生产商" prop="factory.fullName" sortable min-width="60"></el-table-column>
-    <el-table-column label="出厂时间" sortable min-width="50">
-      <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
-    </el-table-column>
-    <el-table-column label="安装时间" sortable min-width="50">
-      <template slot-scope="scope">{{scope.row.installTime|formatDate}}</template>
-    </el-table-column>
-    <el-table-column label="状态类别" prop="status.categoryName" sortable min-width="50"></el-table-column>
-    <el-table-column label="上次离线时间" sortable min-width="70">
-      <template slot-scope="scope">{{scope.row.lastOfflineTime|formatDateTime}}</template>
-    </el-table-column>
-    <el-table-column label="上次上线时间" sortable min-width="70">
-      <template slot-scope="scope">{{scope.row.lastOnlineTime|formatDateTime}}</template>
-    </el-table-column>
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top"
+            trigger="click">
+            <span>责任人:</span>
+            <div v-for="(item,index) in scope.row.owners" :key="item.ID">
+              <span>{{ index + 1 }}: {{item.realName }} - {{ item.phoneNumber }}</span>
+            </div>
+           <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">{{ scope.row.ID}}</el-tag>
+            </div>
+          </el-popover>
+        </template>             
+      </el-table-column>
+      <el-table-column label="在线状态" min-width="80" sortable align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.online === true ? 'success':'warning'">
+            {{scope.row.online|formatBoolean}}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="型号" prop="type.categoryName" sortable min-width="80" align="center"></el-table-column>
+      <el-table-column label="生产商" prop="factory.fullName" sortable min-width="100" align="center"></el-table-column>
+      <el-table-column label="出厂时间" sortable min-width="80" align="center">
+        <template slot-scope="scope">{{scope.row.factoryTime|formatDate}}</template>
+      </el-table-column>
+      <el-table-column label="安装时间" sortable min-width="80" align="center">
+        <template slot-scope="scope">{{scope.row.installTime|formatDate}}</template>
+      </el-table-column>
+      <el-table-column label="状态" prop="status.categoryName" sortable min-width="60" align="center"></el-table-column>
+      <el-table-column label="上次离线时间" sortable min-width="120" align="center">
+        <template slot-scope="scope">{{scope.row.lastOfflineTime|formatDateTime}}</template>
+      </el-table-column>
+      <el-table-column label="上次上线时间" sortable min-width="120" align="center">
+        <template slot-scope="scope">{{scope.row.lastOnlineTime|formatDateTime}}</template>
+      </el-table-column>
+      <el-table-column label="日期" min-width="120" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDateTime}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="200" align="center">
         <template slot-scope="scope">
           <el-button @click="updateAdDevice(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdDevice(scope.row)">删除</el-button>
@@ -131,7 +145,6 @@
                     :label="item.realName"
                     :value="item">
               <span style="float: left">{{ item.realName }}</span>
-              <span style="float: right;color: #2d79a0;font-size: 13px">{{ item.company.fullName }}</span>
             </el-option>
           </el-select>
         </el-form-item>

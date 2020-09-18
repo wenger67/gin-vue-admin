@@ -29,18 +29,15 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-
-    <el-table-column label="设备" prop="deviceId" sortable min-width="30"></el-table-column>
-    
-    <el-table-column label="事件类型" prop="type.categoryName" sortable min-width="60"></el-table-column>
-    
-    <el-table-column label="事件内容" prop="content" sortable min-width="60"></el-table-column> 
-    
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center" />
+      <el-table-column label="设备" prop="deviceId" sortable min-width="80" align="center"></el-table-column>
+      <el-table-column label="事件类型" prop="type.categoryName" sortable min-width="80" align="center"></el-table-column>
+      <el-table-column label="事件内容" prop="content" sortable min-width="200" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="120" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateAdDeviceEvent(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(scope.row)">删除</el-button>

@@ -280,7 +280,7 @@ export default {
       },
       handlePreview(medias) {
         this.previewImages = []
-        this.previewImages = _.map(_.filter(medias, function(o){return o.tag == "jpg"}), "url")
+        this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
         this.$viewer.show()
       },
       handleUploadSuccess(response, file, fileList) {

@@ -327,7 +327,6 @@ import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
 import Subject from "@/utils/subject";
 import XLSX from "xlsx";
-import FileSaver from "file-saver"
 
 export default {
   name: "LiftTrouble",
@@ -418,7 +417,7 @@ export default {
     },
     handlePreview(medias) {
       this.previewImages = []
-      this.previewImages = _.map(_.filter(medias, function(o){return o.tag == "jpg"}), "url")
+      this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
       this.$viewer.show()
     },    
     handleSelectionChange(val) {

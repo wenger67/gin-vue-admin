@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增DeviceConfig</el-button>
+          <el-button @click="openDialog" type="primary">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -29,15 +29,15 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-    <el-table-column type="selection" width="55"></el-table-column>
-    <el-table-column label="序号" prop="ID" sortable min-width="60"></el-table-column>
-    <el-table-column label="配置键值" prop="key" sortable min-width="60"></el-table-column>
-    <el-table-column label="配置内容" prop="value" sortable min-width="60"></el-table-column>
-    <el-table-column label="配置说明" prop="comment" sortable min-width="60"></el-table-column>
-      <el-table-column label="日期" min-width="60">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center" />
+      <el-table-column label="键值" prop="key" sortable min-width="60" align="center"></el-table-column>
+      <el-table-column label="内容" prop="value" sortable min-width="60" align="center"></el-table-column>
+      <el-table-column label="说明" prop="comment" sortable min-width="150" align="center"></el-table-column>
+      <el-table-column label="日期" min-width="120" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="200" align="center">
         <template slot-scope="scope">
           <el-button @click="updateAdDeviceConfig(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAdDeviceConfig(scope.row)">删除</el-button>

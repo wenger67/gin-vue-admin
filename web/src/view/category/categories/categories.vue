@@ -15,7 +15,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增类别</el-button>
+          <el-button @click="openDialog" type="primary">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -38,14 +38,14 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="序号" prop="ID" min-width="40"></el-table-column> 
-      <el-table-column label="主体" prop="categorySubject.subjectName" min-width="60"></el-table-column> 
-      <el-table-column label="类别" prop="categoryName" min-width="60"></el-table-column> 
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="主体" prop="categorySubject.subjectName" min-width="100" align="center"></el-table-column> 
+      <el-table-column label="类别" prop="categoryName" min-width="100" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" min-width="100" fixed="right">
+      <el-table-column label="按钮组" min-width="100" align="center" fixed="right">
         <template slot-scope="scope">
           <el-button @click="updateCategories(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" size="mini" @click="deleteCategories(scope.row)">删除</el-button>

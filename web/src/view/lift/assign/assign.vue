@@ -68,7 +68,6 @@ import {
     deleteUserLift,
     deleteUserLiftByIds,
     updateUserLift,
-    findUserLift,
     getUserLiftList
 } from "@/api/userLift";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/data";

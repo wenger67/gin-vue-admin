@@ -26,18 +26,18 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" prop="ID" sortable min-width="30"></el-table-column> 
-      <el-table-column label="lift" prop="lift.nickName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="timeDimension" prop="timeDimension" sortable min-width="60"></el-table-column> 
-      <el-table-column label="maintainDimension" prop="maintainDimension" sortable min-width="60"></el-table-column> 
-      <el-table-column label="humanDimension" prop="humanDimension" sortable min-width="60"></el-table-column> 
-      <el-table-column label="innerDimension" prop="innerDimension" sortable min-width="60"></el-table-column> 
-      <el-table-column label="sensorDimension" prop="sensorDimension" sortable min-width="60"></el-table-column> 
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="电梯" prop="lift.nickName" sortable min-width="60" align="center"></el-table-column> 
+      <el-table-column label="时间维度" prop="timeDimension" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="维保维度" prop="maintainDimension" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="人为维度" prop="humanDimension" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="内在维度" prop="innerDimension" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="数据维度" prop="sensorDimension" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="100">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateHealthSystem(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteHealthSystem(scope.row)">删除</el-button>

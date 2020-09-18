@@ -6,9 +6,6 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增message表</el-button>
-        </el-form-item>
-        <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
             <p>确定要删除吗？</p>
               <div style="text-align: right; margin: 0">
@@ -29,22 +26,22 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="序号" prop="ID" sortable min-width="30"></el-table-column> 
-      <el-table-column label="from" prop="fromUser.realName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="target" prop="targetUser.realName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
-      <el-table-column label="type" prop="type.categoryName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="send" prop="send" min-width="30">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="来源" prop="fromUser.realName" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="目标" prop="targetUser.realName" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="内容" prop="content" sortable min-width="150" align="center"></el-table-column> 
+      <el-table-column label="类型" prop="type.categoryName" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="已发送" prop="send" min-width="60" align="center">
           <template slot-scope="scope">{{scope.row.send|formatBoolean}}</template>
       </el-table-column>
-      <el-table-column label="read" prop="read" min-width="30">
+      <el-table-column label="已读" prop="read" min-width="60" align="center">
           <template slot-scope="scope">{{scope.row.read|formatBoolean}}</template>
       </el-table-column>
-      <el-table-column label="日期" min-width="70">
+      <el-table-column label="日期" min-width="120" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="100">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateMessage(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteMessage(scope.row)">删除</el-button>

@@ -26,16 +26,16 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" prop="ID" sortable min-width="30"></el-table-column> 
-      <el-table-column label="lift" prop="lift.nickName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="dimension" prop="dimension.categoryName" sortable min-width="60"></el-table-column> 
-      <el-table-column label="content" prop="content" sortable min-width="60"></el-table-column> 
-      <el-table-column label="score字段" prop="score" sortable min-width="60"></el-table-column> 
-      <el-table-column label="日期" min-width="70">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="lift" prop="lift.nickName" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="dimension" prop="dimension.categoryName" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="content" prop="content" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="score字段" prop="score" sortable min-width="120" align="center"></el-table-column> 
+      <el-table-column label="日期" min-width="120" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="100">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateHealthChange(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteHealthChange(scope.row)">删除</el-button>

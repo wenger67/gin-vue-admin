@@ -358,7 +358,6 @@
             res = await createUser(this.formData);
             break;
           case "update":
-            res = await updateUserAdmin(this.formData);
             break;
         }
         if (res.code === 0) {

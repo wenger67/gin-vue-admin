@@ -1577,13 +1577,13 @@ func InitLiftModel() (err error) {
 	tx := global.PantaDb.Begin()
 	insert := []model.LiftModel{
 		{Model: gorm.Model{ID: 1, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FactoryId: 7, Brand: "奥的斯",
-			Modal: "TECE-300VF", Load: 1000},
+			Modal: "TECE-300VF", Load: 1000, Speed: 1.5},
 		{Model: gorm.Model{ID: 2, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FactoryId: 7, Brand: "奥的斯",
-			Modal: "TECE-60VF", Load: 500},
+			Modal: "TECE-60VF", Load: 500, Speed: 2.0},
 		{Model: gorm.Model{ID: 3, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FactoryId: 7, Brand: "奥的斯",
-			Modal: "E311", Load: 800},
+			Modal: "E311", Load: 800, Speed: 2.5},
 		{Model: gorm.Model{ID: 4, CreatedAt: time.Now(), UpdatedAt: time.Now()}, FactoryId: 7, Brand: "奥的斯",
-			Modal: "TECE-3VF", Load: 600},
+			Modal: "TECE-3VF", Load: 600, Speed: 1.8},
 	}
 	if err := tx.Create(&insert).Error; err != nil {
 		tx.Rollback()
@@ -2313,11 +2313,9 @@ func InitData() {
 	err = InitCompany()
 	err = InitUser()
 	err = InitSysApi()
-	err = InitDevice()
 	err = InitDeviceOwner()
 	err = InitDeviceConfig()
 	err = InitDeviceConfigRelation()
-	err = InitLift()
 	err = InitMessage()
 	err = InitLiftModel()
 	err = InitHealthSystem()
@@ -2332,6 +2330,8 @@ func InitData() {
 	err = InitLiftTrouble()
 	err = InitUserLift()
 	err = InitCasbinModel()
+	err = InitLift()
+	err = InitDevice()
 	if err != nil {
 		global.PantaLog.Error("initialize data failed", err)
 	} else {

@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增address表</el-button>
+          <el-button @click="openDialog" type="primary">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -29,22 +29,22 @@
       style="width: 100%"
       tooltip-effect="dark"
     >
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" prop="ID" min-width="30"></el-table-column>
-      <el-table-column label="Province" prop="region.province" min-width="60"></el-table-column>
-      <el-table-column label="City" prop="region.city" min-width="60"></el-table-column>
-      <el-table-column label="District" prop="region.district" min-width="60"></el-table-column> 
-      <el-table-column label="地址 detail" prop="addressName" min-width="60"></el-table-column> 
-      <el-table-column label="user amount" prop="userAmount" min-width="60"></el-table-column> 
-      <el-table-column label="Tags" prop="tags" min-width="60">
+      <el-table-column type="selection" width="40" align="center"></el-table-column>
+      <el-table-column sortable label="序号" prop="ID" min-width="50" align="center"/>
+      <el-table-column label="省份" prop="region.province" min-width="80" align="center"></el-table-column>
+      <el-table-column label="城市" prop="region.city" min-width="80" align="center"></el-table-column>
+      <el-table-column label="区县" prop="region.district" min-width="80" align="center"></el-table-column> 
+      <el-table-column label="详细地址" prop="addressName" min-width="180" align="center"></el-table-column> 
+      <el-table-column label="人流量" prop="userAmount" min-width="100" align="center"></el-table-column> 
+      <el-table-column label="标签" prop="tags" min-width="150" align="center">
         <template slot-scope="scope">
           <el-tag :key="tag.ID" v-for="tag in scope.row.tags">{{tag.categoryName}}</el-tag>        
         </template>
       </el-table-column> 
-      <el-table-column label="日期" min-width="100">
+      <el-table-column label="日期" min-width="100" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" width="200">
+      <el-table-column label="按钮组" fixed="right" min-width="100" align="center">
         <template slot-scope="scope">
           <el-button @click="updateAddress(scope.row)" size="small" type="primary">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteAddress(scope.row)">删除</el-button>
