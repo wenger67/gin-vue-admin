@@ -71,6 +71,14 @@ Vue.use(VueNativeSocket, 'ws://127.0.0.1:8888/api/ws/endpoint', {
 import _ from 'lodash'
 Vue.prototype._ = _
 
+// less
+import less from 'less'
+Vue.use(less)
+
+// DATA-V
+import dataV from '@jiaminghi/data-view'
+Vue.use(dataV)
+
 new Vue({
     render: h => h(App),
     router,

@@ -95,6 +95,7 @@ import Search from '@/view/layout/search/search'
 import BottomInfo from '@/view/layout/bottomInfo/bottomInfo'
 import { mapGetters, mapActions } from 'vuex'
 import { changePassword } from '@/api/user'
+
 export default {
   name: 'Layout',
   data() {
@@ -187,7 +188,7 @@ export default {
         event: "report",
         data: this.userInfo.uuid
       })
-    },
+    }
   },
   computed: {
     ...mapGetters('user', ['userInfo']),

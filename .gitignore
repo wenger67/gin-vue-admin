@@ -27,5 +27,6 @@ go.sum
 /server/latest_log
 
 *.iml
+/server/panta
 /server/server
 /server/go_build_server_
