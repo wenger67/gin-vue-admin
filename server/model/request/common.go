@@ -6,6 +6,12 @@ type PageInfo struct {
 	PageSize int `json:"pageSize" form:"pageSize"`
 }
 
+type RankInfo struct {
+	Key string `json:"key" form:"key"`
+	Threshold int `json:"threshold"`
+	Limit int `json:"limit"`
+}
+
 // Find by id structure
 type GetById struct {
 	Id float64 `json:"id" form:"id"`

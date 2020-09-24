@@ -4,6 +4,7 @@ import (
 	"panta/global"
 	"panta/model"
 	"panta/model/request"
+	"panta/model/response"
 	"time"
 )
 
@@ -111,11 +112,27 @@ func GetLiftTroubleInfoList(info request.LiftTroubleSearch) (err error, list int
     // 创建db
 	db := global.PantaDb.Model(&model.LiftTrouble{})
     var liftTroubles []model.LiftTrouble
-    // 如果有条件搜索 下方会自动创建搜索语句
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("FromCategory").
-		Preload("StartUser").Preload("ResponseUser").Preload("SceneUser").
-		Preload("FixUser").Preload("FixCategory").Preload("ReasonCategory").
-		Preload("Medias").Preload("Recorder").Find(&liftTroubles).Error
-	return err, liftTroubles, total
+
+	if info.Key != "" {
+		var res []response.LiftTroubleCountByProgress
+		if info.Key == "progress" {
+			db = db.Count(&total).Select("progress,Count(*) as total").Group("progress").
+				Order("total desc, progress desc")
+			if info.Threshold != 0 {
+				db = db.Having("total > ?", info.Threshold)
+			}
+			if info.Limit != 0 {
+				db = db.Limit(info.Limit)
+			}
+			err = db.Scan(&res).Error
+		}
+		return err, res, total
+	} else {
+		err = db.Count(&total).Error
+		err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("FromCategory").
+			Preload("StartUser").Preload("ResponseUser").Preload("SceneUser").
+			Preload("FixUser").Preload("FixCategory").Preload("ReasonCategory").
+			Preload("Medias").Preload("Recorder").Find(&liftTroubles).Error
+		return err, liftTroubles, total
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"panta/global"
 	"panta/model"
 	"panta/model/request"
+	"panta/model/response"
 	"time"
 )
 
@@ -91,9 +92,24 @@ func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list inter
     // 创建db
 	db := global.PantaDb.Model(&model.LiftRecord{})
     var liftRecords []model.LiftRecord
-    // 如果有条件搜索 下方会自动创建搜索语句
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Category").Preload("Medias").
-		Preload("Worker").Preload("Recorder").Find(&liftRecords).Error
-	return err, liftRecords, total
+	if info.Key != "" {
+		var res []response.LiftRecordCountByType
+		if info.Key == "type" {
+			db = db.Count(&total).Select("category_id as type,Count(*) as total").Group("category_id").
+				Order("total desc, category_id desc")
+			if info.Threshold != 0 {
+				db = db.Having("total > ?", info.Threshold)
+			}
+			if info.Limit != 0 {
+				db = db.Limit(info.Limit)
+			}
+			err = db.Scan(&res).Error
+		}
+		return err, res, total
+	} else {
+		err = db.Count(&total).Error
+		err = db.Limit(limit).Offset(offset).Preload("Lift").Preload("Category").Preload("Medias").
+			Preload("Worker").Preload("Recorder").Find(&liftRecords).Error
+		return err, liftRecords, total
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"panta/global"
 	"panta/model"
 	"panta/model/request"
+	"panta/model/response"
 )
 
 // @title    CreateLift
@@ -78,11 +79,21 @@ func GetLiftInfoList(info request.LiftSearch) (err error, list interface{}, tota
     // 创建db
 	db := global.PantaDb.Model(&model.Lift{})
     var lifts []model.Lift
-    // 如果有条件搜索 下方会自动创建搜索语句
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Preload("Installer").Preload("Installer.Category").Preload("Maintainer").
-		Preload("Maintainer.Category").Preload("Checker").Preload("Checker.Category").
-		Preload("Owner").Preload("Owner.Category").Preload("LiftModel").Preload("Category").
-		Preload("Address").Preload("AdDevice").Find(&lifts).Error
-	return err, lifts, total
+	var res []response.LiftCountByAddress
+
+	if info.Key != "" {
+		if info.Key == "address" {
+			db.Select("address_id").Group("address_id").Count(&total)
+			err = db.Select("address_id as address,Count(*) as total, addresses.address_name").
+				Joins("left join addresses on addresses.id = lifts.address_id").Group("address_id").Scan(&res).Error
+		}
+		return err, res, total
+	} else {
+		err = db.Count(&total).Error
+		err = db.Limit(limit).Offset(offset).Preload("Installer").Preload("Installer.Category").Preload("Maintainer").
+			Preload("Maintainer.Category").Preload("Checker").Preload("Checker.Category").
+			Preload("Owner").Preload("Owner.Category").Preload("LiftModel").Preload("Category").
+			Preload("Address").Preload("AdDevice").Find(&lifts).Error
+		return err, lifts, total
+	}
 }

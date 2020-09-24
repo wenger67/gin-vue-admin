@@ -13,3 +13,9 @@ type LoginResponse struct {
 	Token     string        `json:"token"`
 	ExpiresAt int64         `json:"expiresAt"`
 }
+
+type UserCountByCompany struct {
+	CompanyId   int    `json:"companyId"`
+	FullName string `json:"companyName"`
+	Total       int    `json:"total"`
+}

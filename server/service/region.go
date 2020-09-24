@@ -73,32 +73,35 @@ func GetRegionInfoList(info request.RegionSearch) (err error, list interface{}, 
 	offset := info.PageSize * (info.Page - 1)
     // 创建db
 	db := global.PantaDb.Model(&model.Region{})
-    var regions []model.Region
-	if info.GroupKey == "province" {
-		if info.Province == "" {
-			db = db.Select("province").Group(info.GroupKey)
-		} else {
-			db = db.Select("province").Where("province LIKE ?", "%" + info.Province + "%").Group(info.GroupKey)
+	var regions []model.Region
+	if info.GroupKey != ""{
+		if info.GroupKey == "province" {
+			if info.Province == "" {
+				db = db.Debug().Select("province").Group(info.GroupKey)
+			} else {
+				db = db.Select("province").Where("province LIKE ?", "%" + info.Province + "%").Group(info.GroupKey)
+			}
 		}
-	}
-
-	if info.GroupKey == "city" {
-		if info.City == "" {
-			db = db.Select("city").Where("province = ?", info.Province).Group(info.GroupKey)
-		} else {
-			db = db.Select("city").Where("province = ? AND city LIKE ?", info.Province, "%" + info.City + "%").Group(info.GroupKey)
+	
+		if info.GroupKey == "city" {
+			if info.City == "" {
+				db = db.Select("city").Where("province = ?", info.Province).Group(info.GroupKey)
+			} else {
+				db = db.Select("city").Where("province = ? AND city LIKE ?", info.Province, "%" + info.City + "%").Group(info.GroupKey)
+			}
 		}
+	
+		// not need group
+		if info.GroupKey == "district" {
+			if info.District == "" {
+				db = db.Select("district").Where("city = ?", info.City)
+			} else {
+				db = db.Select("district").Where("city = ? AND district LIKE ?", info.City, "%" + info.District + "%")
+			}
+		}		
+		err = db.Count(&total).Select(info.GroupKey).Limit(limit).Offset(offset).Find(&regions).Error
+	} else {
+		err = db.Count(&total).Limit(limit).Offset(offset).Find(&regions).Error
 	}
-
-	// not need group
-	if info.GroupKey == "district" {
-		if info.District == "" {
-			db = db.Select("id, district").Where("city = ?", info.City)
-		} else {
-			db = db.Select("id, district").Where("city = ? AND district LIKE ?", info.City, "%" + info.District + "%")
-		}
-	}
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&regions).Error
 	return err, regions, total
 }

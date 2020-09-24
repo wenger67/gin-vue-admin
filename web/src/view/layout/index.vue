@@ -5,7 +5,7 @@
       <el-aside class="main-cont main-left">
         <div class="tilte">
           <img alt class="logoimg" src="~@/assets/nav_logo.png" />
-          <h2 class="tit-text" v-if="isSider">Gin-Vue-Admin</h2>
+          <h2 class="tit-text" v-if="isSider">Panta</h2>
         </div>
         <Aside class="aside" />
       </el-aside>
@@ -372,8 +372,8 @@ $mainHight: 100vh;
     width: 30px;
     height: 30px;
     vertical-align: middle;
-    background: #fff;
-    border-radius: 50%;
+    background: #ffffff;
+    border-radius: 20%;
     padding: 3px;
   }
   .tit-text {
@@ -381,6 +381,7 @@ $mainHight: 100vh;
     color: #fff;
     font-weight: 600;
     font-size: 20px;
+    margin-left: 20px;
     vertical-align: middle;
   }
 }

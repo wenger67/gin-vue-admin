@@ -2326,12 +2326,12 @@ func InitData() {
 	err = InitSysDictionary()
 	err = InitSysDictionaryDetail()
 	err = InitExaFileUploadAndDownload()
-	err = InitLiftRecord()
-	err = InitLiftTrouble()
 	err = InitUserLift()
 	err = InitCasbinModel()
 	err = InitLift()
 	err = InitDevice()
+	err = InitLiftTrouble()
+	err = InitLiftRecord()
 	if err != nil {
 		global.PantaLog.Error("initialize data failed", err)
 	} else {

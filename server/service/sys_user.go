@@ -5,6 +5,7 @@ import (
 	"panta/global"
 	"panta/model"
 	"panta/model/request"
+	"panta/model/response"
 	"panta/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -84,11 +85,29 @@ func GetUserInfoList(params request.SearchUserParams) (err error, list interface
 	offset := params.PageInfo.PageSize * (params.PageInfo.Page - 1)
 	db := global.PantaDb.Model(&model.SysUser{})
 	var userList []model.SysUser
-	if params.CompanyId != 0 {
-		db = db.Where("company_id = ?", params.CompanyId)
+	if params.Key != "" {
+		var res []response.UserCountByCompany
+		if params.Key == "company" {
+			db.Select("company_id").Group("company_id").Count(&total)
+			db = db.Select("company_id,Count(*) as total, companies.full_name").
+				Joins("left join companies on companies.id = sys_users.company_id").Group("company_id").
+				Order("total desc, company_id desc")
+			if params.Threshold != 0 {
+				db = db.Having("total > ?", params.Threshold)
+			}
+			if params.Limit != 0 {
+				db = db.Limit(params.Limit)
+			}
+			err = db.Scan(&res).Error
+		}
+		return err, res, total
+	} else {
+		if params.CompanyId != 0 {
+			db = db.Where("company_id = ?", params.CompanyId)
+		}
+		err = db.Count(&total).Limit(limit).Offset(offset).Preload("Authority").Find(&userList).Error
+		return err, userList, total
 	}
-	err = db.Count(&total).Limit(limit).Offset(offset).Preload("Authority").Find(&userList).Error
-	return err, userList, total
 }
 
 func GetUser(id request.GetById) (err error, user model.SysUser) {

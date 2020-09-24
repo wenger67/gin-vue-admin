@@ -50,4 +50,5 @@ type SearchUserParams struct {
 	model.SysUser
 	PageInfo
 	CompanyId uint `json:"companyId" form:"companyId"`
+	RankInfo
 }

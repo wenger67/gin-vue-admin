@@ -7,6 +7,7 @@ import (
 type LiftRecordSearch struct {
 	model.LiftRecord
 	PageInfo
+	RankInfo
 }
 
 // step 1 create
