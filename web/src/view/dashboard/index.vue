@@ -14,6 +14,12 @@
           <center-cmp />
         </dv-border-box-3>
       </div>
+      <div class="bottom-nav">
+        <dv-decoration-7 class="bottom-nav-item">首页</dv-decoration-7>
+        <dv-decoration-7 class="bottom-nav-item">今日</dv-decoration-7>
+        <dv-decoration-7 class="bottom-nav-item">月度</dv-decoration-7>
+        <dv-decoration-7 class="bottom-nav-item">排行</dv-decoration-7>
+      </div>
     </dv-full-screen-container>
   </div>
 </template>
@@ -21,10 +27,6 @@
 <script>
 import topHeader from './component/topHeader'
 import rankingBoard from './component/rankingBoard'
-import roseChart from './component/roseChart'
-import waterLevelChart from './component/waterLevelChart'
-import scrollBoard from './component/scrollBoard'
-import cards from './component/cards'
 import centerCmp from './component/CenterCmp'
 
 import sf from 'screenfull'
@@ -34,10 +36,6 @@ export default {
   components: {
     topHeader,
     rankingBoard,
-    roseChart,
-    waterLevelChart,
-    scrollBoard,
-    cards,
     centerCmp
   },
   data () {
@@ -48,11 +46,14 @@ export default {
     }
   },
   filters: {
-    formatValue:function(i) {
+    formatDate:function(i) {
       return (i<10)?("0"+i) : i;
     },
   },
   methods: {
+    formatTime(i) {
+      return (i<10)?("0"+i) : i;
+    },
     sfByElement() {
       const element = document.getElementById('data-view');
       if (element && sf.isEnabled) {
@@ -62,12 +63,12 @@ export default {
     getTime(){
       const date = new Date();
       const year = date.getFullYear();
-      const month = (date.getMonth() + 1) | this.formatValue;
-      const day = date.getDate() | this.formatValue;
-      let hour= date.getHours() | this.formatValue;
-      const minute = date.getMinutes() | this.formatValue;
-      const second = date.getSeconds() | this.formatValue;
-      let str = ""
+      const month = this.formatTime(date.getMonth() + 1);
+      const day = this.formatTime(date.getDate());
+      let hour= this.formatTime(date.getHours());
+      const minute = this.formatTime(date.getMinutes());
+      const second = this.formatTime(date.getSeconds());
+      let str = "";
       if(hour>12) {
         hour -= 12;
         str = " PM";
@@ -91,8 +92,8 @@ export default {
 html, body {
   width: 100%;
   height: 100%;
-  padding: 0px;
-  margin: 0px;
+  padding: 0;
+  margin: 0;
 }
 
 #data-view {
@@ -120,7 +121,9 @@ html, body {
   .main-content {
     flex: 1;
     display: flex;
+    height: 80%;
     flex-direction: row;
+    margin-bottom: 48px;
 
     .border-box-content {
       padding: 20px;
@@ -131,7 +134,6 @@ html, body {
 
   .main-column {
     width: 33%;
-
   }
 
   .device-count {
@@ -158,6 +160,21 @@ html, body {
     flex-grow: 0;
     box-sizing: border-box;
     padding-bottom: 20px;
+  }
+
+  .bottom-nav {
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+
+    .bottom-nav-item {
+      width: 150px;
+      height: 48px;
+    }
   }
 }
 </style>
