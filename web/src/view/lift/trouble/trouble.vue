@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                                  
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">                             
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
@@ -18,7 +18,7 @@
             <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
           </el-popover>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="export">
           <el-button type="primary" @click="exportXlsx">Export</el-button>
         </el-form-item>
       </el-form>
@@ -32,11 +32,8 @@
       tooltip-effect="dark"
     >
       <el-table-column type="selection" min-width="30"></el-table-column>
-      <el-table-column label="序号" prop="ID" sortable min-width="80"></el-table-column> 
-      <el-table-column label="进度" sortable min-width="100">
-        <template slot-scope="scope">{{ scope.row.progress|formatProgress }}</template>
-      </el-table-column>
-      <el-table-column label="创建" sortable min-width="100" align="center">
+      <el-table-column label="序号" prop="ID" sortable min-width="80" align="center"></el-table-column> 
+      <el-table-column label="创建" sortable min-width="120" align="center">
         <template slot-scope="scope">
           <el-popover
             placement="top"
@@ -127,18 +124,21 @@
           <span v-else>---</span>
         </template>
       </el-table-column> 
-      <el-table-column label="评分" prop="feedbackRate" sortable min-width="80">
+      <el-table-column label="评分" prop="feedbackRate" sortable min-width="180" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.feedbackRate">{{ scope.row.feedbackRate }}</span>
+          <span v-if="scope.row.feedbackRate">
+            <el-rate v-model="scope.row.feedbackRate" disabled show-score :allow-half="allowHalf"
+           :max="max" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
+          </span>
           <span v-else>---</span>
         </template>
       </el-table-column> 
       <el-table-column label="日期" min-width="160" align="center">
         <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
       </el-table-column>
-      <el-table-column label="按钮组" fixed="right" min-width="150" align="center">
+      <el-table-column label="按钮组" fixed="right" min-width="200" align="center">
         <template slot-scope="scope">
-          <el-button @click="updateLiftTrouble(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
+          <el-button @click="process(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row.progress|formatProgress }}</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftTrouble(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -156,7 +156,7 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-       <el-steps :active="stepActive" :style="{marginLeft:'30px', marginRight:'30px'}">
+       <el-steps :active="stepActive" align-center>
         <el-step v-for="item in stepItems"
           :key="item.key"
           :title="item.title"
@@ -164,22 +164,10 @@
           :icon="item.icon">
         </el-step>
       </el-steps>
-      <el-form :model="formData" ref="formData" label-width="100px" size="medium" label-postion="left" :style="{marginTop:'30px'}">
-        <el-form-item v-if="stepActive == 0" label="lift id" prop="liftId">
-          <el-select v-model="formData.liftId" filter clearable placeholder="please select lift" >
-            <el-option v-for="item in liftOptions"
-              :key="item.ID"
-              :label="item.nickName"
-              :value="item.ID">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="stepActive > 0" label="lift id" prop="liftId">
-          <el-input v-model="formData.lift.nickName" disabled placeholder=""></el-input>
-        </el-form-item>
-
-        <el-form-item v-if="stepActive == 0" label="from category" prop="fromCategoryId">
-          <el-select v-model="formData.fromCategoryId" filter clearable placeholder="please select fromCategoryId" >
+      <el-form :model="formData" ref="formData" class="form-data" label-width="100px" size="medium" label-postion="left" :style="{marginTop:'30px'}">
+        <!-- created -->
+        <el-form-item v-if="stepActive == 0" label="故障类型" prop="fromCategoryId">
+          <el-select v-model="formData.fromCategoryId" filter clearable placeholder="请选择故障类型" >
             <el-option v-for="item in fromOptions"
               :key="item.ID"
               :label="item.categoryName"
@@ -187,12 +175,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 0" label="from category" prop="fromCategoryId">
-          <el-input v-model="formData.fromCategory.categoryName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive == 0" label="电梯:" prop="liftId">
+          <el-select v-model="formData.liftId" filter clearable placeholder="请选择电梯" >
+            <el-option v-for="item in liftOptions"
+              :key="item.ID"
+              :label="item.nickName"
+              :value="item.ID">
+            </el-option>
+          </el-select>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 0" label="creator" prop="startUserId">
-          <el-select v-model="formData.startUserId" filter clearable placeholder="please select startUserId" >
+        <el-form-item v-if="stepActive == 0" label="创建者" prop="startUserId">
+          <el-select v-model="formData.startUserId" filter clearable placeholder="请选择创建者" >
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -200,12 +193,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 0" label="creator" prop="startUserId">
-          <el-input v-model="formData.startUser.realName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 0" label="故障类型" prop="fromCategoryId">
+          <span>{{formData.fromCategory.categoryName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 1" label="response" prop="responseUserId">
-          <el-select v-model="formData.responseUserId" filter clearable placeholder="please select responseUserId" >
+        <el-form-item v-if="stepActive > 0" label="电梯:" prop="liftId">
+          <span>{{formData.lift.nickName}}</span>
+        </el-form-item>        
+        <el-form-item v-if="stepActive > 0" label="创建者" prop="startUserId">
+          <span>{{formData.startUser.realName}}</span>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 0" label="创建时间" prop="startTime">
+          <span>{{formData.startTime|formatDate}}</span>
+        </el-form-item>
+        <!-- responsed -->
+        <el-form-item v-if="stepActive == 1" label="响应人员" prop="responseUserId">
+          <el-select v-model="formData.responseUserId" filter clearable placeholder="请选择响应人员" >
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -213,12 +215,15 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 1" label="response" prop="responseUserId">
-          <el-input v-model="formData.responseUser.realName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 1" label="响应人员" prop="responseUserId">
+          <span>{{formData.responseUser.realName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 2" label="scene" prop="sceneUserId">
-          <el-select v-model="formData.sceneUserId" filter clearable placeholder="please select sceneUserId" >
+        <el-form-item v-if="stepActive > 1" label="响应时间" prop="responseTime">
+          <span>{{formData.responseTime|formatDate}}</span>
+        </el-form-item>
+        <!-- scene -->
+        <el-form-item v-if="stepActive == 2" label="到场人员" prop="sceneUserId">
+          <el-select v-model="formData.sceneUserId" filter clearable placeholder="请选择到场人员" >
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -226,12 +231,15 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 2" label="scene" prop="sceneUserId">
-          <el-input v-model="formData.sceneUser.realName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 2" label="到场人员" prop="sceneUserId">
+          <span>{{formData.sceneUser.realName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 3" label="fixUser" prop="fixUserId">
-          <el-select v-model="formData.fixUserId" filter clearable placeholder="please select fixUserId" >
+        <el-form-item v-if="stepActive > 2" label="到场时间" prop="sceneTime">
+          <span>{{formData.sceneTime|formatDate}}</span>
+        </el-form-item>
+        <!-- fixed -->
+        <el-form-item v-if="stepActive == 3" label="修复人员" prop="fixUserId">
+          <el-select v-model="formData.fixUserId" filter clearable placeholder="请选择修复人员" >
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -239,12 +247,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 3" label="fixUser" prop="fixUserId">
-          <el-input v-model="formData.fixUser.realName" disabled placeholder=""></el-input>
-        </el-form-item>
-
-        <el-form-item v-if="stepActive == 3" label="fixCategory" prop="fixCategoryId">
-          <el-select v-model="formData.fixCategoryId" filter clearable placeholder="please select fixCategoryId" >
+        <el-form-item v-if="stepActive == 3" label="修复方式" prop="fixCategoryId">
+          <el-select v-model="formData.fixCategoryId" filter clearable placeholder="请选择修复方式" >
             <el-option v-for="item in fixOptions"
               :key="item.ID"
               :label="item.categoryName"
@@ -252,12 +256,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 3" label="fixCategory" prop="fixCategoryId">
-          <el-input v-model="formData.fixCategory.categoryName" disabled placeholder=""></el-input>
-        </el-form-item>
-
-        <el-form-item v-if="stepActive == 3" label="reasonCategory" prop="reasonCategoryId">
-          <el-select v-model="formData.reasonCategoryId" filter clearable placeholder="please select reasonCategoryId" >
+        <el-form-item v-if="stepActive == 3" label="故障原因" prop="reasonCategoryId">
+          <el-select v-model="formData.reasonCategoryId" filter clearable placeholder="请选择故障原因" >
             <el-option v-for="item in reasonOptions"
               :key="item.ID"
               :label="item.categoryName"
@@ -265,33 +265,61 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 3" label="reasonCategory" prop="reasonCategoryId">
-          <el-input v-model="formData.reasonCategory.categoryName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 3" label="修复人员" prop="fixUserId">
+          <span>{{formData.fixUser.realName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 3" label="content" prop="content">
-          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input trouble content"></el-input>
+        <el-form-item v-if="stepActive > 3" label="修复方式" prop="fixCategoryId">
+          <span>{{formData.fixCategory.categoryName}}</span>
         </el-form-item>
-        <el-form-item v-if="stepActive > 3" label="content" prop="content">
-          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 3" label="故障原因" prop="reasonCategoryId">
+          <span>{{formData.reasonCategory.categoryName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 4" label="feedbackContent" prop="feedbackContent">
-          <el-input v-model="formData.feedbackContent" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input feedbackContent"></el-input>
+        <el-form-item v-if="stepActive > 3" label="修复时间" prop="fixTime">
+          <span>{{formData.fixTime|formatDate}}</span>
         </el-form-item>
-        <el-form-item v-if="stepActive > 4" label="feedbackContent" prop="feedbackContent">
-          <el-input v-model="formData.feedbackContent" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
+        <el-form-item v-if="stepActive == 3" label="内容:" prop="content">
+          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="请输入内容"></el-input>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 4" label="feedbackRate" prop="feedbackRate">
-           <el-input-number v-model="formData.feedbackRate" :min="1" :max="100" placeholder="please input feedbackRate"></el-input-number>
+        <el-form-item v-if="stepActive > 3" label="内容:" prop="content">
+          <span>{{formData.content}}</span>
         </el-form-item>
-        <el-form-item v-if="stepActive > 4" label="feedbackRate" prop="feedbackRate">
-           <el-input-number v-model="formData.feedbackRate" :min="1" :max="100" placeholder="please input feedbackRate"></el-input-number>
+        <el-form-item v-if="stepActive == 3" label="媒体文件" prop="medias">
+          <el-upload
+            :action="`${path}/fileUploadAndDownload/upload?storage=local`"
+            :on-remove="handleRemove"
+            :on-success="handleUploadSuccess"
+            multiple
+            :headers="{ 'x-token': token }"
+            :file-list="uploadFileList"
+            list-type="picture-card">
+            <i class="el-icon-plus"></i>
+          </el-upload>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 5" label="recorder" prop="recorderId">
-          <el-select v-model="formData.recorderId" filter clearable placeholder="please select recorderId" >
+        <el-form-item v-if="stepActive > 3" label="媒体文件">
+          <el-carousel height="150px">
+            <el-carousel-item v-for="item in uploadFileList" :key="item.uid">
+              <img :src="item.url" />
+            </el-carousel-item>
+          </el-carousel>   
+        </el-form-item>
+        <!-- feedback -->
+        <el-form-item v-if="stepActive == 4" label="反馈内容" prop="feedbackContent">
+          <el-input v-model="formData.feedbackContent" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="请输入反馈内容"></el-input>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 4" label="反馈内容" prop="feedbackContent">
+          <span>{{formData.feedbackContent}}</span>
+        </el-form-item>
+        <el-form-item v-if="stepActive == 4" label="反馈评分" prop="feedbackRate">
+          <el-rate v-model="formData.feedbackRate" :allow-half="allowHalf" :max="max"
+          :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 4" label="反馈评分" prop="feedbackRate">
+          <el-rate v-model="formData.feedbackRate" disabled show-score
+           :max="max" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
+        </el-form-item>
+        <!-- reviewed -->
+        <el-form-item v-if="stepActive == 5" label="审核人员" prop="recorderId">
+          <el-select v-model="formData.recorderId" filter clearable placeholder="请选择审核人员" >
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -299,8 +327,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive > 5" label="recorder" prop="recorderId">
-          <el-input v-model="formData.recorder.realName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 5" label="审核人员" prop="recorderId">
+          <span>{{formData.recorder.realName}}</span>
         </el-form-item>
       </el-form>
       <div class="dialog-footer" slot="footer">
@@ -312,6 +340,7 @@
 </template>
 
 <script>
+const path = process.env.VUE_APP_BASE_API;
 import {
     createLiftTrouble,
     deleteLiftTrouble,
@@ -325,6 +354,7 @@ import infoList from "@/components/mixins/infoList";
 import { getUserList } from '@/api/user';
 import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
+import { mapGetters } from "vuex";
 import Subject from "@/utils/subject";
 import XLSX from "xlsx";
 
@@ -338,13 +368,15 @@ export default {
       type: "",
       deleteVisible: false,
       previewImages:[],
+      path: path,
+      uploadFileList: [],
       stepItems: [
-        {key: 1, title: "步骤 1", description: "create trouble", icon:"el-icon-edit"},
-        {key: 2, title: "步骤 2", description: "response", icon:"el-icon-alarm-clock"},
-        {key: 3, title: "步骤 3", description: "scene", icon:"el-icon-location-information"},
-        {key: 4, title: "步骤 4", description: "fix", icon:"el-icon-s-tools"},
-        {key: 5, title: "步骤 5", description: "feedback", icon:"el-icon-s-comment"},
-        {key: 6, title: "步骤 6", description: "review", icon:"el-icon-s-promotion"}
+        {key: 1, title: "1. 创建", description: "创建故障记录", icon:"el-icon-edit"},
+        {key: 2, title: "2. 响应", description: "响应故障", icon:"el-icon-upload"},
+        {key: 3, title: "3. 到场", description: "到场时间和人员", icon:"el-icon-s-promotion"},
+        {key: 4, title: "4. 修复", description: "修复记录", icon:"el-icon-magic-stick"},
+        {key: 5, title: "5. 反馈", description: "反馈记录", icon:"el-icon-s-comment"},
+        {key: 6, title: "6. 审核", description: "审核记录", icon:"el-icon-check"}
       ],
       liftOptions:[],
       fromOptions:[],
@@ -358,10 +390,13 @@ export default {
         fixTime:"0001-01-01T00:00:00Z",fixUserId:null,fixUser:{}, fixCategoryId:null,
         fixCategory:{},reasonCategoryId:null,reasonCategory:{}, content:null,progress:0,
         recorderId:null,recorder:{},feedbackContent:null,feedbackRate:null
-      }
+      },
+      allowHalf:true,
+      max: 5
     };
   },
   computed: {
+    ...mapGetters("user", ["userInfo", "token"]),
     stepActive: function() {
       return this.formData.progress
     }
@@ -382,27 +417,20 @@ export default {
         return "";
       }
     },
-    formatTitle: function(row) {
-      if (row.recorderId == 0) {
-        return "InProcess"
-      } else {
-        return "View"
-      }
-    },
     formatProgress: function(progress) {
       switch(progress) {
         case 1:
-          return "created, need response"
+          return "待响应"
         case 2:
-          return "responsed, need scene"
+          return "待到达"
         case 3:
-          return "scened, need fix"
+          return "待修复"
         case 4:
-          return "fixed, neesd feedback"
+          return "待反馈"
         case 5:
-          return "feedbacked, need review"
+          return "待审核"
         case 6:
-          return "reviewed"
+          return "已完成"
       }
     }
   },
@@ -427,6 +455,21 @@ export default {
       if (row.recorderId == 0) {
         return "warning"
       } else return "success"
+    },
+    handleRemove(file, fileList){
+      console.log(fileList)        
+      this._.remove(this.uploadFileList, function(item) {
+        return item.uid == file.uid  
+      })
+    },
+    handlePreview(medias) {
+      this.previewImages = []
+      this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
+      this.$viewer.show()
+    },
+    handleUploadSuccess(response, file, fileList) {
+      this.uploadFileList.push({name: file.name, url: response.data.file.url})
+      console.log(fileList)
     },
     exportXlsx() {
       var table = [["ID", "Lift", "ResponseUser"]] // xlsx header
@@ -458,10 +501,30 @@ export default {
         await this.getTableData()
       }
     },
-    async updateLiftTrouble(row) {
+    async process(row) {
       const res = await findLiftTrouble({ ID: row.ID });
       if (res.code === 0) {
         this.formData = res.data.reliftTrouble;
+        
+        switch (this.formData.progress) {
+          case 0:
+            this.formData.startUserId = this.userOptions[0].ID
+            break;
+          case 1:
+            this.formData.responseUserId = this.userOptions[0].ID
+            break;
+          case 2:
+            this.formData.sceneUserId = this.userOptions[0].ID
+            break;
+          case 3:
+            this.formData.fixUserId = this.userOptions[0].ID
+            this.formData.fixCategoryId = this.fixOptions[0].ID
+            this.formData.reasonCategoryId = this.reasonOptions[0].ID
+            break;
+          case 5:
+            this.formData.recorderId = this.userOptions[0].ID
+            break;
+        }
         this.dialogFormVisible = true;
       }
     },
@@ -554,7 +617,7 @@ export default {
     },
     async getFixOptions(){
       let res = await getCategoriesList({
-        ID: 105,
+        ID: Subject.SubjectLiftTroubleSolvedType,
         page: 1,
         pageSize: 9999
       })
@@ -564,7 +627,7 @@ export default {
     },
     async getReasonOptions(){
       let res = await getCategoriesList({
-        ID: 106,
+        ID: Subject.SubjectLiftTroubleReasonType,
         page: 1,
         pageSize: 9999
       })
@@ -584,5 +647,37 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+
+.export {
+  float: right;
+}
+
+.el-rate {
+  display: inline;
+}
+
+.form-data {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .el-form-item {
+    width: 60%;
+    margin-bottom: 8px;
+    .el-form-item__label {
+      display: flex;
+      align-content: center;
+      width: 20%;
+      padding: 0;
+    }
+    .el-form-item__content {
+      width: 60%;
+      .el-select {
+        width: 100%;
+      }
+    }
+  }
+}
 </style>

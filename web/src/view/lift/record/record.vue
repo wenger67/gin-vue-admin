@@ -6,7 +6,7 @@
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增liftRecord表</el-button>
+          <el-button @click="openDialog" type="primary">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -56,7 +56,7 @@
       </el-table-column> 
       <el-table-column label="按钮组" fixed="right" min-width="100" >
         <template slot-scope="scope">
-          <el-button @click="updateLiftRecord(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
+          <el-button @click="process(scope.row)" size="small" :type="getButtonType(scope.row)">{{ scope.row|formatTitle }}</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteLiftRecord(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -74,19 +74,18 @@
     ></el-pagination>
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
-      <el-form :model="formData" ref="formData" label-width="100px" size="medium" label-postion="left">
-        <el-form-item label="">
-          <el-steps :active="stepActive" align-center>
-            <el-step v-for="item in stepItems"
-              :key="item.key"
-              :title="item.title"
-              :description="item.description"
-              :icon="item.icon">
-            </el-step>
-          </el-steps>
-        </el-form-item>
-        <el-form-item v-if="stepActive == 0" label="lift id" prop="liftId">
-          <el-select v-model="formData.liftId" filter clearable placeholder="please select lift" >
+      <el-steps :active="stepActive" align-center>
+        <el-step v-for="item in stepItems"
+          :key="item.key"
+          :title="item.title"
+          :description="item.description"
+          :icon="item.icon">
+        </el-step>
+      </el-steps>
+      <el-form class="form-data" :model="formData" ref="formData" :label-position="labelPosition" label-width="100px" size="medium" label-postion="left">
+        <!-- created -->
+        <el-form-item v-if="stepActive == 0" label="电梯:" prop="liftId">
+          <el-select v-model="formData.liftId" filter clearable placeholder="请选择电梯" >
             <el-option v-for="item in liftOptions"
               :key="item.ID"
               :label="item.nickName"
@@ -94,11 +93,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive != 0" label="lift id" prop="liftId">
-          <el-input v-model="formData.lift.nickName" disabled placeholder=""></el-input>
-        </el-form-item>
-        <el-form-item v-if="stepActive == 0" label="record type" prop="categoryId">
-          <el-select v-model="formData.categoryId" filter clearable placeholder="please select record type">
+        <el-form-item v-if="stepActive == 0" label="记录类型:" prop="categoryId">
+          <el-select v-model="formData.categoryId" filter clearable placeholder="请选择记录类型">
             <el-option v-for="item in categoryOptions"
               :key="item.ID"
               :label="item.categoryName"
@@ -106,11 +102,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive != 0" label="record type" prop="categoryId">
-          <el-input v-model="formData.category.categoryName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 0" label="电梯:" prop="liftId">
+          <span>{{formData.lift.nickName}}</span>
         </el-form-item>
-        <el-form-item v-if="stepActive == 0" label="worker" prop="workerId">
-          <el-select v-model="formData.workerId" filter clearable placeholder="please select workerId">
+        <el-form-item v-if="stepActive > 0" label="记录类型:" prop="categoryId">
+          <span>{{formData.category.categoryName}}</span>
+        </el-form-item>
+        <el-form-item v-if="stepActive > 0" label="创建时间:" prop="CreatedAt">
+          <span >{{formData.CreatedAt|formatDate}}</span>
+        </el-form-item>
+        <!-- started -->
+        <el-form-item v-if="stepActive == 1" label="人  员:" prop="workerId">
+          <el-select v-model="formData.workerId" filter clearable placeholder="请选择人员">
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -118,18 +121,20 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="stepActive != 0" label="worker" prop="workerId">
-          <el-input v-model="formData.worker.realName" disabled placeholder=""></el-input>
+        <el-form-item v-if="stepActive > 1" label="人  员:" prop="workerId">
+          <span>{{formData.worker.realName}}</span>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 1" label="content" prop="content">
-          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input record content"></el-input>
+        <el-form-item v-if="stepActive > 1" label="开始时间:" prop="startTime">
+          <span >{{formData.startTime|formatDate}}</span>
         </el-form-item>
-        <el-form-item v-if="stepActive == 2" label="content" prop="content">
+        <!-- ended -->
+        <el-form-item v-if="stepActive == 2" label="内  容:" prop="content">
           <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder=""></el-input>
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 1" label="medias" prop="medias">
+        <el-form-item v-if="stepActive > 2" label="内  容:" prop="content">
+          <el-input v-model="formData.content" type="textarea" :autosize="{minRows: 4, maxRows: 4}" placeholder="please input record content"></el-input>
+        </el-form-item>
+        <el-form-item v-if="stepActive == 2" label="媒体文件" prop="medias">
           <el-upload
             :action="`${path}/fileUploadAndDownload/upload?storage=local`"
             :on-remove="handleRemove"
@@ -141,17 +146,16 @@
             <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
-        
-        <el-form-item v-if="stepActive == 2" label="medias">
+        <el-form-item v-if="stepActive > 2" label="媒体文件">
           <el-carousel height="150px">
             <el-carousel-item v-for="item in uploadFileList" :key="item.uid">
               <img :src="item.url" />
             </el-carousel-item>
           </el-carousel>   
         </el-form-item>
-
-        <el-form-item v-if="stepActive == 2" label="recorder" prop="recorderId">
-          <el-select v-model="formData.recorderId" filter clearable placeholder="please select recorderId">
+        <!-- reviewed -->
+        <el-form-item v-if="stepActive == 3" label="审核人员" prop="recorderId">
+          <el-select v-model="formData.recorderId" filter clearable placeholder="请选择审核人员">
             <el-option v-for="item in userOptions"
               :key="item.ID"
               :label="item.realName"
@@ -159,6 +163,12 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item v-if="stepActive > 3" label="完结时间" prop="endTime">
+          <span>{{formData.endTime|formatDate}}</span>
+        </el-form-item> 
+        <el-form-item v-if="stepActive > 3" label="审核人员" prop="recorderId">
+          <span>{{formData.recorder.realName}}</span>
+        </el-form-item> 
       </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -174,8 +184,7 @@ import {
     createLiftRecord,
     deleteLiftRecord,
     deleteLiftRecordByIds,
-    fillLiftRecord,
-    reviewLiftRecord,
+    updateLiftRecord,
     findLiftRecord,
     getLiftRecordList
 } from "@/api/liftRecord";
@@ -185,6 +194,7 @@ import { getUserList } from '@/api/user';
 import { getCategoriesList } from '@/api/categories';
 import { getLiftList } from "@/api/lift";
 import { mapGetters } from "vuex";
+import Subject from "@/utils/subject"
 
 export default {
   name: "LiftRecord",
@@ -195,14 +205,15 @@ export default {
       dialogFormVisible: false,
       previewDialogVisible: false,
       previewImages:[],
-      type: "",
       deleteVisible: false,
+      labelPosition:"right",
       path: path,
       uploadFileList: [],
       stepItems: [
-        {key: 1, title: "步骤 1", description: "create record", icon:"el-icon-edit"},
-        {key: 2, title: "步骤 2", description: "fill record", icon:"el-icon-upload"},
-        {key: 3, title: "步骤 3", description: "review record", icon:"el-icon-s-promotion"}
+        {key: 1, title: "1. 创建", description: "创建记录", icon:"el-icon-edit"},
+        {key: 2, title: "2. 开始", description: "开始记录", icon:"el-icon-upload"},
+        {key: 3, title: "3. 完结", description: "提交记录", icon:"el-icon-s-promotion"},
+        {key: 4, title: "4. 审核", description: "审核记录", icon:"el-icon-check"}
       ],
       categoryOptions:[],
       userOptions:[],
@@ -211,21 +222,14 @@ export default {
       formData: {
         liftId:null,lift:{}, categoryId:null, category:{},
         medias:"",content:"",startTime:"0001-01-01T00:00:00Z",endTime:"0001-01-01T00:00:00Z",
-        workerId:null,worker:{}, recorderId:0, recorder:{}
+        workerId:null,worker:{}, recorderId:0, recorder:{}, progress:0
       }
     };
   },
   computed: {
     ...mapGetters("user", ["userInfo", "token"]),
     stepActive: function() {
-      if (this.formData.content == "" && this.formData.medias == "" && this.formData.startTime == "0001-01-01T00:00:00Z") {
-        return 0
-      }
-      if (this.formData.recorderId == 0 && this.formData.endTime == "0001-01-01T00:00:00Z") {
-        return 1
-      }
-
-      return 2
+      return this.formData.progress
     }
   },
   filters: {
@@ -248,10 +252,15 @@ export default {
       }
     },
     formatTitle: function(row) {
-      if (row.recorderId == 0) {
-        return "InProcess"
-      } else {
-        return "View"
+      switch(row.progress) {
+        case 1:
+          return "待开始"
+        case 2:
+          return "待完成"
+        case 3:
+          return "待审核"
+        case 4:
+          return "已完成"
       }
     }
   },
@@ -303,11 +312,11 @@ export default {
           await this.getTableData()
         }
       },
-    async updateLiftRecord(row) {
+    async process(row) {
       const res = await findLiftRecord({ ID: row.ID });
       if (res.code === 0) {
-        this.formData = res.data.reliftRecord;
-        this.uploadFileList = JSON.parse(this.formData.medias)
+        this.formData = res.data.liftRecord;
+        this.uploadFileList = this._.filter(this.formData.medias, ['tag', 'jpg'])
         this.dialogFormVisible = true;
       }
     },
@@ -343,31 +352,29 @@ export default {
       })
     },
     async enterDialog() {
-      if (this.stepActive == 0) {
-        this.type = "create"
-      } else if (this.stepActive == 1) {
-        this.type = "fill"
-      } else this.type = "review"
-
       let res;
       let param = {}
-      switch (this.type) {
-        case "create":
+      switch (this.stepActive) {
+        case 0:
           param.liftId = this.formData.liftId
           param.categoryId = this.formData.categoryId
-          param.workerId = this.formData.workerId
           res = await createLiftRecord(param);
           break;
-        case "fill":
+        case 1:
+          param.recordId = this.formData.ID
+          param.workerId = this.formData.workerId
+          res = await updateLiftRecord(param);
+          break;
+        case 2:
           param.recordId = this.formData.ID
           param.content = this.formData.content
           param.medias = JSON.stringify(this.uploadFileList)
-          res = await fillLiftRecord(param);
+          res = await updateLiftRecord(param);
           break;
-        case "review":
+        case 3:
           param.recordId = this.formData.ID
           param.recorderId = this.formData.recorderId
-          res = await reviewLiftRecord(param)
+          res = await updateLiftRecord(param)
           break;
       }
       if (res.code === 0) {
@@ -380,7 +387,6 @@ export default {
       }
     },
     openDialog() {
-      console.log(this.stepActive)
       this.dialogFormVisible = true;
     },
     async getUserOptions() {
@@ -403,7 +409,7 @@ export default {
     },
     async getCategoryOptions() {
       let res = await getCategoriesList({
-        ID: 103, // TODO hard code
+        ID: Subject.SubjectLiftRecordType,
         page: 1,
         pageSize: 9999
       })
@@ -421,14 +427,35 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 .previewImage {
     cursor: pointer;
     margin: 5px;
     display: inline-block;
 }
 
-.el-form-item{
-  text-align: center;
+.form-data {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .el-form-item {
+    width: 60%;
+    margin-bottom: 8px;
+    .el-form-item__label {
+      display: flex;
+      align-content: center;
+      width: 20%;
+      padding: 0;
+    }
+    .el-form-item__content {
+      width: 60%;
+      .el-select {
+        width: 100%;
+      }
+    }
+  }
 }
+
 </style>

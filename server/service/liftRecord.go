@@ -20,19 +20,6 @@ func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
 	return err
 }
 
-func FillLiftRecord(fill request.LiftRecordFill) (err error) {
-	global.PantaLog.Debug(fill)
-	db := global.PantaDb.Model(model.LiftRecord{}).Where("id = ?", fill.RecordId)
-	err = db.Debug().Updates(map[string]interface{}{"content": fill.Content, "images": fill.Images, "EndTime": time.Now(), "progress": 2}).Error
-	return
-}
-
-func ReviewLiftRecord(review request.LiftRecordReview) (err error) {
-	db := global.PantaDb.Model(model.LiftRecord{}).Where("id = ?", review.RecordId)
-	err = db.Updates(map[string]interface{}{"recorderId": review.RecorderId, "progress": 3}).Error
-	return
-}
-
 
 // @title    DeleteLiftRecord
 // @description   delete a LiftRecord
@@ -62,8 +49,21 @@ func DeleteLiftRecordByIds(ids request.IdsReq) (err error) {
 // @auth                     （2020/04/05  20:22）
 // @return                    error
 
-func UpdateLiftRecord(liftRecord *model.LiftRecord) (err error) {
-	err = global.PantaDb.Save(liftRecord).Error
+func UpdateLiftRecord(params *request.LiftRecordUpdate) (err error) {
+	_, liftRecord := GetLiftRecord(params.RecordId)
+	switch liftRecord.Progress {
+	case 1:
+		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"worker_id": params.WorkerId,
+			"start_time": time.Now(), "progress": liftRecord.Progress + 1}).Error
+		break
+	case 2:
+		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"medias": params.Medias,
+			"content": params.Content, "end_time": time.Now(), "progress": liftRecord.Progress + 1}).Error
+		break
+	case 3:
+		liftRecord.RecorderId = params.RecorderId
+		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"recorder_id": params.RecorderId}).Error
+	}
 	return err
 }
 
