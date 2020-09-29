@@ -20,7 +20,6 @@ func CreateLiftRecord(liftRecord model.LiftRecord) (err error) {
 	return err
 }
 
-
 // @title    DeleteLiftRecord
 // @description   delete a LiftRecord
 // @auth                     （2020/04/05  20:22）
@@ -39,7 +38,7 @@ func DeleteLiftRecord(liftRecord model.LiftRecord) (err error) {
 // @return                    error
 
 func DeleteLiftRecordByIds(ids request.IdsReq) (err error) {
-	err = global.PantaDb.Delete(&[]model.LiftRecord{},"id in (?)",ids.Ids).Error
+	err = global.PantaDb.Delete(&[]model.LiftRecord{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
@@ -62,7 +61,8 @@ func UpdateLiftRecord(params *request.LiftRecordUpdate) (err error) {
 		break
 	case 3:
 		liftRecord.RecorderId = params.RecorderId
-		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"recorder_id": params.RecorderId}).Error
+		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"recorder_id": params.RecorderId,
+			"progress": liftRecord.Progress + 1}).Error
 	}
 	return err
 }
@@ -89,9 +89,9 @@ func GetLiftRecord(id uint) (err error, liftRecord model.LiftRecord) {
 func GetLiftRecordInfoList(info request.LiftRecordSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-    // 创建db
+	// 创建db
 	db := global.PantaDb.Model(&model.LiftRecord{})
-    var liftRecords []model.LiftRecord
+	var liftRecords []model.LiftRecord
 	if info.Key != "" {
 		var res []response.LiftRecordCountByType
 		if info.Key == "type" {
