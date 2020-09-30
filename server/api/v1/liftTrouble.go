@@ -101,9 +101,9 @@ func DeleteLiftTroubleByIds(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"更新成功"}"
 // @Router /liftTrouble/updateLiftTrouble [put]
 func UpdateLiftTrouble(c *gin.Context) {
-	var liftTrouble model.LiftTrouble
-	_ = c.ShouldBindJSON(&liftTrouble)
-	err := service.UpdateLiftTrouble(&liftTrouble)
+	var params request.LiftTroubleUpdate
+	_ = c.ShouldBindJSON(&params)
+	err := service.UpdateLiftTrouble(&params)
 	// TODO send message
 	if err != nil {
 		response.FailWithMessage(fmt.Sprintf("更新失败，%v", err), c)

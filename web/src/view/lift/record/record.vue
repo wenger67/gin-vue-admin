@@ -34,25 +34,41 @@
       <el-table-column label="电梯" prop="lift.nickName" sortable min-width="50" align="center"></el-table-column> 
       <el-table-column label="记录类别" prop="category.categoryName" sortable min-width="60" align="center"></el-table-column> 
       <el-table-column label="开始时间" sortable min-width="80" align="center">
-        <template slot-scope="scope">{{scope.row.startTime|formatDate}}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.startTime != '0001-01-01T00:00:00Z'">{{scope.row.startTime|formatDate}}</span>
+          <span class="no-data" v-else>无记录</span>
+        </template>
       </el-table-column> 
 
       <el-table-column label="图片记录" prop="medias" sortable min-width="120" align="center">
         <template slot-scope="scope">
-          <viewer v-if="scope.row.medias" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
+          <viewer v-if="scope.row.medias.length" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
             <el-carousel height="150px" indicator-position="none">
               <el-carousel-item v-for="item in scope.row.medias" :key="item.url">
                 <el-image :src="item.url" fit="cover" @click="handlePreview(scope.row.medias)" style="width:200px;height:150px"/>
               </el-carousel-item>
             </el-carousel>            
           </viewer>          
-          <span v-else>---</span>
+          <span class="no-data" v-else>无记录</span>
         </template>     
       </el-table-column> 
-      <el-table-column label="文字记录" prop="content" sortable min-width="80" align="center"></el-table-column> 
-      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60" align="center"></el-table-column> 
+      <el-table-column label="文字记录" prop="content" sortable min-width="80" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.content">{{scope.row.content}}</span>
+          <span class="no-data" v-else>无记录</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="60" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.recorderId">{{scope.row.recorder.realName}}</span>
+          <span class="no-data" v-else>无记录</span>
+        </template>
+      </el-table-column> 
       <el-table-column label="结束时间" prop="endTime" sortable min-width="80" align="center">
-        <template slot-scope="scope">{{scope.row.endTime|formatDate}}</template>        
+        <template slot-scope="scope">
+          <span v-if="scope.row.endTime != '0001-01-01T00:00:00Z'">{{scope.row.endTime|formatDate}}</span>
+          <span class="no-data" v-else>无记录</span>
+        </template>
       </el-table-column> 
       <el-table-column label="按钮组" fixed="right" min-width="100" >
         <template slot-scope="scope">
@@ -136,13 +152,14 @@
         </el-form-item>
         <el-form-item v-if="stepActive == 2" label="媒体文件" prop="medias">
           <el-upload
-            :action="`${path}/fileUploadAndDownload/upload?storage=local`"
+            :action="`${path}/fileUploadAndDownload/uploadList`"
             :on-remove="handleRemove"
             :on-success="handleUploadSuccess"
             multiple
             :headers="{ 'x-token': token }"
             :file-list="uploadFileList"
-            list-type="picture-card">
+            list-type="picture-card"
+            :data="uploadData">
             <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
@@ -188,6 +205,7 @@ import {
     findLiftRecord,
     getLiftRecordList
 } from "@/api/liftRecord";
+import { deleteFile } from "@/api/fileUploadAndDownload";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 import { getUserList } from '@/api/user';
@@ -209,6 +227,10 @@ export default {
       labelPosition:"right",
       path: path,
       uploadFileList: [],
+      uploadData:{
+        storage: "local",
+        type: "record"
+      },
       stepItems: [
         {key: 1, title: "1. 创建", description: "创建记录", icon:"el-icon-edit"},
         {key: 2, title: "2. 开始", description: "开始记录", icon:"el-icon-upload"},
@@ -235,7 +257,7 @@ export default {
   filters: {
     formatDate: function(time) {
       if (time == "0001-01-01T00:00:00Z") {
-        return "---"
+        return ""
       }
       if (time != null && time != "") {
         var date = new Date(time);
@@ -281,20 +303,34 @@ export default {
           return "warning"
         } else return "success"
       },
-      handleRemove(file, fileList){
-        console.log(fileList)        
-        this._.remove(this.uploadFileList, function(item) {
-          return item.uid == file.uid  
+      async handleRemove(file){
+        const item = this._.find(this.uploadFileList, ["uid", file.uid])  
+        const res = await deleteFile({
+          ID: item.ID,
+          storage: "local"
         })
+        if (res.code == 0) {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })       
+          this._.remove(this.uploadFileList, function(n){
+            return n.uid == file.uid
+          })   
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除失败:' + res.message
+          })     
+        }
       },
       handlePreview(medias) {
         this.previewImages = []
         this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
         this.$viewer.show()
       },
-      handleUploadSuccess(response, file, fileList) {
-        this.uploadFileList.push({name: file.name, url: response.data.file.url})
-        console.log(fileList)
+      handleUploadSuccess(response) {
+        this.uploadFileList.push(response.data.files[0])
       },
       async onDelete() {
         const ids = []
@@ -315,9 +351,20 @@ export default {
     async process(row) {
       const res = await findLiftRecord({ ID: row.ID });
       if (res.code === 0) {
-        this.formData = res.data.liftRecord;
-        this.uploadFileList = this._.filter(this.formData.medias, ['tag', 'jpg'])
-        this.dialogFormVisible = true;
+        this.formData = res.data.liftRecord
+        switch (this.formData.progress) {
+          case 1:
+            this.formData.workerId = this.userOptions[0].ID
+            break;
+          case 3:
+            this.formData.recorderId = this.userOptions[0].ID
+            break;
+        }
+        this.uploadFileList = this.formData.medias
+        this.dialogFormVisible = true
+        // assign id for upload file field
+        this.uploadData.id = row.ID
+        this.uploadData.liftId = res.data.liftRecord.liftId
       }
     },
     closeDialog() {
@@ -353,28 +400,14 @@ export default {
     },
     async enterDialog() {
       let res;
-      let param = {}
       switch (this.stepActive) {
         case 0:
-          param.liftId = this.formData.liftId
-          param.categoryId = this.formData.categoryId
-          res = await createLiftRecord(param);
+          res = await createLiftRecord(this.formData);
           break;
         case 1:
-          param.recordId = this.formData.ID
-          param.workerId = this.formData.workerId
-          res = await updateLiftRecord(param);
-          break;
         case 2:
-          param.recordId = this.formData.ID
-          param.content = this.formData.content
-          param.medias = JSON.stringify(this.uploadFileList)
-          res = await updateLiftRecord(param);
-          break;
         case 3:
-          param.recordId = this.formData.ID
-          param.recorderId = this.formData.recorderId
-          res = await updateLiftRecord(param)
+          res = await updateLiftRecord(this.formData)
           break;
       }
       if (res.code === 0) {
@@ -387,6 +420,9 @@ export default {
       }
     },
     openDialog() {
+      this.formData.liftId = this.liftOptions[0].ID
+      this.formData.categoryId = this.categoryOptions[0].ID
+      
       this.dialogFormVisible = true;
     },
     async getUserOptions() {
@@ -432,6 +468,10 @@ export default {
     cursor: pointer;
     margin: 5px;
     display: inline-block;
+}
+
+.no-data {
+  color: lightgray;
 }
 
 .form-data {

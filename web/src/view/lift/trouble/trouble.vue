@@ -58,7 +58,7 @@
               <el-tag size="medium">{{ scope.row.responseUser.realName }}</el-tag>
             </div>
           </el-popover>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column>   
           
@@ -73,7 +73,7 @@
               <el-tag size="medium">{{ scope.row.sceneUser.realName }}</el-tag>
             </div>
           </el-popover>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column> 
      
@@ -90,38 +90,38 @@
               <el-tag size="medium">{{ scope.row.fixCategory.categoryName }}</el-tag>
             </div>
           </el-popover>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column> 
 
       <el-table-column label="故障详情" sortable min-width="200" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.content && scope.row.content != `null`">{{ scope.row.content }}</span>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column>  -->
       <el-table-column label="图片记录" prop="medias" sortable min-width="200" align="center">
         <template slot-scope="scope">
-          <viewer v-if="scope.row.medias" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
+          <viewer v-if="scope.row.medias.length" :images="previewImages" @inited="inited" ref="viewer" class="images clearfix">
             <el-carousel height="150px" indicator-position="none">
               <el-carousel-item v-for="item in scope.row.medias" :key="item.url">
                 <el-image :src="item.url" fit="cover" @click="handlePreview(scope.row.medias)" style="width:200px;height:150px"/>
               </el-carousel-item>
             </el-carousel>            
           </viewer>          
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>     
       </el-table-column>     
       <el-table-column label="记录人员" prop="recorder.realName" sortable min-width="120" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.recorderId">{{ scope.row.recorder.realName }}</span>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column> 
       <el-table-column label="反馈内容" sortable min-width="150" prop="feedbackContent" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.feedbackContent">{{ scope.row.feedbackContent }}</span>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column> 
       <el-table-column label="评分" prop="feedbackRate" sortable min-width="180" align="center">
@@ -130,7 +130,7 @@
             <el-rate v-model="scope.row.feedbackRate" disabled show-score :allow-half="allowHalf"
            :max="max" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
           </span>
-          <span v-else>---</span>
+          <span class="no-data" v-else >无记录</span>
         </template>
       </el-table-column> 
       <el-table-column label="日期" min-width="160" align="center">
@@ -285,13 +285,14 @@
         </el-form-item>
         <el-form-item v-if="stepActive == 3" label="媒体文件" prop="medias">
           <el-upload
-            :action="`${path}/fileUploadAndDownload/upload?storage=local`"
+            :action="`${path}/fileUploadAndDownload/uploadList`"
             :on-remove="handleRemove"
             :on-success="handleUploadSuccess"
             multiple
             :headers="{ 'x-token': token }"
             :file-list="uploadFileList"
-            list-type="picture-card">
+            list-type="picture-card"
+            :data="uploadData">
             <i class="el-icon-plus"></i>
           </el-upload>
         </el-form-item>
@@ -349,6 +350,7 @@ import {
     findLiftTrouble,
     getLiftTroubleList
 } from "@/api/liftTrouble";  //  此处请自行替换地址
+import { deleteFile } from "@/api/fileUploadAndDownload";
 import { formatTimeToStr } from "@/utils/data";
 import infoList from "@/components/mixins/infoList";
 import { getUserList } from '@/api/user';
@@ -370,6 +372,10 @@ export default {
       previewImages:[],
       path: path,
       uploadFileList: [],
+      uploadData:{
+        storage: "local",
+        type: "trouble"
+      },
       stepItems: [
         {key: 1, title: "1. 创建", description: "创建故障记录", icon:"el-icon-edit"},
         {key: 2, title: "2. 响应", description: "响应故障", icon:"el-icon-upload"},
@@ -443,11 +449,6 @@ export default {
     inited(viewer) {
       this.$viewer = viewer
     },
-    handlePreview(medias) {
-      this.previewImages = []
-      this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
-      this.$viewer.show()
-    },    
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -456,20 +457,34 @@ export default {
         return "warning"
       } else return "success"
     },
-    handleRemove(file, fileList){
-      console.log(fileList)        
-      this._.remove(this.uploadFileList, function(item) {
-        return item.uid == file.uid  
+    async handleRemove(file){
+      const item = this._.find(this.uploadFileList, ["uid", file.uid])  
+      const res = await deleteFile({
+        ID: item.ID,
+        storage: "local"
       })
+      if (res.code == 0) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })       
+        this._.remove(this.uploadFileList, function(n){
+          return n.uid == file.uid
+        })   
+      } else {
+        this.$message({
+          type: 'error',
+          message: '删除失败:' + res.message
+        })     
+      }
     },
     handlePreview(medias) {
       this.previewImages = []
       this.previewImages = this._.map(this._.filter(medias, function(o){return o.tag == "jpg"}), "url")
       this.$viewer.show()
     },
-    handleUploadSuccess(response, file, fileList) {
-      this.uploadFileList.push({name: file.name, url: response.data.file.url})
-      console.log(fileList)
+    handleUploadSuccess(response) {
+      this.uploadFileList.push(response.data.files[0])
     },
     exportXlsx() {
       var table = [["ID", "Lift", "ResponseUser"]] // xlsx header
@@ -507,9 +522,6 @@ export default {
         this.formData = res.data.reliftTrouble;
         
         switch (this.formData.progress) {
-          case 0:
-            this.formData.startUserId = this.userOptions[0].ID
-            break;
           case 1:
             this.formData.responseUserId = this.userOptions[0].ID
             break;
@@ -525,7 +537,12 @@ export default {
             this.formData.recorderId = this.userOptions[0].ID
             break;
         }
+        console.log(this.formData.medias)
+        this.uploadFileList = this.formData.medias
         this.dialogFormVisible = true;
+        // assign id for upload file field
+        this.uploadData.id = row.ID
+        this.uploadData.liftId = res.data.reliftTrouble.liftId
       }
     },
     closeDialog() {
@@ -585,6 +602,10 @@ export default {
     },
     openDialog() {
       this.type = "create";
+      this.formData.startUserId = this.userOptions[0].ID
+      this.formData.liftId = this.liftOptions[0].ID
+      this.formData.fromCategoryId = this.fromOptions[0].ID
+
       this.dialogFormVisible = true;
     },
     async getUserOptions() {
@@ -655,6 +676,10 @@ export default {
 
 .el-rate {
   display: inline;
+}
+
+.no-data {
+  color: lightgray;
 }
 
 .form-data {

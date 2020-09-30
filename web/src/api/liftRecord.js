@@ -16,23 +16,6 @@ export const createLiftRecord = (data) => {
      })
  }
 
- export const fillLiftRecord = (data) => {
-  return service({
-      url: "/liftRecord/fillLiftRecord",
-      method: 'post',
-      data
-  })
-}
-
-export const reviewLiftRecord = (data) => {
-  return service({
-      url: "/liftRecord/reviewLiftRecord",
-      method: 'post',
-      data
-  })
-}
-
-
 // @Tags LiftRecord
 // @Summary 删除LiftRecord
 // @Security ApiKeyAuth

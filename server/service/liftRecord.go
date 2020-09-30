@@ -5,6 +5,7 @@ import (
 	"panta/model"
 	"panta/model/request"
 	"panta/model/response"
+	"panta/utils/enum"
 	"time"
 )
 
@@ -49,21 +50,24 @@ func DeleteLiftRecordByIds(ids request.IdsReq) (err error) {
 // @return                    error
 
 func UpdateLiftRecord(params *request.LiftRecordUpdate) (err error) {
-	_, liftRecord := GetLiftRecord(params.RecordId)
-	switch liftRecord.Progress {
-	case 1:
-		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"worker_id": params.WorkerId,
-			"start_time": time.Now(), "progress": liftRecord.Progress + 1}).Error
+	updateMap := make(map[string]interface{})
+	switch params.Progress {
+	case int(enum.RecordCreated):
+		updateMap["StartTime"] = time.Now()
+		updateMap["WorkerId"] = params.WorkerId
 		break
-	case 2:
-		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"medias": params.Medias,
-			"content": params.Content, "end_time": time.Now(), "progress": liftRecord.Progress + 1}).Error
+	case int(enum.RecordStarted):
+		updateMap["Content"] = params.Content
+		updateMap["EndTime"] = time.Now()
 		break
-	case 3:
-		liftRecord.RecorderId = params.RecorderId
-		err = global.PantaDb.Model(&liftRecord).Updates(map[string]interface{}{"recorder_id": params.RecorderId,
-			"progress": liftRecord.Progress + 1}).Error
+	case int(enum.RecordEnded):
+		updateMap["RecorderId"] = params.RecorderId
+		break
+	default:
+		global.PantaLog.Warning("unknown lift record progress, ", params.Progress)
 	}
+	updateMap["Progress"] = params.Progress + 1
+	err = global.PantaDb.Model(model.LiftRecord{}).Where("ID = ?", params.ID).Updates(updateMap).Error
 	return err
 }
 

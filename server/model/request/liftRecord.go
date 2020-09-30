@@ -17,6 +17,5 @@ type LiftRecordCreate struct {
 }
 
 type LiftRecordUpdate struct {
-	RecordId uint `json:"recordId"`
 	model.LiftRecord
 }

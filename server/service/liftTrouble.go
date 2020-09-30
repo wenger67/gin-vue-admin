@@ -5,6 +5,7 @@ import (
 	"panta/model"
 	"panta/model/request"
 	"panta/model/response"
+	"panta/utils/enum"
 	"time"
 )
 
@@ -47,20 +48,20 @@ func DeleteLiftTroubleByIds(ids request.IdsReq) (err error) {
 // @auth                     （2020/04/05  20:22）
 // @return                    error
 
-func UpdateLiftTrouble(liftTrouble *model.LiftTrouble) (err error) {
+func UpdateLiftTrouble(liftTrouble *request.LiftTroubleUpdate) (err error) {
 	updateMap := make(map[string]interface{})
 	switch liftTrouble.Progress {
-	case 1:
+	case int(enum.TroubleCreated):
 		updateMap["ResponseUserId"] = liftTrouble.ResponseUserId
 		updateMap["ResponseTime"] = time.Now()
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
-	case 2:
+	case int(enum.TroubleResponded):
 		updateMap["SceneUserId"] = liftTrouble.SceneUserId
 		updateMap["SceneTime"] = time.Now()
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
-	case 3:
+	case int(enum.TroubleScened):
 		updateMap["FixUserId"] = liftTrouble.FixUserId
 		updateMap["FixTime"] = time.Now()
 		updateMap["FixCategoryId"] = liftTrouble.FixCategoryId
@@ -68,12 +69,12 @@ func UpdateLiftTrouble(liftTrouble *model.LiftTrouble) (err error) {
 		updateMap["Content"] = liftTrouble.Content
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
-	case 4:
+	case int(enum.TroubleFixed):
 		updateMap["FeedbackContent"] = liftTrouble.FeedbackContent
 		updateMap["FeedbackRate"] = liftTrouble.FeedbackRate
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
-	case 5:
+	case int(enum.TroubleFeedback):
 		updateMap["RecorderId"] = liftTrouble.RecorderId
 		updateMap["Progress"] = liftTrouble.Progress + 1
 		break
@@ -96,7 +97,7 @@ func GetLiftTrouble(id uint) (err error, liftTrouble model.LiftTrouble) {
 	err = global.PantaDb.Where("id = ?", id).Preload("Lift").Preload("FromCategory").
 		Preload("StartUser").Preload("ResponseUser").Preload("SceneUser").
 		Preload("FixUser").Preload("FixCategory").Preload("ReasonCategory").
-		Preload("Recorder").First(&liftTrouble).Error
+		Preload("Recorder").Preload("Medias").First(&liftTrouble).Error
 	return
 }
 

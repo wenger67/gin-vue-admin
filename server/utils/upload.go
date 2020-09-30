@@ -3,10 +3,12 @@ package utils
 import (
 	"context"
 	"fmt"
-	"panta/global"
 	"github.com/qiniu/api.v7/v7/auth/qbox"
 	"github.com/qiniu/api.v7/v7/storage"
 	"mime/multipart"
+	"os"
+	"panta/global"
+	"strings"
 	"time"
 )
 
@@ -46,8 +48,7 @@ func Upload(file *multipart.FileHeader) (err error, path string, key string) {
 	return err, global.PantaConfig.Qiniu.ImgPath + "/" + ret.Key, ret.Key
 }
 
-func DeleteFile(key string) error {
-
+func DeleteFileInQiniu(key string) error {
 	mac := qbox.NewMac(global.PantaConfig.Qiniu.AccessKey, global.PantaConfig.Qiniu.SecretKey)
 	cfg := storage.Config{
 		// 是否使用https域名进行资源管理
@@ -63,4 +64,20 @@ func DeleteFile(key string) error {
 		return err
 	}
 	return nil
+}
+
+func DeleteFileInDisk(url string) (err error) {
+	root, _ := os.Getwd()
+	prefix := root + "/resource"
+	splits := strings.Split(url, "/upload")
+	if len(splits) < 2 {
+		return fmt.Errorf("url: %s  illegal", url)
+	} else {
+		path := prefix + "/upload" + splits[1]
+		if exist, _ := PathExists(path); exist {
+			return os.Remove(path)
+		} else {
+			return fmt.Errorf("path: %s  not exist", path)
+		}
+	}
 }

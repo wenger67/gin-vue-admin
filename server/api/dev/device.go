@@ -3,18 +3,14 @@ package dev
 import (
 	"encoding/json"
 	"fmt"
-	"panta/global"
+	"github.com/gin-gonic/gin"
 	"panta/global/response"
 	"panta/model"
 	"panta/model/request"
 	"panta/service"
 	"panta/service/dev"
-	"panta/utils"
-	"github.com/gin-gonic/gin"
-	"mime/multipart"
-	"os"
+	"panta/utils/enum"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -50,13 +46,16 @@ func CreateEvent(c *gin.Context) {
 		response.FailWithMessage("create device event failed", c)
 		return
 	}
-
 	// create content about the event
 	content := request.DeviceEventContent{}
-	imageItems := handleFiles(c, images, noSave, storage, event)
+
+	date := time.Now().Format("2006_01_02")
+	additionPath := "/upload/" + date + "/device_" + strconv.Itoa(int(event.DeviceID)) + "/type_" +
+				strconv.Itoa(int(event.TypeId)) + "/event_" + strconv.Itoa(int(event.ID)) + "/"
+	_, imageItems := service.HandleFiles(c, images, noSave, storage, enum.FileBelongEvent, event.ID, additionPath)
 	item := request.DeviceEventContentItem{Brief: "start", Images: imageItems, CreatedAt: time.Now()}
 	content.Items = append(content.Items, item)
-	videoItems := handleFiles(c, videos, noSave, storage, event)
+	_, videoItems := service.HandleFiles(c, videos, noSave, storage, enum.FileBelongEvent, event.ID, additionPath)
 	content.Videos = videoItems
 
 	temp, _ := json.Marshal(content);
@@ -69,56 +68,3 @@ func CreateEvent(c *gin.Context) {
 	}
 }
 
-func handleFiles(c *gin.Context, files []*multipart.FileHeader, noSave string, storage string, event model.AdDeviceEvent) (list []string){
-	for _, fileHeader := range files {
-		var err error
-		var filePath string
-		var key string
-		if storage == "qiniu" {
-			// 文件上传后拿到文件路径
-			err, filePath, key = utils.Upload(fileHeader)
-		} else {
-			// upload local
-			dir, _ := os.Getwd()
-			fileName := fileHeader.Filename
-			date := time.Now().Format("2006_01_02")
-			dateTime := time.Now().Format("2006_01_02_15_04_05")
-			prefix := dir + "/resource"
-			additionPath := "/upload/" + date + "/" + strconv.Itoa(int(event.DeviceID)) + "/" +
-				strconv.Itoa(int(event.TypeId)) + "/" + strconv.Itoa(int(event.ID)) + "/"
-			newFileName := utils.MD5V([]byte(dateTime)) + "_" + fileName
-			err = os.MkdirAll(prefix + additionPath, os.ModePerm)
-			if err != nil {
-				global.PantaLog.Warning("create dir failed", err)
-			}
-			dst := prefix + additionPath + newFileName
-			err = c.SaveUploadedFile(fileHeader, dst)
-			if err == nil {
-				filePath = "http://127.0.0.1:8888" + additionPath + newFileName
-			} else {
-				global.PantaLog.Warning("save file failed ", err)
-			}
-		}
-
-		if err != nil {
-			global.PantaLog.Warning("get file path failed " , fileHeader.Filename)
-		} else {
-			// 修改数据库后得到修改后的user并且返回供前端使用
-			var file model.ExaFileUploadAndDownload
-			file.Url = filePath
-			file.Name = fileHeader.Filename
-			s := strings.Split(file.Name, ".")
-			file.Tag = s[len(s)-1]
-			file.Key = key
-			if noSave == "0" {
-				err = service.Upload(file)
-			}
-			if err != nil {
-				global.PantaLog.Warning(fmt.Sprintf("修改数据库链接失败，%v", err))
-			} else {
-				list = append(list, filePath)
-			}
-		}
-	}
-	return
-}

@@ -7,3 +7,7 @@ type LiftTroubleSearch struct{
     PageInfo
     RankInfo
 }
+
+type LiftTroubleUpdate struct {
+    model.LiftTrouble
+}
